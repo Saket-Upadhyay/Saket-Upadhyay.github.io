@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="https://gmpg.org/xfn/11" rel="profile" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+  <title>
+    
+      Taking over a software by Instruction Rewriting. &middot; Saket Upadhyay
+    
+  </title>
+
+  
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface" />
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png" />
+<link rel="shortcut icon" href="/favicon.ico" />
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml" />
+
+  <!-- Additional head bits without overriding original head -->
+</head>
+
+
+  <body class="post">
+
+    <div id="sidebar">
+  <header>
+    <div class="site-title">
+      <a>
+        
+          <span class="back-arrow icon"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 0h24v24H0z" fill="none"/>
+  <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+</svg></span>
+        
+        Saket Upadhyay
+      </a>
+    </div>
+    <p class="lead">Cybersecurity Student, Wannabe Malware Researcher. Reverse Engineering, Low Level Software Security, Penetration Testing.</p>
+  </header>
+  <nav id="sidebar-nav-links">
+  
+    <a class="home-link "
+        href="/">Home</a>
+  
+  
+
+  
+
+  
+
+
+  
+    
+  
+
+  
+    
+      <a class="page-link "
+          href="/about.html">About Me</a>
+    
+  
+
+  
+    
+  
+
+  
+
+  
+    
+      <a class="page-link "
+          href="/projects.html">Projects</a>
+    
+  
+
+  
+    
+      <a class="page-link "
+          href="/publications.html">Publications</a>
+    
+  
+
+  
+    
+  
+
+  
+    
+      <a class="page-link "
+          href="/topics.html">Topics</a>
+    
+  
+
+  
+
+  
+    
+  
+
+  
+
+  
+
+
+  
+
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+
+  
+
+
+  <!-- Optional additional links to insert in sidebar nav -->
+</nav>
+
+
+  <!--  -->
+
+  <nav id="sidebar-icon-links">
+  <!--  -->
+
+
+
+    <a id="github-link" class="icon" title="Github" aria-label="Github"
+      href="https://github.com/Saket-Upadhyay">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 28" height="24" width="28"><path d="M12 2c6.625 0 12 5.375 12 12 0 5.297-3.437 9.797-8.203 11.391-0.609 0.109-0.828-0.266-0.828-0.578 0-0.391 0.016-1.687 0.016-3.297 0-1.125-0.375-1.844-0.812-2.219 2.672-0.297 5.484-1.313 5.484-5.922 0-1.313-0.469-2.375-1.234-3.219 0.125-0.313 0.531-1.531-0.125-3.187-1-0.313-3.297 1.234-3.297 1.234-0.953-0.266-1.984-0.406-3-0.406s-2.047 0.141-3 0.406c0 0-2.297-1.547-3.297-1.234-0.656 1.656-0.25 2.875-0.125 3.187-0.766 0.844-1.234 1.906-1.234 3.219 0 4.594 2.797 5.625 5.469 5.922-0.344 0.313-0.656 0.844-0.766 1.609-0.688 0.313-2.438 0.844-3.484-1-0.656-1.141-1.844-1.234-1.844-1.234-1.172-0.016-0.078 0.734-0.078 0.734 0.781 0.359 1.328 1.75 1.328 1.75 0.703 2.141 4.047 1.422 4.047 1.422 0 1 0.016 1.937 0.016 2.234 0 0.313-0.219 0.688-0.828 0.578-4.766-1.594-8.203-6.094-8.203-11.391 0-6.625 5.375-12 12-12zM4.547 19.234c0.031-0.063-0.016-0.141-0.109-0.187-0.094-0.031-0.172-0.016-0.203 0.031-0.031 0.063 0.016 0.141 0.109 0.187 0.078 0.047 0.172 0.031 0.203-0.031zM5.031 19.766c0.063-0.047 0.047-0.156-0.031-0.25-0.078-0.078-0.187-0.109-0.25-0.047-0.063 0.047-0.047 0.156 0.031 0.25 0.078 0.078 0.187 0.109 0.25 0.047zM5.5 20.469c0.078-0.063 0.078-0.187 0-0.297-0.063-0.109-0.187-0.156-0.266-0.094-0.078 0.047-0.078 0.172 0 0.281s0.203 0.156 0.266 0.109zM6.156 21.125c0.063-0.063 0.031-0.203-0.063-0.297-0.109-0.109-0.25-0.125-0.313-0.047-0.078 0.063-0.047 0.203 0.063 0.297 0.109 0.109 0.25 0.125 0.313 0.047zM7.047 21.516c0.031-0.094-0.063-0.203-0.203-0.25-0.125-0.031-0.266 0.016-0.297 0.109s0.063 0.203 0.203 0.234c0.125 0.047 0.266 0 0.297-0.094zM8.031 21.594c0-0.109-0.125-0.187-0.266-0.172-0.141 0-0.25 0.078-0.25 0.172 0 0.109 0.109 0.187 0.266 0.172 0.141 0 0.25-0.078 0.25-0.172zM8.937 21.438c-0.016-0.094-0.141-0.156-0.281-0.141-0.141 0.031-0.234 0.125-0.219 0.234 0.016 0.094 0.141 0.156 0.281 0.125s0.234-0.125 0.219-0.219z"></path>
+</svg>
+
+    </a>
+  <a id="linkedin-link" class="icon" title="Linked-In" aria-label="Linked-In" href="https://www.linkedin.com/in/saketupadhyay/">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+  </a>
+
+  <a id="twitter-link" class="icon" title="Twitter" aria-label="Twitter" href="https://twitter.com/x64mayhem">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-.139 9.237c.209 4.617-3.234 9.765-9.33 9.765-1.854 0-3.579-.543-5.032-1.475 1.742.205 3.48-.278 4.86-1.359-1.437-.027-2.649-.976-3.066-2.28.515.098 1.021.069 1.482-.056-1.579-.317-2.668-1.739-2.633-3.26.442.246.949.394 1.486.411-1.461-.977-1.875-2.907-1.016-4.383 1.619 1.986 4.038 3.293 6.766 3.43-.479-2.053 1.08-4.03 3.199-4.03.943 0 1.797.398 2.395 1.037.748-.147 1.451-.42 2.086-.796-.246.767-.766 1.41-1.443 1.816.664-.08 1.297-.256 1.885-.517-.439.656-.996 1.234-1.639 1.697z"/></svg>
+  </a>
+
+
+  <!-- <a id="subscribe-link"
+     class="icon" title="Subscribe" aria-label="Subscribe"
+     href="/feed.xml">
+    <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <circle cx="6.18" cy="17.82" r="2.18"/>
+    <path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/>
+</svg>
+  </a> -->
+
+  
+  
+  
+  
+
+<a id="research-link"
+       class="icon"
+       title="Tags" aria-label="Tags"
+       href="https://orcid.org/0000-0003-0574-7843">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20.759 20.498c-2.342-3.663-5.575-6.958-5.743-11.498h-2.016c.173 5.212 3.512 8.539 5.953 12.356.143.302-.068.644-.377.644h-1.264l-4.734-7h-3.52c.873-1.665 1.85-3.414 1.936-6h-2.01c-.169 4.543-3.421 7.864-5.743 11.498-.165.347-.241.707-.241 1.057 0 1.283 1.023 2.445 2.423 2.445h13.153c1.4 0 2.424-1.162 2.424-2.446 0-.35-.076-.709-.241-1.056zm-4.759-15.498c0 1.105-.896 2-2 2s-2-.895-2-2 .896-2 2-2 2 .895 2 2zm-5-1.5c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5.672-1.5 1.5-1.5 1.5.671 1.5 1.5zm0 3.5c0 .552-.447 1-1 1s-1-.448-1-1 .447-1 1-1 1 .448 1 1zm3-6c0 .552-.447 1-1 1s-1-.448-1-1 .447-1 1-1 1 .448 1 1z"/></svg>
+</a>
+
+  <a id="email-link" class="icon" title="Tags" aria-label="Tags" href="mailto:x64mayhem@gmail.com">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 12.713l-11.985-9.713h23.971l-11.986 9.713zm-5.425-1.822l-6.575-5.329v12.501l6.575-7.172zm10.85 0l6.575 7.172v-12.501l-6.575 5.329zm-1.557 1.261l-3.868 3.135-3.868-3.135-8.11 8.848h23.956l-8.11-8.848z"/></svg>
+  </a>
+
+<a id="search-link"
+       class="icon"
+       title="Search" aria-label="Search"
+       href="/search.html">
+      <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+    <path d="M0 0h24v24H0z" fill="none"/>
+</svg>
+</a>
+
+  <!-- Optional additional links to insert for icons links -->
+</nav>
+
+  <p>
+  <!-- &copy; 2020.
+  <a href="/LICENSE.md">MIT License.</a> -->
+</p>
+
+</div>
+
+    <main class="container">
+      <header>
+  <h1 class="post-title">Taking over a software by Instruction Rewriting.</h1>
+</header>
+<div class="content">
+  <div class="post-meta">
+  <span class="post-date">25 Nov 2019</span>
+  <span class="post-categories">
+    
+      &bull;
+
+      
+      
+      
+
+      
+        Article
+      
+    
+  </span>
+</div>
+
+
+  <div class="post-body">
+    <div class="message">
+  Baby steps to binary rewriting and reverse engineering.
+</div>
+
+<h3 id="background-story">Background story</h3>
+
+<p><code class="language-plaintext highlighter-rouge">"Almost every code we write and compile is converted into machine code and set of instructions."</code></p>
+
+<p>Pretty basic definition for what compiler does huh?</p>
+
+<p>Well, let me re-frame that with respect to a reverse engineer’s point of view,</p>
+
+<p><code class="language-plaintext highlighter-rouge">"It doesn’t matter if you write your code in C, C++ or C# it will be converted into machine code, which can be viewed as a common low level language, Assembly."</code></p>
+
+<p>In simpler terms, all we need to understand is the assembly of code and without having its actual source code we can conclude what it will do. Now what to do from here?</p>
+
+<p>Imagine we got a program that will activate when provided with valid key, pretty common scenario right? You might say just buy the key, or download the crack etc. pretty boring solutions too… Now, what if I tell you, we can activate the program just by changing it’s binary, that too just 2–6 bytes! YES! And that’s what we will try to understand in this article.</p>
+
+<p>Actually most of such programs use comparison statements to check if your key matches with the actual key or not, e.g. “if (input == key) {//do thing here}” etc.</p>
+
+<p>And that very thing in assembly is done by “CMP” instruction and then followed by a “JMP” or similar instruction to shift the flow of controls according to the result of comparison.</p>
+
+<hr />
+
+<h3 id="lets-do-it">Let’s do it.</h3>
+
+<p>Let us make an application, this application works in the same fashion, check for the key and activate if matches. The program is written in C and compiled by the GCC compiler.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;string.h&gt;
+#include &lt;stdio.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">argc</span><span class="o">==</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">printf</span><span class="p">(</span><span class="s">"Checking License: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+                <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">strlen</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">sum</span><span class="o">+=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>	
+		<span class="p">}</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">sum</span><span class="o">==</span><span class="mi">1000</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">printf</span><span class="p">(</span><span class="s">"Access Granted!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="n">printf</span><span class="p">(</span><span class="s">"WRONG!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="n">printf</span><span class="p">(</span><span class="s">"Usage: &lt;key&gt;</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here is one example where we use “saket” as the key.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*K_G78S10NaB8cpo5rCagRg.png" alt="" />
+As we expected it to behave, when provided with invalid key it will say “WRONG!”</p>
+
+<p>When we observe the compiled binary in our favorite debugger we can see one instruction <strong>“CMP [RBP+VAR_18], 394H”</strong> that checks the string passed and then compares it with <em>(394)h =(916)d</em> that seems to be string length or something, the interesting part is that it is followed by <strong>“JNZ SHORT LOC_400657”</strong> instruction, which makes <strong>EIP</strong> or <strong>instruction pointer</strong> to point at 400657th location. In simple words, <strong>shifts the control flow to 400657th</strong> location in memory , and execute instruction from there. Further we can see that <strong>LOC_400657</strong> contains instructions of <strong>WRONG KEY</strong> part of software.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*QiRX5E9kSXkvrN7YyTFedg.png" alt="" />
+So what if we can just skip that jump statement and whatever the result of the CMP we will just continue to <strong>Access Granted</strong> part. To do that we will just <strong>change jump address in HEX DUMP from “0C” to “00”</strong> which will cause <strong>EIP</strong> to just continue to the next instruction.</p>
+
+<p>For that we will go to the hex equivalent of the instruction in dump and change the value in target address.
+<img src="https://miro.medium.com/max/1400/1*Ndw-9qh6-jx-Pw79bJhUiQ.png" alt="" />
+here we can observe JNZ instruction starts at 400649 (relative address), we can go to same in hex dump to get equivalent hex values.</p>
+
+<p><img src="https://miro.medium.com/max/1378/1*uxriK_ycJjHxt-aYJYJ-3w.png" alt="" /></p>
+
+<p>now we know that <strong><em>JNZ SHORT LOC_400649 ~ 75 0C;</em></strong> Now keeping JNZ intact, i.e. not changing 75, we can change 0C to 00 to try to null it’s effect. or we can just replace the next effective address,something like this :
+<img src="https://miro.medium.com/max/1042/1*OLDef_3bUFDIOlGgpSA3rg.png" alt="" />
+But for this article, we will just replace 0C with 00…</p>
+
+<p>THAT IS, THIS
+<img src="https://miro.medium.com/max/121/1*9xX5CM7-5zkwUw-jLW_vsg.png" alt="" />
+TO
+<img src="https://miro.medium.com/max/91/1*dUlh5aSmPdg0vdDGWOzXnw.png" alt="" />
+And now you can see our instruction continues to ACCESS GRANTED part, and no instruction points to WRONG KEY. That means we should be able to activate the software with any key we want!.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*BVYRUDW4dLcBwd2jCT16HQ.png" alt="" />
+Now let’s check that with the same key we provided, and just another key to check our modification.
+<img src="https://miro.medium.com/max/1400/1*-In-V9fwv_pAMbyqhCYTJg.png" alt="" />
+<img src="https://miro.medium.com/max/1400/1*wZb8fjJzQLS1MKEV0gO2xA.png" alt="" />
+And that works pretty good!</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Binary rewriting in <strong>real-world scenarios is much more complex</strong> than this example, but anyways this is just introduction with the aim to get the us familiar with the concept.</p>
+
+<p>I hope you enjoyed this, have a super productive day ahead !</p>
+
+    
+
+
+
+<div class="post-tags">
+  
+    
+    <a href="/topics.html#reverse-engineering">
+    
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">Reverse Engineering</span>
+    </a>
+  
+</div>
+  </div>
+
+  
+  <section class="comments">
+    <h2>Comments</h2>
+    
+  <div id="disqus_thread">
+    <button class="disqus-load" onClick="loadDisqusComments()">
+      Load Comments
+    </button>
+  </div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW
+  *  TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT:s
+  *  https://disqus.com/admin/universalcode/#configuration-variables
+  */
+  var disqus_config = function () {
+    this.page.url = "http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html";
+    this.page.identifier = "" ||
+                           "http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html";
+  }
+  function loadDisqusComments() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//saketupadhyay.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  </script>
+  <noscript>
+    Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus</a>.
+  </noscript>
+
+
+
+  </section>
+
+  <section class="related">
+  <h2>Related Posts</h2>
+  <ul class="posts-list">
+    
+      <li>
+        <h3>
+          <a href="/article/2019/07/27/Pipe-Brute-force-Attack-via-Password-Generator.html">
+            Pipe Brute-force Attack via Password Generator
+            <small>27 Jul 2019</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2019/07/15/Live-Movement-Tracing-in-Android-using-Polygraph-Lines.html">
+            Live Movement Tracing in Android using Polygraph Lines
+            <small>15 Jul 2019</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2000/01/01/First-Post.html">
+            First Post
+            <small>01 Jan 2000</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</section>
+
+</div>
+
+    </main>
+
+    <!-- Optional footer content -->
+
+  </body>
+</html>
