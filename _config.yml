@@ -16,7 +16,7 @@ baseurl:          '/'
 
 author:
   name:           'Saket Upadhyay'
-  url:            https://twitter.com/fongandrewc
+  url:            https://twitter.com/x64mayhem
 
 paginate:         5
 # paginate_path:    '/page:num'
@@ -37,3 +37,5 @@ disqus:
     # Leave shortname blank to disable comments site-wide.
     # Disable comments for any post by adding `comments: false` to that post's YAML Front Matter.
     shortname: saketupadhyay
+
+google_analytics: UA-163708069-1
