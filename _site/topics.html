@@ -14,17 +14,15 @@
     
   </title>
 
-  
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163708069-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
 
-  ga('create', 'UA-163708069-1', 'auto');
-  ga('send', 'pageview');
-  </script>
-
+  gtag('config', 'UA-163708069-1');
+</script>
 
 
   <!-- CSS -->
@@ -125,6 +123,14 @@
 
   
 
+  
+    
+  
+
+  
+
+  
+
 
   
 
@@ -157,6 +163,14 @@
 
   
     
+  
+
+  
+
+  
+    
+  
+
   
 
   
@@ -250,12 +264,18 @@
   <!-- See https://blog.lanyonm.org/articles/2013/11/21/alphabetize-jekyll-page-tags-pure-liquid.html -->
 <!-- With added pipe to handle lack of sort_natural -->
 
-<!-- site_tags: first post|First Post,location tracing|Location Tracing,password cracking|Password Cracking,reverse engineering|Reverse Engineering -->
+<!-- site_tags: first post|First Post,location tracing|Location Tracing,password cracking|Password Cracking,reverse engineering|Reverse Engineering,malware detection|Malware Detection,machine learning|Machine Learning,secure coding|Secure Coding,software security|Software Security,ctf|CTF,malware analysis|Malware Analysis -->
 
-<!-- tag_words: first post|First Postlocation tracing|Location Tracingpassword cracking|Password Crackingreverse engineering|Reverse Engineering -->
+<!-- tag_words: ctf|CTFfirst post|First Postlocation tracing|Location Tracingmachine learning|Machine Learningmalware analysis|Malware Analysismalware detection|Malware Detectionpassword cracking|Password Crackingreverse engineering|Reverse Engineeringsecure coding|Secure Codingsoftware security|Software Security -->
 
 <div id="tags-page">
   <div class="tags-list">
+    
+    
+    <a href="#ctf" class="tag-link">
+      <span class="tag-name">CTF</span>
+      <span class="tag-count">1</span>
+    </a>
     
     
     <a href="#first-post" class="tag-link">
@@ -270,6 +290,24 @@
     </a>
     
     
+    <a href="#machine-learning" class="tag-link">
+      <span class="tag-name">Machine Learning</span>
+      <span class="tag-count">1</span>
+    </a>
+    
+    
+    <a href="#malware-analysis" class="tag-link">
+      <span class="tag-name">Malware Analysis</span>
+      <span class="tag-count">1</span>
+    </a>
+    
+    
+    <a href="#malware-detection" class="tag-link">
+      <span class="tag-name">Malware Detection</span>
+      <span class="tag-count">1</span>
+    </a>
+    
+    
     <a href="#password-cracking" class="tag-link">
       <span class="tag-name">Password Cracking</span>
       <span class="tag-count">1</span>
@@ -278,6 +316,18 @@
     
     <a href="#reverse-engineering" class="tag-link">
       <span class="tag-name">Reverse Engineering</span>
+      <span class="tag-count">2</span>
+    </a>
+    
+    
+    <a href="#secure-coding" class="tag-link">
+      <span class="tag-name">Secure Coding</span>
+      <span class="tag-count">1</span>
+    </a>
+    
+    
+    <a href="#software-security" class="tag-link">
+      <span class="tag-name">Software Security</span>
       <span class="tag-count">1</span>
     </a>
     
@@ -286,6 +336,23 @@
   <hr/>
 
   <div class="posts-by-tag">
+    
+    
+    <div id="ctf" class="posts-for-tag">
+      <h2>CTF</h2>
+      <ul class="posts-list">
+        
+          <li>
+            <h3>
+              <a href="/2019/12/21/Winning-Race-Conditions.html">
+                Winning Race Conditions
+                <small>21 Dec 2019</small>
+              </a>
+            </h3>
+          </li>
+        
+      </ul>
+    </div>
     
     
     <div id="first-post" class="posts-for-tag">
@@ -322,6 +389,57 @@
     </div>
     
     
+    <div id="machine-learning" class="posts-for-tag">
+      <h2>Machine Learning</h2>
+      <ul class="posts-list">
+        
+          <li>
+            <h3>
+              <a href="/2019/12/04/Effortless-Feature-Extraction.html">
+                Effortless Feature Extraction for your ML based Android Malware Detection project
+                <small>04 Dec 2019</small>
+              </a>
+            </h3>
+          </li>
+        
+      </ul>
+    </div>
+    
+    
+    <div id="malware-analysis" class="posts-for-tag">
+      <h2>Malware Analysis</h2>
+      <ul class="posts-list">
+        
+          <li>
+            <h3>
+              <a href="/2020/03/08/Extracting-packer-injected-malware.html">
+                Extracting packer injected malware from memory [Remcos RAT]
+                <small>08 Mar 2020</small>
+              </a>
+            </h3>
+          </li>
+        
+      </ul>
+    </div>
+    
+    
+    <div id="malware-detection" class="posts-for-tag">
+      <h2>Malware Detection</h2>
+      <ul class="posts-list">
+        
+          <li>
+            <h3>
+              <a href="/2019/12/04/Effortless-Feature-Extraction.html">
+                Effortless Feature Extraction for your ML based Android Malware Detection project
+                <small>04 Dec 2019</small>
+              </a>
+            </h3>
+          </li>
+        
+      </ul>
+    </div>
+    
+    
     <div id="password-cracking" class="posts-for-tag">
       <h2>Password Cracking</h2>
       <ul class="posts-list">
@@ -345,9 +463,52 @@
         
           <li>
             <h3>
+              <a href="/2020/03/08/Extracting-packer-injected-malware.html">
+                Extracting packer injected malware from memory [Remcos RAT]
+                <small>08 Mar 2020</small>
+              </a>
+            </h3>
+          </li>
+        
+          <li>
+            <h3>
               <a href="/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">
                 Taking over a software by Instruction Rewriting.
                 <small>25 Nov 2019</small>
+              </a>
+            </h3>
+          </li>
+        
+      </ul>
+    </div>
+    
+    
+    <div id="secure-coding" class="posts-for-tag">
+      <h2>Secure Coding</h2>
+      <ul class="posts-list">
+        
+          <li>
+            <h3>
+              <a href="/2019/12/21/Winning-Race-Conditions.html">
+                Winning Race Conditions
+                <small>21 Dec 2019</small>
+              </a>
+            </h3>
+          </li>
+        
+      </ul>
+    </div>
+    
+    
+    <div id="software-security" class="posts-for-tag">
+      <h2>Software Security</h2>
+      <ul class="posts-list">
+        
+          <li>
+            <h3>
+              <a href="/2019/12/21/Winning-Race-Conditions.html">
+                Winning Race Conditions
+                <small>21 Dec 2019</small>
               </a>
             </h3>
           </li>

@@ -10,7 +10,7 @@
 
   <title>
     
-      Taking over a software by Instruction Rewriting. &middot; Saket Upadhyay
+      Effortless Feature Extraction for your ML based Android Malware Detection project &middot; Saket Upadhyay
     
   </title>
 
@@ -258,22 +258,12 @@
 
     <main class="container">
       <header>
-  <h1 class="post-title">Taking over a software by Instruction Rewriting.</h1>
+  <h1 class="post-title">Effortless Feature Extraction for your ML based Android Malware Detection project</h1>
 </header>
 <div class="content">
   <div class="post-meta">
-  <span class="post-date">25 Nov 2019</span>
+  <span class="post-date">04 Dec 2019</span>
   <span class="post-categories">
-    
-      &bull;
-
-      
-      
-      
-
-      
-        Article
-      
     
   </span>
 </div>
@@ -281,92 +271,74 @@
 
   <div class="post-body">
     <div class="message">
-  Baby steps to binary rewriting and reverse engineering.
+Streamline Permission-Based Feature Extraction for android data-set with one Python Script.
 </div>
 
-<h3 id="background-story">Background story</h3>
+<h3 id="background">Background</h3>
 
-<p><code class="language-plaintext highlighter-rouge">"Almost every code we write and compile is converted into machine code and set of instructions."</code></p>
+<p>Malware detection and analysis has been the hot topic in security for a long time, overtime the malware writers upgraded their skills and complexity and this has been the main reason for us to find new effective methodologies for malware detection and classification.</p>
 
-<p>Pretty basic definition for what compiler does huh?</p>
+<p>As with the boom of AI and ML to solve general problems,the malware analysis and detection is not left untouched. Many researches has been published in the domain of malware detection using Machine Learning approach. But before doing all the gizmo of model training and neural network formation or any of those wires in brain magic, we need to collect certain information from the target to train our machine, and that is what we call <strong>features</strong> and that is what this article is all about, to get you started in the field.</p>
 
-<p>Well, let me re-frame that with respect to a reverse engineer’s point of view,</p>
+<h3 id="baseline">Baseline</h3>
 
-<p><code class="language-plaintext highlighter-rouge">"It doesn’t matter if you write your code in C, C++ or C# it will be converted into machine code, which can be viewed as a common low level language, Assembly."</code></p>
+<p>The following article only focus on feature generation and formatting, specifically permission-based feature generation for android application.</p>
 
-<p>In simpler terms, all we need to understand is the assembly of code and without having its actual source code we can conclude what it will do. Now what to do from here?</p>
+<p>Here we will only see how we can speed up this process by using simple script which Does It All will break it down in some other article where we will discuss feature extraction in general followed my training our own ML model to detect Android malware !</p>
 
-<p>Imagine we got a program that will activate when provided with valid key, pretty common scenario right? You might say just buy the key, or download the crack etc. pretty boring solutions too… Now, what if I tell you, we can activate the program just by changing it’s binary, that too just 2–6 bytes! YES! And that’s what we will try to understand in this article.</p>
+<h3 id="the-script">The Script</h3>
 
-<p>Actually most of such programs use comparison statements to check if your key matches with the actual key or not, e.g. “if (input == key) {//do thing here}” etc.</p>
+<p>Lets get to the fun part, and explore the script itself.</p>
 
-<p>And that very thing in assembly is done by “CMP” instruction and then followed by a “JMP” or similar instruction to shift the flow of controls according to the result of comparison.</p>
+<blockquote>
+  <p>Get the Project in <a href="https://github.com/Saket-Upadhyay/Android-Permission-Extraction-and-Dataset-Creation-with-Python">GitHub</a></p>
+</blockquote>
+
+<p>This script will extract permission information from Malware and Benign applications in their respective folders and then create one Comma Separated Values (.csv) file to store them in one place ready to be fed into ML algorithms.</p>
+
+<h3 id="how-to-use-the-script">HOW TO USE THE SCRIPT?</h3>
+
+<p>Just copy your <code class="language-plaintext highlighter-rouge">Malware</code> and <code class="language-plaintext highlighter-rouge">Benign</code> applications on which you want to train your ML Model into <code class="language-plaintext highlighter-rouge">respective folders</code> and run the script by following command in terminal.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 ExtractorAIO.py
+</code></pre></div></div>
+<p>And that’s it. yes. done. rest, the script will handle</p>
+
+<h3 id="how-to-use-the-generated-data-set">HOW TO USE THE GENERATED DATA-SET?</h3>
+
+<p>The generated data will be in <code class="language-plaintext highlighter-rouge">*.csv</code> format and can be parsed with the help of many already available libraries or modules. (pandas module in python is suggested)</p>
+
+<h4 id="formatting">Formatting</h4>
+
+<script src="https://gist.github.com/Saket-Upadhyay/e713aa3fe50fd68895c0b50ebf83508b.js"></script>
+
+<p><sup>This is sample data set of 6 applications (3 Malware &amp; 3 Benign)</sup></p>
+
+<p>The 1st column contains <strong>NAME</strong> of respective application and last column <strong>“CLASS”</strong> contains information if the application if from benign or malware family of training set. <strong>[0=Benign, 1=Malware]</strong>. In between there are all the permissions (common + all found in 1st phase) with respective information bit, <em>[0=The application do not use this permission, 1=This permission is used in the application]</em></p>
+
+<h3 id="importing-data-example-in-sklearn">Importing Data Example in sklearn</h3>
+
+<p>Suppose you want to import your new data set into sklearn and train your new model from there, here’s a way you can do that.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">file</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"data.csv"</span><span class="p">)</span>
+<span class="n">coulmnNames</span> <span class="o">=</span> <span class="nb">file</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">FeatureNames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">coulmnNames</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">LabelName</span> <span class="o">=</span> <span class="n">coulmnNames</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="nb">file</span><span class="p">[</span><span class="n">FeatureNames</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="nb">file</span><span class="p">[</span><span class="n">LabelName</span><span class="p">]</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+<span class="n">feature_vectors</span> <span class="o">=</span> <span class="n">X</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">Y</span>
+<span class="n">train_x</span><span class="p">,</span> <span class="n">test_x</span><span class="p">,</span> <span class="n">train_y</span><span class="p">,</span> <span class="n">test_y</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">feature_vectors</span><span class="p">,</span><span class="n">labels</span><span class="p">,</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+</code></pre></div></div>
+<p>The above code will remove <strong>NAME</strong> column and then store <strong>FEATURE_MATRIX</strong> (from column after  NAME  to second last column) and <strong>LABEL_VECTOR</strong> ( CLASS column) in X and Y respectively, which later can be split into desired training and testing sets.</p>
+
+<h3 id="conclusion">CONCLUSION</h3>
+
+<p>I hope this article will get you started with feature extraction for malware analysis using machine learning. It isn’t the end of it, but we just completed one step !</p>
 
 <hr />
-
-<h3 id="lets-do-it">Let’s do it.</h3>
-
-<p>Let us make an application, this application works in the same fashion, check for the key and activate if matches. The program is written in C and compiled by the GCC compiler.</p>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;string.h&gt;
-#include &lt;stdio.h&gt;
-</span>
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">argc</span><span class="o">==</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">printf</span><span class="p">(</span><span class="s">"Checking License: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
-                <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">strlen</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">sum</span><span class="o">+=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>	
-		<span class="p">}</span>
-		<span class="k">if</span><span class="p">(</span><span class="n">sum</span><span class="o">==</span><span class="mi">1000</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">printf</span><span class="p">(</span><span class="s">"Access Granted!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-			<span class="n">printf</span><span class="p">(</span><span class="s">"WRONG!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-		<span class="p">}</span>
-	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-		<span class="n">printf</span><span class="p">(</span><span class="s">"Usage: &lt;key&gt;</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-	<span class="p">}</span>
-	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>Here is one example where we use “saket” as the key.</p>
-
-<p><img src="https://miro.medium.com/max/1400/1*K_G78S10NaB8cpo5rCagRg.png" alt="" />
-As we expected it to behave, when provided with invalid key it will say “WRONG!”</p>
-
-<p>When we observe the compiled binary in our favorite debugger we can see one instruction <strong>“CMP [RBP+VAR_18], 394H”</strong> that checks the string passed and then compares it with <em>(394)h =(916)d</em> that seems to be string length or something, the interesting part is that it is followed by <strong>“JNZ SHORT LOC_400657”</strong> instruction, which makes <strong>EIP</strong> or <strong>instruction pointer</strong> to point at 400657th location. In simple words, <strong>shifts the control flow to 400657th</strong> location in memory , and execute instruction from there. Further we can see that <strong>LOC_400657</strong> contains instructions of <strong>WRONG KEY</strong> part of software.</p>
-
-<p><img src="https://miro.medium.com/max/1400/1*QiRX5E9kSXkvrN7YyTFedg.png" alt="" />
-So what if we can just skip that jump statement and whatever the result of the CMP we will just continue to <strong>Access Granted</strong> part. To do that we will just <strong>change jump address in HEX DUMP from “0C” to “00”</strong> which will cause <strong>EIP</strong> to just continue to the next instruction.</p>
-
-<p>For that we will go to the hex equivalent of the instruction in dump and change the value in target address.
-<img src="https://miro.medium.com/max/1400/1*Ndw-9qh6-jx-Pw79bJhUiQ.png" alt="" />
-here we can observe JNZ instruction starts at 400649 (relative address), we can go to same in hex dump to get equivalent hex values.</p>
-
-<p><img src="https://miro.medium.com/max/1378/1*uxriK_ycJjHxt-aYJYJ-3w.png" alt="" /></p>
-
-<p>now we know that <strong><em>JNZ SHORT LOC_400649 ~ 75 0C;</em></strong> Now keeping JNZ intact, i.e. not changing 75, we can change 0C to 00 to try to null it’s effect. or we can just replace the next effective address,something like this :
-<img src="https://miro.medium.com/max/1042/1*OLDef_3bUFDIOlGgpSA3rg.png" alt="" />
-But for this article, we will just replace 0C with 00…</p>
-
-<p>THAT IS, THIS
-<img src="https://miro.medium.com/max/121/1*9xX5CM7-5zkwUw-jLW_vsg.png" alt="" />
-TO
-<img src="https://miro.medium.com/max/91/1*dUlh5aSmPdg0vdDGWOzXnw.png" alt="" />
-And now you can see our instruction continues to ACCESS GRANTED part, and no instruction points to WRONG KEY. That means we should be able to activate the software with any key we want!.</p>
-
-<p><img src="https://miro.medium.com/max/1400/1*BVYRUDW4dLcBwd2jCT16HQ.png" alt="" />
-Now let’s check that with the same key we provided, and just another key to check our modification.
-<img src="https://miro.medium.com/max/1400/1*-In-V9fwv_pAMbyqhCYTJg.png" alt="" />
-<img src="https://miro.medium.com/max/1400/1*wZb8fjJzQLS1MKEV0gO2xA.png" alt="" />
-And that works pretty good!</p>
-
-<h3 id="conclusion">Conclusion</h3>
-
-<p>Binary rewriting in <strong>real-world scenarios is much more complex</strong> than this example, but anyways this is just introduction with the aim to get the us familiar with the concept.</p>
-
-<p>I hope you enjoyed this, have a super productive day ahead !</p>
 
     
 
@@ -375,14 +347,25 @@ And that works pretty good!</p>
 <div class="post-tags">
   
     
-    <a href="/topics.html#reverse-engineering">
+    <a href="/topics.html#malware-detection">
     
       <span class="icon">
         <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
     <path d="M0 0h24v24H0z" fill="none"/>
     <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
 </svg>
-      </span>&nbsp;<span class="tag-name">Reverse Engineering</span>
+      </span>&nbsp;<span class="tag-name">Malware Detection</span>
+    </a>
+  
+    
+    <a href="/topics.html#machine-learning">
+    
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">Machine Learning</span>
     </a>
   
 </div>
@@ -406,9 +389,9 @@ And that works pretty good!</p>
   *  https://disqus.com/admin/universalcode/#configuration-variables
   */
   var disqus_config = function () {
-    this.page.url = "http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html";
+    this.page.url = "http://localhost:4000/2019/12/04/Effortless-Feature-Extraction.html";
     this.page.identifier = "" ||
-                           "http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html";
+                           "http://localhost:4000/2019/12/04/Effortless-Feature-Extraction.html";
   }
   function loadDisqusComments() { // DON'T EDIT BELOW THIS LINE
     var d = document, s = d.createElement('script');
@@ -450,9 +433,9 @@ And that works pretty good!</p>
     
       <li>
         <h3>
-          <a href="/2019/12/04/Effortless-Feature-Extraction.html">
-            Effortless Feature Extraction for your ML based Android Malware Detection project
-            <small>04 Dec 2019</small>
+          <a href="/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">
+            Taking over a software by Instruction Rewriting.
+            <small>25 Nov 2019</small>
           </a>
         </h3>
       </li>

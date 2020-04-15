@@ -1,4 +1,546 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-15T14:31:20+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Saket Upadhyay</title><subtitle>Cybersecurity Student, Wannabe Malware Researcher. Reverse Engineering, Low Level Software Security, Penetration Testing.</subtitle><author><name>Saket Upadhyay</name></author><entry><title type="html">Taking over a software by Instruction Rewriting.</title><link href="http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html" rel="alternate" type="text/html" title="Taking over a software by Instruction Rewriting." /><published>2019-11-25T00:00:00+05:30</published><updated>2019-11-25T00:00:00+05:30</updated><id>http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting</id><content type="html" xml:base="http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">&lt;div class=&quot;message&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-15T21:21:07+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Saket Upadhyay</title><subtitle>Cybersecurity Student, Wannabe Malware Researcher. Reverse Engineering, Low Level Software Security, Penetration Testing.</subtitle><author><name>Saket Upadhyay</name></author><entry><title type="html">Extracting packer injected malware from memory [Remcos RAT]</title><link href="http://localhost:4000/2020/03/08/Extracting-packer-injected-malware.html" rel="alternate" type="text/html" title="Extracting packer injected malware from memory [Remcos RAT]" /><published>2020-03-08T00:00:00+05:30</published><updated>2020-03-08T00:00:00+05:30</updated><id>http://localhost:4000/2020/03/08/Extracting-packer-injected-malware</id><content type="html" xml:base="http://localhost:4000/2020/03/08/Extracting-packer-injected-malware.html">&lt;div class=&quot;message&quot;&gt;
+Extraction of injected malicious PE from dynamic memory in windows (Remcos malware)
+&lt;/div&gt;
+
+&lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
+
+&lt;p&gt;Usually, malware comes packed by some packer which obfuscates the original code and helps it to evade AV software or general human suspicion. When executed the packed binary inject actual binary in the memory and runs it from there.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-we-will-cover-in-this-write-up&quot;&gt;What we will cover in this write-up?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Approach for setting break-point in packed binary to stop it in midst of injecting the malicious code and executing it.&lt;/li&gt;
+  &lt;li&gt;Bypassing malware’s “debugger bypass tricks”&lt;/li&gt;
+  &lt;li&gt;Locate and dump injected code from the memory.&lt;/li&gt;
+  &lt;li&gt;Do necessary patching.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;setup-environment-&quot;&gt;Setup Environment :&lt;/h5&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Operating_System :&lt;/strong&gt; Windows 10, Enterprise Evaluation 180914 
+&lt;strong&gt;Software_Arsenal :&lt;/strong&gt; x32debugger, PE bear, Hexadecimal Editor HxD 
+&lt;strong&gt;Malware_Binary :&lt;/strong&gt; Remcos&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;what-is-remcos-rat&quot;&gt;What is Remcos RAT?&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://blog.malwarebytes.com/detections/trojan-remcos/&quot;&gt;Here you go, blog.malwarebytes.com&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;want-to-follow-up-with-the-article&quot;&gt;Want to follow up with the article?&lt;/h4&gt;
+
+&lt;p&gt;Here’s your malware, handle with &lt;strong&gt;&lt;em&gt;care and caution.&lt;/em&gt;&lt;/strong&gt;
+&lt;a href=&quot;https://malshare.com/sample.php?action=detail&amp;amp;hash=15fdc5c025e9d1645df07110c455aa09&quot;&gt;Malshare RemCos Download Link&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;lab-setup-and-initial-inspection&quot;&gt;Lab setup and Initial Inspection&lt;/h3&gt;
+
+&lt;p&gt;We will be using our Windows 10 Virtual Machine. We have set networking to “HOST ONLY” to transfer the binary to VM via Python’s SimpleHTTPServer.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*diqgBrGTPCwzjJGAYxFbxA.png&quot; alt=&quot;&quot; title=&quot;python server in host&quot; /&gt;
+&lt;img src=&quot;https://miro.medium.com/max/1400/1*mdrm2R22TaYYN2yLXMzyYA.png&quot; alt=&quot;&quot; title=&quot;Downloading Binary in VM&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we have our binary, before starting we will &lt;strong&gt;shut down network and folder sharing in VM&lt;/strong&gt; to prevent chaos if things goes sideways.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*E4-CrEFvjonmBBkqG3FyJA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s rename our binary to RemCOS.bin and start investigation with PE Bear.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*B_E8ArBPGcNpJ5LmcLQINw.png&quot; alt=&quot;&quot; title=&quot;MSVBVM60.DLL points at VisualBasic6 code&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The binary seems to be a VB6 packer. Lets fire up x32debugger and load our binary in it.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/2000/1*S7TM3SyUNdhvGnroDUBlXA.png&quot; alt=&quot;&quot; title=&quot;RemCOS.bin in x32Debugger&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;setting-break-point-at-createprocessinternalw&quot;&gt;Setting Break-point at CreateProcessInternalW&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;What’s &lt;a href=&quot;https://attack.mitre.org/techniques/T1106/&quot;&gt;CreateProcessInternalW&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*PUH4ZBp2sxWhY0ax97dp7A.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This API call allows the program to spawn a new process from itself, usually packers use this method to inject actual malware code in memory and execute them using CreateProcessInternalW.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/258/1*xCiuR-I0wHS5qbrCmUN48Q.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Without more delay let’s create a breakpoint here. Type:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bp CreateProcessInternalW&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;In cmd. section and press enter.&lt;/p&gt;
+
+&lt;h3 id=&quot;bypassing-debugger-detection&quot;&gt;Bypassing Debugger Detection&lt;/h3&gt;
+
+&lt;p&gt;As we continue to execute the binary, we stumble upon one interesting Exception. This can be an anti-debugger tactics or just some random exception from one of VB6 APIs. Anyways this is blocking us from hitting our intended break-point.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1072/1*OA_xBTt0ojDD3i_9yLOqlQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To bypass this, do &lt;strong&gt;Debug &amp;gt; Advanced &amp;gt; Run (pass exceptions)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*KZkkxfJU9hdxrum5iqNn-w.png&quot; alt=&quot;&quot; title=&quot;Passing all exceptions to binary, so that it’s not countered by debugger&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This will pass all the exceptions to program as it would do in normal execution. Now we can hit out break-point :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/858/1*OsKEWja66BL5PRHLjOTbiw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;finding-and-dumping-injected-code&quot;&gt;Finding and Dumping Injected Code&lt;/h3&gt;
+
+&lt;p&gt;We now know that it’s trying to run something from memory, we need to find what is it.&lt;/p&gt;
+
+&lt;p&gt;For that goto &lt;strong&gt;Memory Map&lt;/strong&gt;. As we know that most of Portable Executable File (PE File) has a DOS header which says something like “This program cannot be run in DOS mode” or something like that. We can try to search for this string in our memory map, and let’s see what we get.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*1r1K9JRiYafo3vrMV3RL1Q.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After the search we found following hits:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/2000/1*daYJlZpCbuRPdoiXwWW0xg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we need to find our injected code, but here’s a hurdle : any file that contains our string “This program..” will be listed, including most of the microsoft’s own DLLs and support libraries.&lt;/p&gt;
+
+&lt;h3 id=&quot;finding-the-injected-executable-code&quot;&gt;Finding the injected executable code&lt;/h3&gt;
+
+&lt;p&gt;Now we have to trace each of the hits to check if it’s the code we are looking for or something else.&lt;/p&gt;
+
+&lt;p&gt;Select one of all listed entries : &lt;strong&gt;Follow in Dump &amp;gt; Follow in Memory Map&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*Afh9hdo_TOMPeep1mpWYag.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1306/1*pF2iREtDJ8GHkIqwLvbykQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You will know when you will find something unusual like : Unnamed section in memory with &lt;strong&gt;R&lt;/strong&gt;ead &lt;strong&gt;W&lt;/strong&gt;rite and &lt;strong&gt;E&lt;/strong&gt;xecutable permission.&lt;/p&gt;
+
+&lt;p&gt;Select and &lt;strong&gt;“Dump Memory to File”&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1200/1*pjOOoq-wN6tIJEzDELYmFg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*rKmW9wXkluX-nOOEYnCbTg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We named it “remcos_extracted.bin” , let’s test it with PE Bear to make sure it was injected executable :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*AOa9LeBVpq7ClPjPUDauxA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Hmmmm… now what?&lt;/strong&gt; but we found our DOS header and all right?&lt;/p&gt;
+
+&lt;p&gt;Let’s inspect the file in Hex Editor&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*0ipjycn3vKmR1FwMxK8Uhw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*bLprdOz8P0UyZibX4SfNFw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And we have our DOS header… then? WHY PE BEAR IS NOT WORKING?&lt;/p&gt;
+
+&lt;p&gt;This is because the file signature or magic number is not present !! Remember PE files start with &lt;strong&gt;“MZ.”&lt;/strong&gt; header?&lt;/p&gt;
+
+&lt;h3 id=&quot;fixing-extracted-binary-header-signature-fix&quot;&gt;Fixing Extracted Binary [Header Signature Fix]&lt;/h3&gt;
+
+&lt;p&gt;Now we know what’s missing, let’s repair the binary by placing missing header in place. But where to put it?&lt;/p&gt;
+
+&lt;p&gt;Let’s go to check list method :&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;MZ header usually aligns with starting offset.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;about ~60 bytes before DOS header&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://i.stack.imgur.com/0DdKh.png&quot;&gt;PE FORMAT &lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*PrBFxUXOvFotdMmVuhz-Fw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So let’s clean all the Zero padding before 0x000600 as this seems to be good place for our signature and fits our checklist.&lt;/p&gt;
+
+&lt;p&gt;Clean all the padding above and modify first 2 Bytes as &lt;strong&gt;4D 5A&lt;/strong&gt; hexadecimal for &lt;strong&gt;MZ&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*xng5ZjsiO9CorNTfNSw6qA.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;https://miro.medium.com/max/1400/1*oWvk1kbCDw4f-RG2thpt7g.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Save the file and … Now let’s check this in PE BEAR&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*d9FEHk3tvzF-SKjdp9qibg.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;https://miro.medium.com/max/1400/1*lYxvu0zotmOzAAkD1BAcVw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Cool ! everything is fine.&lt;/p&gt;
+
+&lt;p&gt;AND we have our memory injected malware out in open!&lt;/p&gt;
+
+&lt;p&gt;Now we can fire up IDA or whatever rocks your boat to further analyze the extracted malware.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/2000/1*RVcQFMYOL7U7Vb0uyx2rjw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;But we will leave that for another article, (’cause ofcourse you can see how excited IDA is with this RAT) it will take much more space and time to clear out all those crazy Call Graphs.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;I hope this will come in handy for someone. This was actually super cool to me.&lt;/p&gt;
+
+&lt;p&gt;I was playing with windows memory recently and will share more as it comes. Till then… stay caffeinated enough and keep roaming in the memory lanes(pun intended)of windows.&lt;/p&gt;
+
+&lt;h3 id=&quot;references&quot;&gt;References&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://youtu.be/DIH4SvKuktM&quot;&gt;OA LABS ANALYSIS VIDEO&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://countuponsecurity.com/tag/finding-injected-code-into-memory/&quot;&gt;Finding injected code into memory - Count Upon Security&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="Reverse Engineering" /><category term="Malware Analysis" /><summary type="html">Extraction of injected malicious PE from dynamic memory in windows (Remcos malware)</summary></entry><entry><title type="html">Winning Race Conditions</title><link href="http://localhost:4000/2019/12/21/Winning-Race-Conditions.html" rel="alternate" type="text/html" title="Winning Race Conditions" /><published>2019-12-21T00:00:00+05:30</published><updated>2019-12-21T00:00:00+05:30</updated><id>http://localhost:4000/2019/12/21/Winning-Race-Conditions</id><content type="html" xml:base="http://localhost:4000/2019/12/21/Winning-Race-Conditions.html">&lt;div class=&quot;message&quot;&gt;
+Introduction to Race Condition Vulnerability and how to Exploit them.
+&lt;/div&gt;
+
+&lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
+
+&lt;p&gt;One fine day, someone, somewhere was absorbing random knowledge from the “great internet forums” and stumbled on a CTF challenge remake.&lt;/p&gt;
+
+&lt;p&gt;The challenge was to read the flag from a file [duh… “capture the FLAG(CTF)”]… but here the file was owned by root user and the programs checks for the same and if it is so, then it will not read it for us.&lt;/p&gt;
+
+&lt;p&gt;This actually took me hours of screaming and existential crisis, and then after looking at naked code for long enough with extensive internet researches, I found the solution (or the solution found me?). Anyways, this was cool enough for me to share with you, so here we go with an article.&lt;/p&gt;
+
+&lt;h3 id=&quot;so-what-its-all-about&quot;&gt;So what it’s all about?&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TL;DR :&lt;/code&gt; If the computer program tries to check for some condition more
+than once, we try to change the state of the condition in between two?
+transfers in attempt to deceive the program into behaving in the way we
+want or it’s not supposed to work.&lt;/p&gt;
+
+  &lt;p&gt;if you want to skip, &lt;a href=&quot;#exp&quot;&gt;jump to EXPLOIT&lt;/a&gt; section
+&lt;img src=&quot;https://miro.medium.com/max/1000/1*2I7e7fdKmE9JOBmSEJHrPQ.png&quot; alt=&quot;Joke_Image.png&quot; title=&quot;It's supposed to be funny&quot; /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In technical terms,&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“A &lt;strong&gt;race condition&lt;/strong&gt; or &lt;strong&gt;race hazard&lt;/strong&gt; is the condition of an electronics, software, or other system where the system’s substantive behavior is dependent on the sequence or timing of other uncontrollable events. It becomes a bug when one or more of the possible behaviors is undesirable.” 
+— &lt;a href=&quot;https://en.wikipedia.org/wiki/Race_condition&quot;&gt;WikiPedia&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In the light of computer security,&lt;/p&gt;
+
+&lt;p&gt;“In software development, &lt;strong&gt;time-of-check to time-of-use (TOCTOU, TOCTTOU or TOC/TOU)&lt;/strong&gt; is a class of software bugs caused by a race condition involving the checking of the state of a part of a system (such as a security credential) and the use of the results of that check.”&lt;/p&gt;
+
+&lt;p&gt;— says… guess who? …. &lt;a href=&quot;https://en.wikipedia.org/wiki/Race_condition&quot;&gt;WikiPedia&lt;/a&gt;, ofc.&lt;/p&gt;
+
+&lt;p&gt;Let’s try to understand this while attempting to do the challenge we got.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;recreating-the-challenge&quot;&gt;Recreating the challenge.&lt;/h3&gt;
+
+&lt;p&gt;Let’s first recreate the challenge in our own machine, so that we can try it while reading this article… cool? let’s go…&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We will be using Linux for all the things, ’cause Linux is Love. If you are already working on Linux just go on, you are doing great in life, if otherwise, you can use virtual machine for this tutorial and we are good.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;step-1&quot;&gt;Step 1:&lt;/h4&gt;
+
+&lt;p&gt;Let’s create a file with root ownership which will create our flag. We can do this by following commands :&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;{th1s_fl@g_i5_wh@7_w3_s33k}&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; flag.txt
+&lt;span class=&quot;nb&quot;&gt;chown &lt;/span&gt;root:root flag.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*pzsDxvYtEwgoDFNUV7OS7Q.png&quot; alt=&quot;ScreenShot.png&quot; title=&quot;ScreenShot&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;step-2&quot;&gt;Step 2:&lt;/h4&gt;
+
+&lt;p&gt;Here’s the &lt;strong&gt;&lt;em&gt;C code&lt;/em&gt;&lt;/strong&gt; of challenge binary, used to read the root flag.txt&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;string.h&amp;gt;
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;sys/types.h&amp;gt;
+#include &amp;lt;sys/stat.h&amp;gt;
+#include &amp;lt;fcntl.h&amp;gt;
+#include &amp;lt;errno.h&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]){&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;usage: %s &amp;lt;file&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stat_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stat_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Failed to stat %s: %s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strerror&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;errno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stat_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;st_uid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;File %s is owned by root&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O_RDONLY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Couldn’t open %s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);}&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I know ! I know ! This is some aggressively jotted down code chunk and yes, but it works and it’s just packed by removing all unnecessary spaces and indentation.&lt;/p&gt;
+
+&lt;p&gt;For now just copy it can paste in a *.c file and this will work.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*J053Ay9Fe54ll59jXGvh8Q.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;after compiling we get the following behaviour from our program…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*a6dcj44480Ugl9-LmSyKLg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;But we want it to somehow show the contents of the file, and that’s what we will try to do, but first let’s see what the program is actually doing and what we understand from it.&lt;/p&gt;
+
+&lt;h3 id=&quot;dissection-of-c-code&quot;&gt;Dissection of C Code&lt;/h3&gt;
+
+&lt;p&gt;Here’s beautified code for you,&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;string.h&amp;gt;
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;sys/types.h&amp;gt;
+#include &amp;lt;sys/stat.h&amp;gt;
+#include &amp;lt;fcntl.h&amp;gt;
+#include &amp;lt;errno.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;usage: %s &amp;lt;file&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stat_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stat_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Failed to stat %s: %s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strerror&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;errno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stat_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;st_uid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;File %s is owned by root&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O_RDONLY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Couldn't open %s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;https://gist.github.com/Saket-Upadhyay/6f1c5e15c2b454d81f7826b64ae1df2d/raw/d7c083a03cce749158726b4131d1e50ab03e615f/raceconditionchallenge.c&quot;&gt;View Raw on GitHub&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Now, let’s try to understand its workings,&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Line 1 to 6&lt;/strong&gt; are just imports.(all hail header files)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Line 9,10,11&lt;/strong&gt; declares some obvious variables.&lt;/p&gt;
+
+&lt;p&gt;Now we can see that we have 4 conditions before line 38 which will actually display the contents of the file. Let’s try to understand these.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;At line 13&lt;/strong&gt;, we have condition to check if the given arguments to the program equals “two” or not. actually that means we have to provide one file in the arguments, the other argument is just the program itself given by default. So according to this if we don’t provide a file to read this will execute&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;usage: %s &amp;lt;file&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;and then exit.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*5FzFVOSl4vsYHjVTd9WzDg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At &lt;strong&gt;line 19&lt;/strong&gt;, we check if the file contains valid formatted data or not, we can see in &lt;strong&gt;line 18&lt;/strong&gt; we defined object for &lt;strong&gt;stat&lt;/strong&gt; structure from &lt;strong&gt;sys/stat.h&lt;/strong&gt; header. In line 19 “if” condition we just check if we are able to extract information from the supplied file or not. If not, then we execute&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Failed to stat %s: %s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strerror&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;errno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;which will print error message in standard error out and then exit.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://pubs.opengroup.org/onlinepubs/007908799/xsh/sysstat.h.html&quot;&gt;pubs.opengroup.org/onlinepubs/007908799/xsh/sysstat.h.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;At line 24, we check if the file is owned by root or not by checking the uid of the file. What’s UID ? check the link below…&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://geek-university.com/linux/uid-user-identifier-gid-group-identifier/&quot;&gt;UID AND GID IN LINUX&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The last check is at &lt;strong&gt;Line 32&lt;/strong&gt;, just checks if we are able to successfully open the file as read only or not. Notice that file open at Line 30? it’s there to check for that only, no big deal here.&lt;/p&gt;
+
+&lt;h4 id=&quot;overall-working-&quot;&gt;Overall working :&lt;/h4&gt;
+
+&lt;p&gt;The program takes one argument as the file we want to open and then it will check if it’s a valid file or not and then checks for root ownership, and then if not owned by root it will try to open it as read only and then if successful in that it will show the contents.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-we-need-to-do&quot;&gt;What we need to do?&lt;/h3&gt;
+
+&lt;p&gt;According to above information if we somehow convince the program that the file is not root we might be able to see the contents of the file, because this is the only barrier that out file has, it’s owned by root all other checks are just kind-of integrity checks.&lt;/p&gt;
+
+&lt;h4 id=&quot;finding-the-race-condition-flaw&quot;&gt;Finding the race condition flaw&lt;/h4&gt;
+
+&lt;p&gt;Now let’s see where’s the bug that we were talking about actually is…&lt;/p&gt;
+
+&lt;p&gt;Here we need to focus… let’s examine the flow of the program again, and we can see that it uses &lt;strong&gt;argument argv[1]&lt;/strong&gt; two times in the file at significant interval.&lt;/p&gt;
+
+&lt;p&gt;once at Line 19 :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt;if (stat(argv[1], &amp;amp;stat_data) &amp;lt; 0) {
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And then in Line 30 :&lt;/p&gt;
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O_RDONLY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Interestingly, &lt;strong&gt;it check for the root ownership with the first use&lt;/strong&gt; and then actually opens the file to &lt;strong&gt;display the contents from second usage.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Now imagine if we are able to change the file in between two uses of the argument we might be able to tell the program that the file is not owned by root and then pass on the file owned by root to open !!&lt;/p&gt;
+
+&lt;p&gt;Let’s try to understand this with a diagram.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*rLkHV47bazGNdWza9kPkmQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div id=&quot;exp&quot;&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;the-exploit&quot;&gt;The Exploit&lt;/h3&gt;
+
+&lt;p&gt;To exploit this vulnerability, we need to quickly swap the files before the other function calls it.&lt;/p&gt;
+
+&lt;p&gt;After watching lots and lots of tutorials on system calls, Linux file management etc. in hopes to find any solution to this, eventually bumped into one.&lt;/p&gt;
+
+&lt;p&gt;Okay, so we are going to use following things in our exploit&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;SYS_renameat2 [Systemcall] : &lt;a href=&quot;http://man7.org/linux/man-pages/man2/rename.2.html&quot;&gt;MAN7.ORG/LINUX/MAN-PAGES&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Our idea is to swap / rename the two files so fast that we are able to pull off above described maneuver.&lt;/p&gt;
+
+&lt;p&gt;Here is a small C code that can help us do that :&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#define _GNU_SOURCE
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;fcntl.h&amp;gt;
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt;
+#include &amp;lt;sys/syscall.h&amp;gt;
+#include &amp;lt;linux/fs.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// source https://github.com/sroettger/35c3ctf_chals/blob/master/logrotate/exploit/rename.c&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;syscall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SYS_renameat2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AT_FDCWD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AT_FDCWD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RENAME_EXCHANGE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Copy the C code and compile it normally with gcc, that being done, let’s understand the code :&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Line 1 to 7 are just imports&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Line 11&lt;/strong&gt; has infinite While loop as while(1) is always true&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Line 12 here has a super important&lt;/strong&gt; “syscall()” will call the system call from C program, here it calls renameat2 system call.&lt;/p&gt;
+
+&lt;p&gt;We pass the two arguments as filenames we want to rapidly swap as argv[1] and argv[2]. Let’s understand other parameters:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;AT_FDCWD&lt;/strong&gt; :If pathname is relative and dirfd is the special value AT_FDCWD, then pathname is interpreted relative to the current working directory of the calling process.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;RENAME_EXCHANGE&lt;/strong&gt; — does an atomic exchange. Atomic exchange? yeah that’s new to me too … here it is&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.embhack.com/atomic-operation-in-linux-kernel/&quot;&gt;Atomic Operation in Linx Kernel - EmbHack&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;how-to-use-the-exploit-&quot;&gt;HOW TO USE THE EXPLOIT ?&lt;/h3&gt;
+
+&lt;p&gt;Now as we have the exploit and we know how it works, let’s use it.&lt;/p&gt;
+
+&lt;p&gt;just create a temp. file with anything in it&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;./temp
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Now run the exploit program with the flag and temp file as its parameters&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*QUfK9dAuHDDBtg3RvYQitQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;this will not produce any output but let it run, it is swapping the two files rapidly.&lt;/p&gt;
+
+&lt;p&gt;Now OPEN NEW TERMINAL and run readFlag program with flag as parameter.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*MbvBeaL5aKkPsBycGRjEQw.png&quot; alt=&quot;Flag.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;AND THERE WE HAVE IT !! our F L A G…&lt;/p&gt;
+
+&lt;h4 id=&quot;sign-off&quot;&gt;Sign-off&lt;/h4&gt;
+
+&lt;p&gt;Phew! that was lots of information for one article, I understand … may be it’s not that simple as I intended to make it but believe me when i say this… I was just amazed and overwhelmed with the knowledge I gained on my way through it and wanted to share it asap.&lt;/p&gt;
+
+&lt;p&gt;Well I hope this was new to you too and you enjoyed it, if you have any suggestion or feedback, feel free to drop it in comments.&lt;/p&gt;
+
+&lt;p&gt;See ya all in next article, till then keep your bodies caffeinated enough!&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;NOTE: here is an awesome video by LiveOverflow on the same topic and actually this is the one which inspired me to write about it. &lt;a href=&quot;https://www.youtube.com/watch?v=5g137gsB9Wk&amp;amp;feature=youtu.be&quot;&gt;YOUTUBE LINK&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name>Saket Upadhyay</name></author><category term="Secure Coding" /><category term="Software Security" /><category term="CTF" /><summary type="html">Introduction to Race Condition Vulnerability and how to Exploit them.</summary></entry><entry><title type="html">Effortless Feature Extraction for your ML based Android Malware Detection project</title><link href="http://localhost:4000/2019/12/04/Effortless-Feature-Extraction.html" rel="alternate" type="text/html" title="Effortless Feature Extraction for your ML based Android Malware Detection project" /><published>2019-12-04T00:00:00+05:30</published><updated>2019-12-04T00:00:00+05:30</updated><id>http://localhost:4000/2019/12/04/Effortless-Feature-Extraction</id><content type="html" xml:base="http://localhost:4000/2019/12/04/Effortless-Feature-Extraction.html">&lt;div class=&quot;message&quot;&gt;
+Streamline Permission-Based Feature Extraction for android data-set with one Python Script.
+&lt;/div&gt;
+
+&lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
+
+&lt;p&gt;Malware detection and analysis has been the hot topic in security for a long time, overtime the malware writers upgraded their skills and complexity and this has been the main reason for us to find new effective methodologies for malware detection and classification.&lt;/p&gt;
+
+&lt;p&gt;As with the boom of AI and ML to solve general problems,the malware analysis and detection is not left untouched. Many researches has been published in the domain of malware detection using Machine Learning approach. But before doing all the gizmo of model training and neural network formation or any of those wires in brain magic, we need to collect certain information from the target to train our machine, and that is what we call &lt;strong&gt;features&lt;/strong&gt; and that is what this article is all about, to get you started in the field.&lt;/p&gt;
+
+&lt;h3 id=&quot;baseline&quot;&gt;Baseline&lt;/h3&gt;
+
+&lt;p&gt;The following article only focus on feature generation and formatting, specifically permission-based feature generation for android application.&lt;/p&gt;
+
+&lt;p&gt;Here we will only see how we can speed up this process by using simple script which Does It All will break it down in some other article where we will discuss feature extraction in general followed my training our own ML model to detect Android malware !&lt;/p&gt;
+
+&lt;h3 id=&quot;the-script&quot;&gt;The Script&lt;/h3&gt;
+
+&lt;p&gt;Lets get to the fun part, and explore the script itself.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Get the Project in &lt;a href=&quot;https://github.com/Saket-Upadhyay/Android-Permission-Extraction-and-Dataset-Creation-with-Python&quot;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This script will extract permission information from Malware and Benign applications in their respective folders and then create one Comma Separated Values (.csv) file to store them in one place ready to be fed into ML algorithms.&lt;/p&gt;
+
+&lt;h3 id=&quot;how-to-use-the-script&quot;&gt;HOW TO USE THE SCRIPT?&lt;/h3&gt;
+
+&lt;p&gt;Just copy your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Malware&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Benign&lt;/code&gt; applications on which you want to train your ML Model into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;respective folders&lt;/code&gt; and run the script by following command in terminal.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python3 ExtractorAIO.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;And that’s it. yes. done. rest, the script will handle&lt;/p&gt;
+
+&lt;h3 id=&quot;how-to-use-the-generated-data-set&quot;&gt;HOW TO USE THE GENERATED DATA-SET?&lt;/h3&gt;
+
+&lt;p&gt;The generated data will be in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*.csv&lt;/code&gt; format and can be parsed with the help of many already available libraries or modules. (pandas module in python is suggested)&lt;/p&gt;
+
+&lt;h4 id=&quot;formatting&quot;&gt;Formatting&lt;/h4&gt;
+
+&lt;script src=&quot;https://gist.github.com/Saket-Upadhyay/e713aa3fe50fd68895c0b50ebf83508b.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;sup&gt;This is sample data set of 6 applications (3 Malware &amp;amp; 3 Benign)&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;The 1st column contains &lt;strong&gt;NAME&lt;/strong&gt; of respective application and last column &lt;strong&gt;“CLASS”&lt;/strong&gt; contains information if the application if from benign or malware family of training set. &lt;strong&gt;[0=Benign, 1=Malware]&lt;/strong&gt;. In between there are all the permissions (common + all found in 1st phase) with respective information bit, &lt;em&gt;[0=The application do not use this permission, 1=This permission is used in the application]&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;importing-data-example-in-sklearn&quot;&gt;Importing Data Example in sklearn&lt;/h3&gt;
+
+&lt;p&gt;Suppose you want to import your new data set into sklearn and train your new model from there, here’s a way you can do that.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read_csv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;data.csv&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;coulmnNames&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iloc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;FeatureNames&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;coulmnNames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;LabelName&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;coulmnNames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FeatureNames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;asarray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LabelName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;asarray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;feature_vectors&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;labels&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Y&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;train_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;train_y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;train_test_split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;feature_vectors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test_size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;The above code will remove &lt;strong&gt;NAME&lt;/strong&gt; column and then store &lt;strong&gt;FEATURE_MATRIX&lt;/strong&gt; (from column after  NAME  to second last column) and &lt;strong&gt;LABEL_VECTOR&lt;/strong&gt; ( CLASS column) in X and Y respectively, which later can be split into desired training and testing sets.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;CONCLUSION&lt;/h3&gt;
+
+&lt;p&gt;I hope this article will get you started with feature extraction for malware analysis using machine learning. It isn’t the end of it, but we just completed one step !&lt;/p&gt;
+
+&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="Malware Detection" /><category term="Machine Learning" /><summary type="html">Streamline Permission-Based Feature Extraction for android data-set with one Python Script.</summary></entry><entry><title type="html">Taking over a software by Instruction Rewriting.</title><link href="http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html" rel="alternate" type="text/html" title="Taking over a software by Instruction Rewriting." /><published>2019-11-25T00:00:00+05:30</published><updated>2019-11-25T00:00:00+05:30</updated><id>http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting</id><content type="html" xml:base="http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">&lt;div class=&quot;message&quot;&gt;
   Baby steps to binary rewriting and reverse engineering.
 &lt;/div&gt;
 
