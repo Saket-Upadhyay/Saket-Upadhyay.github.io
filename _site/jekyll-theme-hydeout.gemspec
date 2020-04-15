@@ -1,12 +1,12 @@
 # coding: utf-8
 
 Gem::Specification.new do |spec|
-  spec.name          = "jekyll-theme-hydeout"
-  spec.version       = "4.1.0"
+  spec.name          = "saket-website-new"
+  spec.version       = "3.0.0"
   spec.authors       = ["Saket Upadhyay"]
   spec.email         = ["x64mayhem@gmail.com"]
 
-  spec.summary       = %q{The Hyde theme for Jekyll.}
+  spec.summary       = %q{The Hyde theme in Jekyll. for x64mayhem}
   spec.homepage      = "https://github.com/fongandrew/hydeout"
   spec.license       = "MIT"
 

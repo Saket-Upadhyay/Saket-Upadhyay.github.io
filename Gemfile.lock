@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jekyll-theme-hydeout (4.1.0)
+    saket-website-new (3.0.0)
       jekyll (>= 3.6, < 5.0)
       jekyll-feed (~> 0.6)
       jekyll-gist (~> 1.4)
@@ -253,7 +253,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 2.1)
   github-pages
-  jekyll-theme-hydeout!
+  saket-website-new!
 
 BUNDLED WITH
    2.1.4
