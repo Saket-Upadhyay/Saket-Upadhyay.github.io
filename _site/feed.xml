@@ -1,4 +1,291 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-15T21:21:07+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Saket Upadhyay</title><subtitle>Cybersecurity Student, Wannabe Malware Researcher. Reverse Engineering, Low Level Software Security, Penetration Testing.</subtitle><author><name>Saket Upadhyay</name></author><entry><title type="html">Extracting packer injected malware from memory [Remcos RAT]</title><link href="http://localhost:4000/2020/03/08/Extracting-packer-injected-malware.html" rel="alternate" type="text/html" title="Extracting packer injected malware from memory [Remcos RAT]" /><published>2020-03-08T00:00:00+05:30</published><updated>2020-03-08T00:00:00+05:30</updated><id>http://localhost:4000/2020/03/08/Extracting-packer-injected-malware</id><content type="html" xml:base="http://localhost:4000/2020/03/08/Extracting-packer-injected-malware.html">&lt;div class=&quot;message&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-15T23:10:03+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Saket Upadhyay</title><subtitle>Cybersecurity Student, Wannabe Malware Researcher. Reverse Engineering, Low Level Software Security, Penetration Testing.</subtitle><author><name>Saket Upadhyay</name></author><entry><title type="html">Digest [CipherCombat2.0 CTF write-up]</title><link href="http://localhost:4000/2020/04/13/CipherCombat2-Digest.html" rel="alternate" type="text/html" title="Digest [CipherCombat2.0 CTF write-up]" /><published>2020-04-13T00:00:00+05:30</published><updated>2020-04-13T00:00:00+05:30</updated><id>http://localhost:4000/2020/04/13/CipherCombat2-Digest</id><content type="html" xml:base="http://localhost:4000/2020/04/13/CipherCombat2-Digest.html">&lt;div class=&quot;message&quot;&gt;
+Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/916/1*Nuc4N5RaZtr63_YQFhz_0g.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;what-we-get&quot;&gt;What we get?&lt;/h3&gt;
+
+&lt;p&gt;A zip file with password “hackerearth”… unzip it and we get a Linux Executable
+&lt;img src=&quot;https://miro.medium.com/max/1400/1*vAjPVcnwMkk3vsJWwFYvCw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Notice I highlighted LSB(Least Significant Bit) ? We will see why later…&lt;/p&gt;
+
+&lt;h3 id=&quot;solving-the-challenge&quot;&gt;Solving the challenge&lt;/h3&gt;
+
+&lt;p&gt;Let’s do strings …&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*QituOMU8zpAkklSEngDR6g.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;With strings we found some Texts but nothing like our flag.&lt;/p&gt;
+
+&lt;p&gt;Important thing to see here is &lt;strong&gt;MD5 function calls&lt;/strong&gt; and use of &lt;strong&gt;libcrypto.so.1.1&lt;/strong&gt; points at use of MD5 hash algorithm.&lt;/p&gt;
+
+&lt;p&gt;Further we can check this by listing all imports by RABIN2&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*Zs5ILlbbLfM-sZEeRbzljw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And we see that MD5 global functions are important.&lt;/p&gt;
+
+&lt;p&gt;Let’s check the disassembly now…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*mPe6hOAoX4GAUC4DhYytVA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can see that it compares the MD5 digest of string supplied with a hard coded MD5 value. We can also see it has moved hard-coded hex string to stack at &lt;strong&gt;0x000011ad&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Any ways, it is comparing with something in stack, and my favorite way is to fire up GDB and check the stack in real-time to get the data.&lt;/p&gt;
+
+&lt;p&gt;Let’s have a look at GDB disassembly…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1368/1*lNZuiBDzkNvgSrHube7sgA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can see that string compare function is at *main+186 so we will put break point there.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*nmAFCPnQbBwgoA-1C2Jhuw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/766/1*6qb-pH2gzMPvaOLQhj3dtA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now let’s run the program and provide random input.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*6ad6Uix5zcBN7SQhMBWVhw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We hit our breakpoints ! Let’s check registers, STRNCMP compares values stored in &lt;strong&gt;[R/ESI]&lt;/strong&gt; with &lt;strong&gt;[R/EDI]&lt;/strong&gt;…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*GEzuZe_tObGW6OpVnaz-Dg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So get address of our hard-coded hash loaded in stack, lets check it out how it’s doing.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*4ESNSFiNrykRXxfoo0mZ7w.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And we get our values now let’s reconstruct the MD5&lt;/p&gt;
+
+&lt;p&gt;Remember about LSB? these values are stored like that, we need to convert it into MSB and then we can continue.&lt;/p&gt;
+
+&lt;p&gt;Copy the values in any text editor and rearrange them as following…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*6W3H0okjKG1LlN5e5bNaFg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;so at last we have our hash : &lt;strong&gt;53a167c8d4dc964f7d7838dd4ce2d137&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Only thing left to do is brute force it, we can use online services, the one I used and which they later provided in their free hint is https://hashes.org/&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*l3Cq8Jw-b3GGG3qS3V3REw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And we have our flag :&lt;strong&gt;&lt;em&gt;HE{iamalmighty9}&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/988/1*K7A9d8L1oQ5QBzLxV6Ngkw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;lt; And here is a cross check with the challenge binary.&lt;/p&gt;
+
+&lt;p&gt;Another Fun challenge! Done.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;NOTE: we could have done it in 3–4 less steps by just converting the strings found in &lt;strong&gt;MOVABS&lt;/strong&gt; instructions,&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*8RgD9zk0eJD2S6szrk-1Dg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;But what’s the fun in that, also i wanted to show you the dynamic analysis path. :-)&lt;/p&gt;
+
+&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="CTF Writeup" /><summary type="html">Reverse Engineering Challenge of Hacker Earth CipherCombat2.0</summary></entry><entry><title type="html">Locked [CipherCombat2.0 CTF write-up]</title><link href="http://localhost:4000/2020/04/13/CipherCombat2-Locked.html" rel="alternate" type="text/html" title="Locked [CipherCombat2.0 CTF write-up]" /><published>2020-04-13T00:00:00+05:30</published><updated>2020-04-13T00:00:00+05:30</updated><id>http://localhost:4000/2020/04/13/CipherCombat2-Locked</id><content type="html" xml:base="http://localhost:4000/2020/04/13/CipherCombat2-Locked.html">&lt;div class=&quot;message&quot;&gt;
+Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/976/1*er3VhPR2dIn2nI7BXu_uVg.png&quot; alt=&quot;&quot; title=&quot;Question Header&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;what-we-get-&quot;&gt;What we get ?&lt;/h3&gt;
+
+&lt;p&gt;We get a zip file with our binary in it with password hackerearth.
+&lt;img src=&quot;https://miro.medium.com/max/1400/1*YlLxAp6kziXd1d_db8HIUA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After unzipping the file, we can start looking at the binary.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*gYTW45PJ_L2Zap_-KENFlw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Important stuff : it’s Linux Executable and not stripped… This makes task easier.&lt;/p&gt;
+
+&lt;h3 id=&quot;solving-the-challenge&quot;&gt;Solving the challenge&lt;/h3&gt;
+
+&lt;p&gt;Let’s make the file executable by chmod.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*zLCzrFMLMXOzhGJfirn2Bg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;now let’s run it once and see what it actually does…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*X657SCKYqyTcoQsLsdrSvA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So seems like some type password check, and the name of challenge checks out !&lt;/p&gt;
+
+&lt;p&gt;Let’s Disassemble it and try to understand the checking mechanism.&lt;/p&gt;
+
+&lt;p&gt;doing Strings on the file we get something interesting…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1262/1*jcUCXvcFuhsdFUZUODtQEQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Looks like good password? Also if we see the disassembly we see main calls the &lt;strong&gt;fun2()&lt;/strong&gt; function before &lt;strong&gt;test eax,eax&lt;/strong&gt; at &lt;strong&gt;0x000012d7&lt;/strong&gt; which controls the flow of program… and see what it compares! the same string !&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*MvkJYxg2J9qjStMB20DYIw.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;https://miro.medium.com/max/1400/1*s1VfuFXEvf_Z5GjST_vXVg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s just try this as password…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*3oQeagCI-u_3zWlyJxgr6g.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And that works ! submit the flag and get them points…&lt;/p&gt;
+
+&lt;h3 id=&quot;about-ctf&quot;&gt;About CTF&lt;/h3&gt;
+
+&lt;p&gt;Hacker Earth’s CipherCombat2.0 was great CTF for beginners in the security field. Overall nice refresher.&lt;/p&gt;</content><author><name>Saket Upadhyay</name></author><category term="CTF Writeup" /><category term="CTF" /><summary type="html">Reverse Engineering Challenge of Hacker Earth CipherCombat2.0</summary></entry><entry><title type="html">Shifter2 [CipherCombat2.0 CTF write-up]</title><link href="http://localhost:4000/2020/04/13/CipherCombat2-Shifter2.html" rel="alternate" type="text/html" title="Shifter2 [CipherCombat2.0 CTF write-up]" /><published>2020-04-13T00:00:00+05:30</published><updated>2020-04-13T00:00:00+05:30</updated><id>http://localhost:4000/2020/04/13/CipherCombat2-Shifter2</id><content type="html" xml:base="http://localhost:4000/2020/04/13/CipherCombat2-Shifter2.html">&lt;div class=&quot;message&quot;&gt;
+Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/986/1*5HJibwnLn_XKQpwXrS_AJg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;what-we-get&quot;&gt;What we get?&lt;/h3&gt;
+
+&lt;p&gt;A zip file with password “hakerearth”… In there we find a PNG image&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*0grm3yTRon_G1N1rVhir4Q.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Checking the file for strings and embedded files we find nothing, and this is reverse engineering challenge so we will not go for stenography mumbo jumbo.&lt;/p&gt;
+
+&lt;h3 id=&quot;lets-solve-this&quot;&gt;Let’s Solve this&lt;/h3&gt;
+
+&lt;p&gt;Looking at the image, we can see it’s Graph representation of assembly code, and here is the image we get :-&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/3510/1*L7e4TQtggVNv8lVNdJayWw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now let’s try to understand what this is trying to do.&lt;/p&gt;
+
+&lt;h4 id=&quot;1st-block&quot;&gt;1st Block&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1000/1*4Wqzg1mliI6Icey6dz102Q.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The first block is our MAIN() function taking some arguments&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;envp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;argc = no of arguments
+
+argv = argument pointer
+
+envp = enviornment pointer
+
+It initializes bunch of variables and then stack setting routine.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;we also see that it compares argc with 1 followed by JE condition&lt;/p&gt;
+
+&lt;p&gt;checking number of arguments should be equal to 2, argv[0] is always program name and argv[1] is our supplied password. That means we have to give &lt;strong&gt;exactly ONE parameter&lt;/strong&gt; to the program.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1000/1*WrOeYnyhUO_IukWtAGUb8Q.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If the condition is not satisfied it’s putting 1 in EAX (that’s our return register) and then returning from the main() routine, that’s equivalent to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exit(1);&lt;/code&gt;, but here implemented through &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return 1;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;2nd-block&quot;&gt;2nd Block&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1000/1*pkXCvu2IckRwOkC4UCNHXg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Most of this block is just initialization of some variables and then a jump statement to get to next block.&lt;/p&gt;
+
+&lt;p&gt;also interesting thing to notice is that address spaces are separated by 4bytes each, looks similar? Yes, it’s character &lt;strong&gt;array allocation of 15 characters.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;then it sets &lt;strong&gt;var_4h = 1&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s start building the program to side by side…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/2000/1*ucuhdJV_NSM0XJqK_LZnWw.png&quot; alt=&quot;&quot; title=&quot;Array Recreated in Python&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;3rd-block&quot;&gt;3rd Block&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1000/1*baW1SBXF4GzcBL_vmlhuVg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now this looks like&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Initialize a var &amp;gt; do something &amp;gt; add 1 to it&amp;gt; check if var =&amp;gt;0xf i.e (15)base &amp;gt; repeat
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Looks familiar? loops something with increasing variable?&lt;/p&gt;
+
+&lt;p&gt;It’s nothing but a &lt;strong&gt;for()/while()&lt;/strong&gt; loop implementation which iterates for 15 times, same as our character array length.&lt;/p&gt;
+
+&lt;p&gt;so let’s define it as&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;≤&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;loop&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;also, at the end of loop body it compares something and if it fails it shows “Better Luck next time” and then exit.&lt;/p&gt;
+
+&lt;p&gt;Other wise it completes the loop and exit with “c0ngrats!” message.&lt;/p&gt;
+
+&lt;h4 id=&quot;the-loop-body&quot;&gt;The Loop Body&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/898/1*zsGBKxn_DxW26ofiVq6_Bw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The loop body is pretty interesting, it might look intimidating to new reverse engineer but it’s really simple.With some experience, you can already tell what it’s doing.&lt;/p&gt;
+
+&lt;p&gt;Let’s have a look at it.&lt;/p&gt;
+
+&lt;p&gt;now as we know it’s a loop and var_4h is our control variable let’s call it “i”. First we load the value of i in EAX, then we load the address of rax*8 to RDX, and then move our ARGUMENT(var_60h) into RAX. Then we do logical and RAX,RDX and mov Quad Word value at address of RAX to RAX, now we Move with Zero extended (movzx) byte value of RAX to …… ahhhhh… i am pretty sure this does not make it easier for you to understand it, all i am doing is dictating the instructions one by one…&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Know this : Look at it, remember the pattern and know that it is one of the methods compilers implement &lt;strong&gt;fetching an element at some given index.&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;You can ofcourse take some values yourself and try this but the full explaination is out of scope for this writeup, also it will make it boring and long enough.&lt;/p&gt;
+
+&lt;p&gt;Some important instruction reference (links):&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.felixcloutier.com/x86/cbw:cwde:cdqe&quot;&gt;Convert Doubleword to Quadword (CDQE)&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.felixcloutier.com/x86/movzx&quot;&gt;Move with Zero-Extend (MOVZX)&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.felixcloutier.com/x86/movsx:movsxd&quot;&gt;Move with Sign-Extension (MOVSX)&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Okay so what it actually did? Lemme explain:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Take value at [i-1] index from our argument &lt;strong&gt;=argv[i-1] let’s say = arg&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Take value at [i-1] index from our character array = charp[i-1]&lt;/li&gt;
+  &lt;li&gt;Add i to our charp = charp[i-1]+i&lt;/li&gt;
+  &lt;li&gt;Add 1 to Step3 = &lt;strong&gt;charp[i-1]+i+1 , let’s say = charpnew&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Compare &lt;strong&gt;arg == charpnew&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/200/1*bdGkZ4cylX17rnq36F7DJA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;These instructions are responsible for step 3 and 4, remember we stored our i in EAX ? and then we add EAX (i.e. i )to ECX, our element which is stored in EAX and then again add 1 to new EAX.&lt;/p&gt;
+
+&lt;p&gt;and now converting it to code we have :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1324/1*SnTdBpFKV0kYQU_rqXCEvA.png&quot; alt=&quot;&quot; title=&quot;Code reversed from Assembly Graph&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now instead of checking the flag we can print it !!&lt;/p&gt;
+
+&lt;p&gt;Here’s is relatively clean Python Implementation of above algorithm, Running it spits out the flag.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/bin/python3
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;given_array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x71&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x65&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x65&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x61&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x6e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
+             &lt;span class=&quot;mh&quot;&gt;0x2c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x6a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x56&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x68&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x5a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+             &lt;span class=&quot;mh&quot;&gt;0x68&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x68&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x5f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x63&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;given_array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;given_array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*-Cw8YRpP7UzyLHpl7eFzWg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And we got the flag &lt;strong&gt;HE{shift3r_returns}&lt;/strong&gt; we can also check it with the C++ program we reconstructed.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/2000/1*TKgw7s99BDWM9zeHEcGHew.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;That’s it for this challenge, actually an easy one, just some basic experience in reverse engineering needed.&lt;/p&gt;
+
+&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="CTF Writeup" /><category term="CTF" /><summary type="html">Reverse Engineering Challenge of Hacker Earth CipherCombat2.0</summary></entry><entry><title type="html">Extracting packer injected malware from memory [Remcos RAT]</title><link href="http://localhost:4000/2020/03/08/Extracting-packer-injected-malware.html" rel="alternate" type="text/html" title="Extracting packer injected malware from memory [Remcos RAT]" /><published>2020-03-08T00:00:00+05:30</published><updated>2020-03-08T00:00:00+05:30</updated><id>http://localhost:4000/2020/03/08/Extracting-packer-injected-malware</id><content type="html" xml:base="http://localhost:4000/2020/03/08/Extracting-packer-injected-malware.html">&lt;div class=&quot;message&quot;&gt;
 Extraction of injected malicious PE from dynamic memory in windows (Remcos malware)
 &lt;/div&gt;
 
@@ -184,7 +471,114 @@ Extraction of injected malicious PE from dynamic memory in windows (Remcos malwa
 
 &lt;p&gt;&lt;a href=&quot;https://countuponsecurity.com/tag/finding-injected-code-into-memory/&quot;&gt;Finding injected code into memory - Count Upon Security&lt;/a&gt;&lt;/p&gt;
 
-&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="Reverse Engineering" /><category term="Malware Analysis" /><summary type="html">Extraction of injected malicious PE from dynamic memory in windows (Remcos malware)</summary></entry><entry><title type="html">Winning Race Conditions</title><link href="http://localhost:4000/2019/12/21/Winning-Race-Conditions.html" rel="alternate" type="text/html" title="Winning Race Conditions" /><published>2019-12-21T00:00:00+05:30</published><updated>2019-12-21T00:00:00+05:30</updated><id>http://localhost:4000/2019/12/21/Winning-Race-Conditions</id><content type="html" xml:base="http://localhost:4000/2019/12/21/Winning-Race-Conditions.html">&lt;div class=&quot;message&quot;&gt;
+&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="Reverse Engineering" /><category term="Malware Analysis" /><summary type="html">Extraction of injected malicious PE from dynamic memory in windows (Remcos malware)</summary></entry><entry><title type="html">Recover Deleted Files in Linux from Live Running Processes</title><link href="http://localhost:4000/2020/02/02/Recover-Deleted-Files-in-Linux.html" rel="alternate" type="text/html" title="Recover Deleted Files in Linux from Live Running Processes" /><published>2020-02-02T00:00:00+05:30</published><updated>2020-02-02T00:00:00+05:30</updated><id>http://localhost:4000/2020/02/02/Recover-Deleted-Files-in-Linux</id><content type="html" xml:base="http://localhost:4000/2020/02/02/Recover-Deleted-Files-in-Linux.html">&lt;div class=&quot;message&quot;&gt;
+Recover recently deleted file (if it’s still open in some process) using properties of procfs
+&lt;/div&gt;
+
+&lt;p&gt;Ever deleted an important file while it’s still open in some other process? or Someone opened a PDF file in your PC from pen drive and removed the pen drive while it’s still open in some PDF-Viewer and you wanted to save it first and now you are just not touching that process because that’s the last trace of that file left in your computer?&lt;/p&gt;
+
+&lt;p&gt;Well, luckily you have &lt;strong&gt;procfs&lt;/strong&gt; to your rescue. Let’s check the definition :&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;/proc&lt;/strong&gt; is very special in that it is also a virtual filesystem. It’s sometimes referred to as a process information pseudo-file system. It doesn’t contain ‘real’ files but runtime system information (e.g. system memory, devices mounted, hardware configuration, etc). For this reason it can be regarded as a control and information centre for the kernel. In fact, quite a lot of system utilities are simply calls to files in this directory. For example, &lt;strong&gt;‘lsmod’&lt;/strong&gt; is the same as ‘&lt;strong&gt;cat /proc/modules’&lt;/strong&gt; while &lt;strong&gt;&lt;em&gt;‘lspci’ is a synonym for ‘cat /proc/pci’&lt;/em&gt;&lt;/strong&gt;. By altering files located in this directory you can even read/change kernel parameters (sysctl) while the system is running.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;sup&gt;source : &lt;a href=&quot;https://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html&quot;&gt;www.tldp.org&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;setup&quot;&gt;Setup.&lt;/h3&gt;
+
+&lt;p&gt;For this demonstration we just need one pdf file and… well that’s it!&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;[I am using Ubuntu 18.04 LTS for this demo.]&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;how-to&quot;&gt;How to.&lt;/h3&gt;
+
+&lt;p&gt;Let’s follow this step-by-step.&lt;/p&gt;
+
+&lt;h4 id=&quot;step-0&quot;&gt;STEP 0:&lt;/h4&gt;
+
+&lt;p&gt;Open the PDF file with default PDF viewer.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*ZbJE03T5B3HXw4yuf_cnMQ.png&quot; alt=&quot;&quot; title=&quot;PDF document open in a PDF viewer (Ubuntu 18.04 LTS)&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;step-1&quot;&gt;STEP 1:&lt;/h4&gt;
+
+&lt;p&gt;DELETE THE FILE. FROM THE FOLDER. P E R M A N E N T L Y.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1280/1*7rcljwEYNFzH2cY-lPXEmw.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;https://miro.medium.com/max/552/1*36beTPYYSIqjvCgSZrvK-g.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;step-2&quot;&gt;STEP 2:&lt;/h4&gt;
+
+&lt;p&gt;Now as we have deleted the file, let’s get on work to recover that.&lt;/p&gt;
+
+&lt;p&gt;Let’s fetch our PDF viewer’s PID (Process ID) using “ps”&lt;/p&gt;
+
+&lt;p&gt;What’s pid you might ask? here…&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;the process identifier (a.k.a. process ID or PID) is a number used by most operating system kernels — such as those of Unix, macOS and Windows — to uniquely identify an active process.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;sup&gt;source : &lt;a href=&quot;https://en.wikipedia.org/wiki/Process_identifier&quot;&gt;WikiPedia&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/2000/1*iCZcVmfFRLe2poxYp8vHzg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;so now we have our PID = &lt;strong&gt;5201.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;step-3&quot;&gt;STEP 3:&lt;/h4&gt;
+
+&lt;p&gt;Let’s go to /proc/&lt;strong&gt;&amp;lt;pid&amp;gt;&lt;/strong&gt;,yes that’s how your Linux PC keeps track of processes.&lt;/p&gt;
+
+&lt;p&gt;In our case it’s &lt;strong&gt;&lt;em&gt;/proc/5201/&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/2000/1*oiitajakNYIaKFXmPYlD6Q.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;step-4&quot;&gt;STEP 4:&lt;/h4&gt;
+
+&lt;p&gt;We will now try to locate the file descriptor for our target file in the process, file descriptor? here you go…&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A &lt;strong&gt;file descriptor&lt;/strong&gt; is a number that uniquely identifies an open file in a computer’s operating system. It describes a data resource, and how that resource may be accessed.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Now, go to “fd” (file descriptor) folder.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/2000/1*YzcnPHuUv8vMMJs_wlcBZw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can see that &lt;strong&gt;file descriptor 14&lt;/strong&gt; points to our ex-impotant-ish file DocumentPDF.pdf and smartly shows “(deleted)” status after it.&lt;/p&gt;
+
+&lt;p&gt;But our program still has access to the PDF file and it’s open there, so how? ‘cause file descriptor points to the file’s actual real-time location from which the program is using it,so if not on disk then in memory.&lt;/p&gt;
+
+&lt;h4 id=&quot;step-5&quot;&gt;STEP 5:&lt;/h4&gt;
+
+&lt;p&gt;Just “cat” the file pointer to some other location, and that’s it!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/2000/1*BKXfsQkGCjjCiQmJgN9qog.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here we write the file bit-wise to &lt;strong&gt;“restore.pdf”&lt;/strong&gt; using ‘cat’.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1024/1*c9Ht4a7Lm8CQavq7l-6sOQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;AND BAM !!! We have our file back.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*naQC7KHea6tIdED5Tn9a1A.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;This is one of the things I found interesting enough while reading about Linux file system and mysteries of it’s file and process management techniques, which was worth sharing.&lt;/p&gt;
+
+&lt;h3 id=&quot;from-here-&quot;&gt;From Here …&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Procfs&quot;&gt;PROCFS&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.tecmint.com/linux-process-management/&quot;&gt;All You Need To Know About Processes in Linux&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.computerhope.com/jargon/f/file-descriptor.htm&quot;&gt;What is a File Descriptor?&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="Linux" /><summary type="html">Recover recently deleted file (if it’s still open in some process) using properties of procfs Ever deleted an important file while it’s still open in some other process? or Someone opened a PDF file in your PC from pen drive and removed the pen drive while it’s still open in some PDF-Viewer and you wanted to save it first and now you are just not touching that process because that’s the last trace of that file left in your computer? Well, luckily you have procfs to your rescue. Let’s check the definition : /proc is very special in that it is also a virtual filesystem. It’s sometimes referred to as a process information pseudo-file system. It doesn’t contain ‘real’ files but runtime system information (e.g. system memory, devices mounted, hardware configuration, etc). For this reason it can be regarded as a control and information centre for the kernel. In fact, quite a lot of system utilities are simply calls to files in this directory. For example, ‘lsmod’ is the same as ‘cat /proc/modules’ while ‘lspci’ is a synonym for ‘cat /proc/pci’. By altering files located in this directory you can even read/change kernel parameters (sysctl) while the system is running. source : www.tldp.org Setup. For this demonstration we just need one pdf file and… well that’s it! [I am using Ubuntu 18.04 LTS for this demo.] How to. Let’s follow this step-by-step. STEP 0: Open the PDF file with default PDF viewer. STEP 1: DELETE THE FILE. FROM THE FOLDER. P E R M A N E N T L Y. STEP 2: Now as we have deleted the file, let’s get on work to recover that. Let’s fetch our PDF viewer’s PID (Process ID) using “ps” What’s pid you might ask? here… the process identifier (a.k.a. process ID or PID) is a number used by most operating system kernels — such as those of Unix, macOS and Windows — to uniquely identify an active process. source : WikiPedia so now we have our PID = 5201. STEP 3: Let’s go to /proc/&amp;lt;pid&amp;gt;,yes that’s how your Linux PC keeps track of processes. In our case it’s /proc/5201/ STEP 4: We will now try to locate the file descriptor for our target file in the process, file descriptor? here you go… A file descriptor is a number that uniquely identifies an open file in a computer’s operating system. It describes a data resource, and how that resource may be accessed. Now, go to “fd” (file descriptor) folder. We can see that file descriptor 14 points to our ex-impotant-ish file DocumentPDF.pdf and smartly shows “(deleted)” status after it. But our program still has access to the PDF file and it’s open there, so how? ‘cause file descriptor points to the file’s actual real-time location from which the program is using it,so if not on disk then in memory. STEP 5: Just “cat” the file pointer to some other location, and that’s it! Here we write the file bit-wise to “restore.pdf” using ‘cat’. AND BAM !!! We have our file back. Conclusion This is one of the things I found interesting enough while reading about Linux file system and mysteries of it’s file and process management techniques, which was worth sharing. From Here … PROCFS All You Need To Know About Processes in Linux What is a File Descriptor?</summary></entry><entry><title type="html">Winning Race Conditions</title><link href="http://localhost:4000/2019/12/21/Winning-Race-Conditions.html" rel="alternate" type="text/html" title="Winning Race Conditions" /><published>2019-12-21T00:00:00+05:30</published><updated>2019-12-21T00:00:00+05:30</updated><id>http://localhost:4000/2019/12/21/Winning-Race-Conditions</id><content type="html" xml:base="http://localhost:4000/2019/12/21/Winning-Race-Conditions.html">&lt;div class=&quot;message&quot;&gt;
 Introduction to Race Condition Vulnerability and how to Exploit them.
 &lt;/div&gt;
 
@@ -1005,33 +1399,4 @@ and you can see it took just 31 seconds to crack 8 digit numeric password &lt;em
 &lt;ul&gt;
   &lt;li&gt;The points of polygraphs, if stored in arrays or any of your fav. data structure can be passed to your database and then share that with your other apps to live track group of friends together.&lt;/li&gt;
   &lt;li&gt;Can run this service in background to store data points and then draw them whenever needed.&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Saket Upadhyay</name></author><category term="Location Tracing" /><summary type="html">Android already have accurate Geo location capabilities by using multiple sources like Cellular Networks, G.P.S. and nearby Wi-Fi connections. And that’s handful of sources to extract information from, but their working and synchronisation among each other is real beauty.</summary></entry><entry><title type="html">First Post</title><link href="http://localhost:4000/2000/01/01/First-Post.html" rel="alternate" type="text/html" title="First Post" /><published>2000-01-01T00:00:00+05:30</published><updated>2000-01-01T00:00:00+05:30</updated><id>http://localhost:4000/2000/01/01/First-Post</id><content type="html" xml:base="http://localhost:4000/2000/01/01/First-Post.html">&lt;div class=&quot;message&quot;&gt;
-So you scrolled this far? Well that means two things, either my work is interesting and you liked it or you are doing some OSINT mumbo jombo.
-
-For the first one, I am so glad, thank you for spending your time on my articles and motivating me to write more.
-For the later, Ewwww.. just go away already .... :-)
-&lt;/div&gt;
-
-&lt;!-- &lt;div class=&quot;message&quot;&gt; --&gt;
-&lt;p&gt;Howdy! This is a test post created when i was getting comfy with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ruby&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Jekyll&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;html templates&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gems&lt;/code&gt;  and other related stuffs.
-&lt;!-- &lt;/div&gt; --&gt;
-&lt;br /&gt;
-Around summer of 2020 during “The Lockdown Times”, ‘cause you might have noticed this article is back-dated to move it down the list in Home page. (PS : I started programming in early 2010, so this is way back. lol.)&lt;/p&gt;
-
-&lt;h2&gt;Why not delete it?&lt;/h2&gt;
-
-&lt;p&gt;But why delete it? actually i wanted to at first but then i thought “every one learns something at some time frame of life and need not to hide it”.
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;Wait … Lemme quote it. I just learned how to do it !&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;Everyone learns something at some time frame of their life
-it’s called growing up &amp;amp; evolving in their life / profession, they need not to hide it.&lt;/p&gt;
-
-  &lt;p&gt;&lt;cite&gt;&lt;a href=&quot;#&quot;&gt;Saket Upadhyay&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;br /&gt;
-Hehe.
-&lt;br /&gt;
-Have a nice day!&lt;/p&gt;</content><author><name>Saket Upadhyay</name></author><category term="First Post" /><summary type="html">So you scrolled this far? Well that means two things, either my work is interesting and you liked it or you are doing some OSINT mumbo jombo. For the first one, I am so glad, thank you for spending your time on my articles and motivating me to write more. For the later, Ewwww.. just go away already .... :-) Howdy! This is a test post created when i was getting comfy with Ruby, Jekyll, html templates, gems and other related stuffs. Around summer of 2020 during “The Lockdown Times”, ‘cause you might have noticed this article is back-dated to move it down the list in Home page. (PS : I started programming in early 2010, so this is way back. lol.) Why not delete it? But why delete it? actually i wanted to at first but then i thought “every one learns something at some time frame of life and need not to hide it”. Wait … Lemme quote it. I just learned how to do it ! Everyone learns something at some time frame of their life it’s called growing up &amp;amp; evolving in their life / profession, they need not to hide it. Saket Upadhyay Hehe. Have a nice day!</summary></entry></feed>
+&lt;/ul&gt;</content><author><name>Saket Upadhyay</name></author><category term="Location Tracing" /><summary type="html">Android already have accurate Geo location capabilities by using multiple sources like Cellular Networks, G.P.S. and nearby Wi-Fi connections. And that’s handful of sources to extract information from, but their working and synchronisation among each other is real beauty.</summary></entry></feed>

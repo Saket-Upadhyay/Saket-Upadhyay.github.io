@@ -10,7 +10,7 @@
 
   <title>
     
-      Taking over a software by Instruction Rewriting. &middot; Saket Upadhyay
+      Recover Deleted Files in Linux from Live Running Processes &middot; Saket Upadhyay
     
   </title>
 
@@ -266,22 +266,12 @@
 
     <main class="container">
       <header>
-  <h1 class="post-title">Taking over a software by Instruction Rewriting.</h1>
+  <h1 class="post-title">Recover Deleted Files in Linux from Live Running Processes</h1>
 </header>
 <div class="content">
   <div class="post-meta">
-  <span class="post-date">25 Nov 2019</span>
+  <span class="post-date">02 Feb 2020</span>
   <span class="post-categories">
-    
-      &bull;
-
-      
-      
-      
-
-      
-        Article
-      
     
   </span>
 </div>
@@ -289,92 +279,113 @@
 
   <div class="post-body">
     <div class="message">
-  Baby steps to binary rewriting and reverse engineering.
+Recover recently deleted file (if it’s still open in some process) using properties of procfs
 </div>
 
-<h3 id="background-story">Background story</h3>
+<p>Ever deleted an important file while it’s still open in some other process? or Someone opened a PDF file in your PC from pen drive and removed the pen drive while it’s still open in some PDF-Viewer and you wanted to save it first and now you are just not touching that process because that’s the last trace of that file left in your computer?</p>
 
-<p><code class="language-plaintext highlighter-rouge">"Almost every code we write and compile is converted into machine code and set of instructions."</code></p>
+<p>Well, luckily you have <strong>procfs</strong> to your rescue. Let’s check the definition :</p>
 
-<p>Pretty basic definition for what compiler does huh?</p>
+<blockquote>
+  <p><strong>/proc</strong> is very special in that it is also a virtual filesystem. It’s sometimes referred to as a process information pseudo-file system. It doesn’t contain ‘real’ files but runtime system information (e.g. system memory, devices mounted, hardware configuration, etc). For this reason it can be regarded as a control and information centre for the kernel. In fact, quite a lot of system utilities are simply calls to files in this directory. For example, <strong>‘lsmod’</strong> is the same as ‘<strong>cat /proc/modules’</strong> while <strong><em>‘lspci’ is a synonym for ‘cat /proc/pci’</em></strong>. By altering files located in this directory you can even read/change kernel parameters (sysctl) while the system is running.</p>
+</blockquote>
 
-<p>Well, let me re-frame that with respect to a reverse engineer’s point of view,</p>
-
-<p><code class="language-plaintext highlighter-rouge">"It doesn’t matter if you write your code in C, C++ or C# it will be converted into machine code, which can be viewed as a common low level language, Assembly."</code></p>
-
-<p>In simpler terms, all we need to understand is the assembly of code and without having its actual source code we can conclude what it will do. Now what to do from here?</p>
-
-<p>Imagine we got a program that will activate when provided with valid key, pretty common scenario right? You might say just buy the key, or download the crack etc. pretty boring solutions too… Now, what if I tell you, we can activate the program just by changing it’s binary, that too just 2–6 bytes! YES! And that’s what we will try to understand in this article.</p>
-
-<p>Actually most of such programs use comparison statements to check if your key matches with the actual key or not, e.g. “if (input == key) {//do thing here}” etc.</p>
-
-<p>And that very thing in assembly is done by “CMP” instruction and then followed by a “JMP” or similar instruction to shift the flow of controls according to the result of comparison.</p>
+<p><sup>source : <a href="https://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html">www.tldp.org</a></sup></p>
 
 <hr />
 
-<h3 id="lets-do-it">Let’s do it.</h3>
+<h3 id="setup">Setup.</h3>
 
-<p>Let us make an application, this application works in the same fashion, check for the key and activate if matches. The program is written in C and compiled by the GCC compiler.</p>
+<p>For this demonstration we just need one pdf file and… well that’s it!</p>
 
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;string.h&gt;
-#include &lt;stdio.h&gt;
-</span>
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">argc</span><span class="o">==</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">printf</span><span class="p">(</span><span class="s">"Checking License: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
-                <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">strlen</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">sum</span><span class="o">+=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>	
-		<span class="p">}</span>
-		<span class="k">if</span><span class="p">(</span><span class="n">sum</span><span class="o">==</span><span class="mi">1000</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">printf</span><span class="p">(</span><span class="s">"Access Granted!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-			<span class="n">printf</span><span class="p">(</span><span class="s">"WRONG!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-		<span class="p">}</span>
-	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-		<span class="n">printf</span><span class="p">(</span><span class="s">"Usage: &lt;key&gt;</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-	<span class="p">}</span>
-	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
+<p><em>[I am using Ubuntu 18.04 LTS for this demo.]</em></p>
 
-<p>Here is one example where we use “saket” as the key.</p>
+<h3 id="how-to">How to.</h3>
 
-<p><img src="https://miro.medium.com/max/1400/1*K_G78S10NaB8cpo5rCagRg.png" alt="" />
-As we expected it to behave, when provided with invalid key it will say “WRONG!”</p>
+<p>Let’s follow this step-by-step.</p>
 
-<p>When we observe the compiled binary in our favorite debugger we can see one instruction <strong>“CMP [RBP+VAR_18], 394H”</strong> that checks the string passed and then compares it with <em>(394)h =(916)d</em> that seems to be string length or something, the interesting part is that it is followed by <strong>“JNZ SHORT LOC_400657”</strong> instruction, which makes <strong>EIP</strong> or <strong>instruction pointer</strong> to point at 400657th location. In simple words, <strong>shifts the control flow to 400657th</strong> location in memory , and execute instruction from there. Further we can see that <strong>LOC_400657</strong> contains instructions of <strong>WRONG KEY</strong> part of software.</p>
+<h4 id="step-0">STEP 0:</h4>
 
-<p><img src="https://miro.medium.com/max/1400/1*QiRX5E9kSXkvrN7YyTFedg.png" alt="" />
-So what if we can just skip that jump statement and whatever the result of the CMP we will just continue to <strong>Access Granted</strong> part. To do that we will just <strong>change jump address in HEX DUMP from “0C” to “00”</strong> which will cause <strong>EIP</strong> to just continue to the next instruction.</p>
+<p>Open the PDF file with default PDF viewer.</p>
 
-<p>For that we will go to the hex equivalent of the instruction in dump and change the value in target address.
-<img src="https://miro.medium.com/max/1400/1*Ndw-9qh6-jx-Pw79bJhUiQ.png" alt="" />
-here we can observe JNZ instruction starts at 400649 (relative address), we can go to same in hex dump to get equivalent hex values.</p>
+<p><img src="https://miro.medium.com/max/1400/1*ZbJE03T5B3HXw4yuf_cnMQ.png" alt="" title="PDF document open in a PDF viewer (Ubuntu 18.04 LTS)" /></p>
 
-<p><img src="https://miro.medium.com/max/1378/1*uxriK_ycJjHxt-aYJYJ-3w.png" alt="" /></p>
+<h4 id="step-1">STEP 1:</h4>
 
-<p>now we know that <strong><em>JNZ SHORT LOC_400649 ~ 75 0C;</em></strong> Now keeping JNZ intact, i.e. not changing 75, we can change 0C to 00 to try to null it’s effect. or we can just replace the next effective address,something like this :
-<img src="https://miro.medium.com/max/1042/1*OLDef_3bUFDIOlGgpSA3rg.png" alt="" />
-But for this article, we will just replace 0C with 00…</p>
+<p>DELETE THE FILE. FROM THE FOLDER. P E R M A N E N T L Y.</p>
 
-<p>THAT IS, THIS
-<img src="https://miro.medium.com/max/121/1*9xX5CM7-5zkwUw-jLW_vsg.png" alt="" />
-TO
-<img src="https://miro.medium.com/max/91/1*dUlh5aSmPdg0vdDGWOzXnw.png" alt="" />
-And now you can see our instruction continues to ACCESS GRANTED part, and no instruction points to WRONG KEY. That means we should be able to activate the software with any key we want!.</p>
+<p><img src="https://miro.medium.com/max/1280/1*7rcljwEYNFzH2cY-lPXEmw.png" alt="" />
+<img src="https://miro.medium.com/max/552/1*36beTPYYSIqjvCgSZrvK-g.png" alt="" /></p>
 
-<p><img src="https://miro.medium.com/max/1400/1*BVYRUDW4dLcBwd2jCT16HQ.png" alt="" />
-Now let’s check that with the same key we provided, and just another key to check our modification.
-<img src="https://miro.medium.com/max/1400/1*-In-V9fwv_pAMbyqhCYTJg.png" alt="" />
-<img src="https://miro.medium.com/max/1400/1*wZb8fjJzQLS1MKEV0gO2xA.png" alt="" />
-And that works pretty good!</p>
+<h4 id="step-2">STEP 2:</h4>
+
+<p>Now as we have deleted the file, let’s get on work to recover that.</p>
+
+<p>Let’s fetch our PDF viewer’s PID (Process ID) using “ps”</p>
+
+<p>What’s pid you might ask? here…</p>
+
+<blockquote>
+  <p>the process identifier (a.k.a. process ID or PID) is a number used by most operating system kernels — such as those of Unix, macOS and Windows — to uniquely identify an active process.</p>
+</blockquote>
+
+<p><sup>source : <a href="https://en.wikipedia.org/wiki/Process_identifier">WikiPedia</a></sup></p>
+
+<p><img src="https://miro.medium.com/max/2000/1*iCZcVmfFRLe2poxYp8vHzg.png" alt="" /></p>
+
+<p>so now we have our PID = <strong>5201.</strong></p>
+
+<h4 id="step-3">STEP 3:</h4>
+
+<p>Let’s go to /proc/<strong>&lt;pid&gt;</strong>,yes that’s how your Linux PC keeps track of processes.</p>
+
+<p>In our case it’s <strong><em>/proc/5201/</em></strong></p>
+
+<p><img src="https://miro.medium.com/max/2000/1*oiitajakNYIaKFXmPYlD6Q.png" alt="" /></p>
+
+<h4 id="step-4">STEP 4:</h4>
+
+<p>We will now try to locate the file descriptor for our target file in the process, file descriptor? here you go…</p>
+
+<blockquote>
+  <p>A <strong>file descriptor</strong> is a number that uniquely identifies an open file in a computer’s operating system. It describes a data resource, and how that resource may be accessed.</p>
+</blockquote>
+
+<p>Now, go to “fd” (file descriptor) folder.</p>
+
+<p><img src="https://miro.medium.com/max/2000/1*YzcnPHuUv8vMMJs_wlcBZw.png" alt="" /></p>
+
+<p>We can see that <strong>file descriptor 14</strong> points to our ex-impotant-ish file DocumentPDF.pdf and smartly shows “(deleted)” status after it.</p>
+
+<p>But our program still has access to the PDF file and it’s open there, so how? ‘cause file descriptor points to the file’s actual real-time location from which the program is using it,so if not on disk then in memory.</p>
+
+<h4 id="step-5">STEP 5:</h4>
+
+<p>Just “cat” the file pointer to some other location, and that’s it!</p>
+
+<p><img src="https://miro.medium.com/max/2000/1*BKXfsQkGCjjCiQmJgN9qog.png" alt="" /></p>
+
+<p>Here we write the file bit-wise to <strong>“restore.pdf”</strong> using ‘cat’.</p>
+
+<p><img src="https://miro.medium.com/max/1024/1*c9Ht4a7Lm8CQavq7l-6sOQ.png" alt="" /></p>
+
+<p>AND BAM !!! We have our file back.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*naQC7KHea6tIdED5Tn9a1A.png" alt="" /></p>
 
 <h3 id="conclusion">Conclusion</h3>
 
-<p>Binary rewriting in <strong>real-world scenarios is much more complex</strong> than this example, but anyways this is just introduction with the aim to get the us familiar with the concept.</p>
+<p>This is one of the things I found interesting enough while reading about Linux file system and mysteries of it’s file and process management techniques, which was worth sharing.</p>
 
-<p>I hope you enjoyed this, have a super productive day ahead !</p>
+<h3 id="from-here-">From Here …</h3>
+
+<p><a href="https://en.wikipedia.org/wiki/Procfs">PROCFS</a></p>
+
+<p><a href="https://www.tecmint.com/linux-process-management/">All You Need To Know About Processes in Linux</a></p>
+
+<p><a href="https://www.computerhope.com/jargon/f/file-descriptor.htm">What is a File Descriptor?</a></p>
+
+<hr />
 
     
 
@@ -383,14 +394,14 @@ And that works pretty good!</p>
 <div class="post-tags">
   
     
-    <a href="/topics.html#reverse-engineering">
+    <a href="/topics.html#linux">
     
       <span class="icon">
         <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
     <path d="M0 0h24v24H0z" fill="none"/>
     <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
 </svg>
-      </span>&nbsp;<span class="tag-name">Reverse Engineering</span>
+      </span>&nbsp;<span class="tag-name">Linux</span>
     </a>
   
 </div>
@@ -414,9 +425,9 @@ And that works pretty good!</p>
   *  https://disqus.com/admin/universalcode/#configuration-variables
   */
   var disqus_config = function () {
-    this.page.url = "http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html";
+    this.page.url = "http://localhost:4000/2020/02/02/Recover-Deleted-Files-in-Linux.html";
     this.page.identifier = "" ||
-                           "http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html";
+                           "http://localhost:4000/2020/02/02/Recover-Deleted-Files-in-Linux.html";
   }
   function loadDisqusComments() { // DON'T EDIT BELOW THIS LINE
     var d = document, s = d.createElement('script');

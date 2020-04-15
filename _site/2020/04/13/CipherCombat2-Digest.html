@@ -10,7 +10,7 @@
 
   <title>
     
-      Taking over a software by Instruction Rewriting. &middot; Saket Upadhyay
+      Digest [CipherCombat2.0 CTF write-up] &middot; Saket Upadhyay
     
   </title>
 
@@ -266,22 +266,12 @@
 
     <main class="container">
       <header>
-  <h1 class="post-title">Taking over a software by Instruction Rewriting.</h1>
+  <h1 class="post-title">Digest [CipherCombat2.0 CTF write-up]</h1>
 </header>
 <div class="content">
   <div class="post-meta">
-  <span class="post-date">25 Nov 2019</span>
+  <span class="post-date">13 Apr 2020</span>
   <span class="post-categories">
-    
-      &bull;
-
-      
-      
-      
-
-      
-        Article
-      
     
   </span>
 </div>
@@ -289,92 +279,95 @@
 
   <div class="post-body">
     <div class="message">
-  Baby steps to binary rewriting and reverse engineering.
+Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
 </div>
 
-<h3 id="background-story">Background story</h3>
+<p><img src="https://miro.medium.com/max/916/1*Nuc4N5RaZtr63_YQFhz_0g.png" alt="" /></p>
 
-<p><code class="language-plaintext highlighter-rouge">"Almost every code we write and compile is converted into machine code and set of instructions."</code></p>
+<h3 id="what-we-get">What we get?</h3>
 
-<p>Pretty basic definition for what compiler does huh?</p>
+<p>A zip file with password “hackerearth”… unzip it and we get a Linux Executable
+<img src="https://miro.medium.com/max/1400/1*vAjPVcnwMkk3vsJWwFYvCw.png" alt="" /></p>
 
-<p>Well, let me re-frame that with respect to a reverse engineer’s point of view,</p>
+<p>Notice I highlighted LSB(Least Significant Bit) ? We will see why later…</p>
 
-<p><code class="language-plaintext highlighter-rouge">"It doesn’t matter if you write your code in C, C++ or C# it will be converted into machine code, which can be viewed as a common low level language, Assembly."</code></p>
+<h3 id="solving-the-challenge">Solving the challenge</h3>
 
-<p>In simpler terms, all we need to understand is the assembly of code and without having its actual source code we can conclude what it will do. Now what to do from here?</p>
+<p>Let’s do strings …</p>
 
-<p>Imagine we got a program that will activate when provided with valid key, pretty common scenario right? You might say just buy the key, or download the crack etc. pretty boring solutions too… Now, what if I tell you, we can activate the program just by changing it’s binary, that too just 2–6 bytes! YES! And that’s what we will try to understand in this article.</p>
+<p><img src="https://miro.medium.com/max/1400/1*QituOMU8zpAkklSEngDR6g.png" alt="" /></p>
 
-<p>Actually most of such programs use comparison statements to check if your key matches with the actual key or not, e.g. “if (input == key) {//do thing here}” etc.</p>
+<p>With strings we found some Texts but nothing like our flag.</p>
 
-<p>And that very thing in assembly is done by “CMP” instruction and then followed by a “JMP” or similar instruction to shift the flow of controls according to the result of comparison.</p>
+<p>Important thing to see here is <strong>MD5 function calls</strong> and use of <strong>libcrypto.so.1.1</strong> points at use of MD5 hash algorithm.</p>
+
+<p>Further we can check this by listing all imports by RABIN2</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*Zs5ILlbbLfM-sZEeRbzljw.png" alt="" /></p>
+
+<p>And we see that MD5 global functions are important.</p>
+
+<p>Let’s check the disassembly now…</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*mPe6hOAoX4GAUC4DhYytVA.png" alt="" /></p>
+
+<p>We can see that it compares the MD5 digest of string supplied with a hard coded MD5 value. We can also see it has moved hard-coded hex string to stack at <strong>0x000011ad</strong></p>
+
+<p>Any ways, it is comparing with something in stack, and my favorite way is to fire up GDB and check the stack in real-time to get the data.</p>
+
+<p>Let’s have a look at GDB disassembly…</p>
+
+<p><img src="https://miro.medium.com/max/1368/1*lNZuiBDzkNvgSrHube7sgA.png" alt="" /></p>
+
+<p>We can see that string compare function is at *main+186 so we will put break point there.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*nmAFCPnQbBwgoA-1C2Jhuw.png" alt="" /></p>
+
+<p><img src="https://miro.medium.com/max/766/1*6qb-pH2gzMPvaOLQhj3dtA.png" alt="" /></p>
+
+<p>Now let’s run the program and provide random input.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*6ad6Uix5zcBN7SQhMBWVhw.png" alt="" /></p>
+
+<p>We hit our breakpoints ! Let’s check registers, STRNCMP compares values stored in <strong>[R/ESI]</strong> with <strong>[R/EDI]</strong>…</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*GEzuZe_tObGW6OpVnaz-Dg.png" alt="" /></p>
+
+<p>So get address of our hard-coded hash loaded in stack, lets check it out how it’s doing.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*4ESNSFiNrykRXxfoo0mZ7w.png" alt="" /></p>
+
+<p>And we get our values now let’s reconstruct the MD5</p>
+
+<p>Remember about LSB? these values are stored like that, we need to convert it into MSB and then we can continue.</p>
+
+<p>Copy the values in any text editor and rearrange them as following…</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*6W3H0okjKG1LlN5e5bNaFg.png" alt="" /></p>
+
+<p>so at last we have our hash : <strong>53a167c8d4dc964f7d7838dd4ce2d137</strong></p>
+
+<p>Only thing left to do is brute force it, we can use online services, the one I used and which they later provided in their free hint is https://hashes.org/</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*l3Cq8Jw-b3GGG3qS3V3REw.png" alt="" /></p>
+
+<p>And we have our flag :<strong><em>HE{iamalmighty9}</em></strong></p>
+
+<p><img src="https://miro.medium.com/max/988/1*K7A9d8L1oQ5QBzLxV6Ngkw.png" alt="" /></p>
+
+<p>&lt; And here is a cross check with the challenge binary.</p>
+
+<p>Another Fun challenge! Done.</p>
+
+<blockquote>
+  <p>NOTE: we could have done it in 3–4 less steps by just converting the strings found in <strong>MOVABS</strong> instructions,</p>
+</blockquote>
+
+<p><img src="https://miro.medium.com/max/1400/1*8RgD9zk0eJD2S6szrk-1Dg.png" alt="" /></p>
+
+<p>But what’s the fun in that, also i wanted to show you the dynamic analysis path. :-)</p>
 
 <hr />
-
-<h3 id="lets-do-it">Let’s do it.</h3>
-
-<p>Let us make an application, this application works in the same fashion, check for the key and activate if matches. The program is written in C and compiled by the GCC compiler.</p>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;string.h&gt;
-#include &lt;stdio.h&gt;
-</span>
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">argc</span><span class="o">==</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">printf</span><span class="p">(</span><span class="s">"Checking License: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
-                <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">strlen</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">sum</span><span class="o">+=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>	
-		<span class="p">}</span>
-		<span class="k">if</span><span class="p">(</span><span class="n">sum</span><span class="o">==</span><span class="mi">1000</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">printf</span><span class="p">(</span><span class="s">"Access Granted!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-			<span class="n">printf</span><span class="p">(</span><span class="s">"WRONG!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-		<span class="p">}</span>
-	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-		<span class="n">printf</span><span class="p">(</span><span class="s">"Usage: &lt;key&gt;</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-	<span class="p">}</span>
-	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>Here is one example where we use “saket” as the key.</p>
-
-<p><img src="https://miro.medium.com/max/1400/1*K_G78S10NaB8cpo5rCagRg.png" alt="" />
-As we expected it to behave, when provided with invalid key it will say “WRONG!”</p>
-
-<p>When we observe the compiled binary in our favorite debugger we can see one instruction <strong>“CMP [RBP+VAR_18], 394H”</strong> that checks the string passed and then compares it with <em>(394)h =(916)d</em> that seems to be string length or something, the interesting part is that it is followed by <strong>“JNZ SHORT LOC_400657”</strong> instruction, which makes <strong>EIP</strong> or <strong>instruction pointer</strong> to point at 400657th location. In simple words, <strong>shifts the control flow to 400657th</strong> location in memory , and execute instruction from there. Further we can see that <strong>LOC_400657</strong> contains instructions of <strong>WRONG KEY</strong> part of software.</p>
-
-<p><img src="https://miro.medium.com/max/1400/1*QiRX5E9kSXkvrN7YyTFedg.png" alt="" />
-So what if we can just skip that jump statement and whatever the result of the CMP we will just continue to <strong>Access Granted</strong> part. To do that we will just <strong>change jump address in HEX DUMP from “0C” to “00”</strong> which will cause <strong>EIP</strong> to just continue to the next instruction.</p>
-
-<p>For that we will go to the hex equivalent of the instruction in dump and change the value in target address.
-<img src="https://miro.medium.com/max/1400/1*Ndw-9qh6-jx-Pw79bJhUiQ.png" alt="" />
-here we can observe JNZ instruction starts at 400649 (relative address), we can go to same in hex dump to get equivalent hex values.</p>
-
-<p><img src="https://miro.medium.com/max/1378/1*uxriK_ycJjHxt-aYJYJ-3w.png" alt="" /></p>
-
-<p>now we know that <strong><em>JNZ SHORT LOC_400649 ~ 75 0C;</em></strong> Now keeping JNZ intact, i.e. not changing 75, we can change 0C to 00 to try to null it’s effect. or we can just replace the next effective address,something like this :
-<img src="https://miro.medium.com/max/1042/1*OLDef_3bUFDIOlGgpSA3rg.png" alt="" />
-But for this article, we will just replace 0C with 00…</p>
-
-<p>THAT IS, THIS
-<img src="https://miro.medium.com/max/121/1*9xX5CM7-5zkwUw-jLW_vsg.png" alt="" />
-TO
-<img src="https://miro.medium.com/max/91/1*dUlh5aSmPdg0vdDGWOzXnw.png" alt="" />
-And now you can see our instruction continues to ACCESS GRANTED part, and no instruction points to WRONG KEY. That means we should be able to activate the software with any key we want!.</p>
-
-<p><img src="https://miro.medium.com/max/1400/1*BVYRUDW4dLcBwd2jCT16HQ.png" alt="" />
-Now let’s check that with the same key we provided, and just another key to check our modification.
-<img src="https://miro.medium.com/max/1400/1*-In-V9fwv_pAMbyqhCYTJg.png" alt="" />
-<img src="https://miro.medium.com/max/1400/1*wZb8fjJzQLS1MKEV0gO2xA.png" alt="" />
-And that works pretty good!</p>
-
-<h3 id="conclusion">Conclusion</h3>
-
-<p>Binary rewriting in <strong>real-world scenarios is much more complex</strong> than this example, but anyways this is just introduction with the aim to get the us familiar with the concept.</p>
-
-<p>I hope you enjoyed this, have a super productive day ahead !</p>
 
     
 
@@ -383,14 +376,14 @@ And that works pretty good!</p>
 <div class="post-tags">
   
     
-    <a href="/topics.html#reverse-engineering">
+    <a href="/topics.html#ctf-writeup">
     
       <span class="icon">
         <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
     <path d="M0 0h24v24H0z" fill="none"/>
     <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
 </svg>
-      </span>&nbsp;<span class="tag-name">Reverse Engineering</span>
+      </span>&nbsp;<span class="tag-name">CTF Writeup</span>
     </a>
   
 </div>
@@ -414,9 +407,9 @@ And that works pretty good!</p>
   *  https://disqus.com/admin/universalcode/#configuration-variables
   */
   var disqus_config = function () {
-    this.page.url = "http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html";
+    this.page.url = "http://localhost:4000/2020/04/13/CipherCombat2-Digest.html";
     this.page.identifier = "" ||
-                           "http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html";
+                           "http://localhost:4000/2020/04/13/CipherCombat2-Digest.html";
   }
   function loadDisqusComments() { // DON'T EDIT BELOW THIS LINE
     var d = document, s = d.createElement('script');
@@ -458,9 +451,9 @@ And that works pretty good!</p>
     
       <li>
         <h3>
-          <a href="/2020/04/13/CipherCombat2-Digest.html">
-            Digest [CipherCombat2.0 CTF write-up]
-            <small>13 Apr 2020</small>
+          <a href="/2020/03/08/Extracting-packer-injected-malware.html">
+            Extracting packer injected malware from memory [Remcos RAT]
+            <small>08 Mar 2020</small>
           </a>
         </h3>
       </li>

@@ -123,6 +123,10 @@
   
 
   
+    
+  
+
+  
 
   
 
@@ -168,6 +172,10 @@
 
   
 
+  
+
+  
+    
   
 
   
@@ -261,6 +269,105 @@
   
   <article class="post-body">
     <h2 class="post-title">
+      <a href="/2020/04/13/CipherCombat2-Shifter2.html">
+        Shifter2 [CipherCombat2.0 CTF write-up]
+      </a>
+    </h2>
+    <div class="post-meta">
+  <span class="post-date">13 Apr 2020</span>
+  <span class="post-categories">
+    
+  </span>
+</div>
+
+
+    
+      <div class="message">
+Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
+</div>
+
+
+    
+
+    
+      
+      
+      
+
+      
+        <a href="/2020/04/13/CipherCombat2-Shifter2.html">More &hellip;</a>
+      
+    
+  </article>
+  
+  <article class="post-body">
+    <h2 class="post-title">
+      <a href="/2020/04/13/CipherCombat2-Locked.html">
+        Locked [CipherCombat2.0 CTF write-up]
+      </a>
+    </h2>
+    <div class="post-meta">
+  <span class="post-date">13 Apr 2020</span>
+  <span class="post-categories">
+    
+  </span>
+</div>
+
+
+    
+      <div class="message">
+Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
+</div>
+
+
+    
+
+    
+      
+      
+      
+
+      
+        <a href="/2020/04/13/CipherCombat2-Locked.html">More &hellip;</a>
+      
+    
+  </article>
+  
+  <article class="post-body">
+    <h2 class="post-title">
+      <a href="/2020/04/13/CipherCombat2-Digest.html">
+        Digest [CipherCombat2.0 CTF write-up]
+      </a>
+    </h2>
+    <div class="post-meta">
+  <span class="post-date">13 Apr 2020</span>
+  <span class="post-categories">
+    
+  </span>
+</div>
+
+
+    
+      <div class="message">
+Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
+</div>
+
+
+    
+
+    
+      
+      
+      
+
+      
+        <a href="/2020/04/13/CipherCombat2-Digest.html">More &hellip;</a>
+      
+    
+  </article>
+  
+  <article class="post-body">
+    <h2 class="post-title">
       <a href="/2020/03/08/Extracting-packer-injected-malware.html">
         Extracting packer injected malware from memory [Remcos RAT]
       </a>
@@ -294,12 +401,12 @@ Extraction of injected malicious PE from dynamic memory in windows (Remcos malwa
   
   <article class="post-body">
     <h2 class="post-title">
-      <a href="/2019/12/21/Winning-Race-Conditions.html">
-        Winning Race Conditions
+      <a href="/2020/02/02/Recover-Deleted-Files-in-Linux.html">
+        Recover Deleted Files in Linux from Live Running Processes
       </a>
     </h2>
     <div class="post-meta">
-  <span class="post-date">21 Dec 2019</span>
+  <span class="post-date">02 Feb 2020</span>
   <span class="post-categories">
     
   </span>
@@ -308,9 +415,113 @@ Extraction of injected malicious PE from dynamic memory in windows (Remcos malwa
 
     
       <div class="message">
-Introduction to Race Condition Vulnerability and how to Exploit them.
+Recover recently deleted file (if it’s still open in some process) using properties of procfs
 </div>
 
+<p>Ever deleted an important file while it’s still open in some other process? or Someone opened a PDF file in your PC from pen drive and removed the pen drive while it’s still open in some PDF-Viewer and you wanted to save it first and now you are just not touching that process because that’s the last trace of that file left in your computer?</p>
+
+<p>Well, luckily you have <strong>procfs</strong> to your rescue. Let’s check the definition :</p>
+
+<blockquote>
+  <p><strong>/proc</strong> is very special in that it is also a virtual filesystem. It’s sometimes referred to as a process information pseudo-file system. It doesn’t contain ‘real’ files but runtime system information (e.g. system memory, devices mounted, hardware configuration, etc). For this reason it can be regarded as a control and information centre for the kernel. In fact, quite a lot of system utilities are simply calls to files in this directory. For example, <strong>‘lsmod’</strong> is the same as ‘<strong>cat /proc/modules’</strong> while <strong><em>‘lspci’ is a synonym for ‘cat /proc/pci’</em></strong>. By altering files located in this directory you can even read/change kernel parameters (sysctl) while the system is running.</p>
+</blockquote>
+
+<p><sup>source : <a href="https://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html">www.tldp.org</a></sup></p>
+
+<hr />
+
+<h3 id="setup">Setup.</h3>
+
+<p>For this demonstration we just need one pdf file and… well that’s it!</p>
+
+<p><em>[I am using Ubuntu 18.04 LTS for this demo.]</em></p>
+
+<h3 id="how-to">How to.</h3>
+
+<p>Let’s follow this step-by-step.</p>
+
+<h4 id="step-0">STEP 0:</h4>
+
+<p>Open the PDF file with default PDF viewer.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*ZbJE03T5B3HXw4yuf_cnMQ.png" alt="" title="PDF document open in a PDF viewer (Ubuntu 18.04 LTS)" /></p>
+
+<h4 id="step-1">STEP 1:</h4>
+
+<p>DELETE THE FILE. FROM THE FOLDER. P E R M A N E N T L Y.</p>
+
+<p><img src="https://miro.medium.com/max/1280/1*7rcljwEYNFzH2cY-lPXEmw.png" alt="" />
+<img src="https://miro.medium.com/max/552/1*36beTPYYSIqjvCgSZrvK-g.png" alt="" /></p>
+
+<h4 id="step-2">STEP 2:</h4>
+
+<p>Now as we have deleted the file, let’s get on work to recover that.</p>
+
+<p>Let’s fetch our PDF viewer’s PID (Process ID) using “ps”</p>
+
+<p>What’s pid you might ask? here…</p>
+
+<blockquote>
+  <p>the process identifier (a.k.a. process ID or PID) is a number used by most operating system kernels — such as those of Unix, macOS and Windows — to uniquely identify an active process.</p>
+</blockquote>
+
+<p><sup>source : <a href="https://en.wikipedia.org/wiki/Process_identifier">WikiPedia</a></sup></p>
+
+<p><img src="https://miro.medium.com/max/2000/1*iCZcVmfFRLe2poxYp8vHzg.png" alt="" /></p>
+
+<p>so now we have our PID = <strong>5201.</strong></p>
+
+<h4 id="step-3">STEP 3:</h4>
+
+<p>Let’s go to /proc/<strong>&lt;pid&gt;</strong>,yes that’s how your Linux PC keeps track of processes.</p>
+
+<p>In our case it’s <strong><em>/proc/5201/</em></strong></p>
+
+<p><img src="https://miro.medium.com/max/2000/1*oiitajakNYIaKFXmPYlD6Q.png" alt="" /></p>
+
+<h4 id="step-4">STEP 4:</h4>
+
+<p>We will now try to locate the file descriptor for our target file in the process, file descriptor? here you go…</p>
+
+<blockquote>
+  <p>A <strong>file descriptor</strong> is a number that uniquely identifies an open file in a computer’s operating system. It describes a data resource, and how that resource may be accessed.</p>
+</blockquote>
+
+<p>Now, go to “fd” (file descriptor) folder.</p>
+
+<p><img src="https://miro.medium.com/max/2000/1*YzcnPHuUv8vMMJs_wlcBZw.png" alt="" /></p>
+
+<p>We can see that <strong>file descriptor 14</strong> points to our ex-impotant-ish file DocumentPDF.pdf and smartly shows “(deleted)” status after it.</p>
+
+<p>But our program still has access to the PDF file and it’s open there, so how? ‘cause file descriptor points to the file’s actual real-time location from which the program is using it,so if not on disk then in memory.</p>
+
+<h4 id="step-5">STEP 5:</h4>
+
+<p>Just “cat” the file pointer to some other location, and that’s it!</p>
+
+<p><img src="https://miro.medium.com/max/2000/1*BKXfsQkGCjjCiQmJgN9qog.png" alt="" /></p>
+
+<p>Here we write the file bit-wise to <strong>“restore.pdf”</strong> using ‘cat’.</p>
+
+<p><img src="https://miro.medium.com/max/1024/1*c9Ht4a7Lm8CQavq7l-6sOQ.png" alt="" /></p>
+
+<p>AND BAM !!! We have our file back.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*naQC7KHea6tIdED5Tn9a1A.png" alt="" /></p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>This is one of the things I found interesting enough while reading about Linux file system and mysteries of it’s file and process management techniques, which was worth sharing.</p>
+
+<h3 id="from-here-">From Here …</h3>
+
+<p><a href="https://en.wikipedia.org/wiki/Procfs">PROCFS</a></p>
+
+<p><a href="https://www.tecmint.com/linux-process-management/">All You Need To Know About Processes in Linux</a></p>
+
+<p><a href="https://www.computerhope.com/jargon/f/file-descriptor.htm">What is a File Descriptor?</a></p>
+
+<hr />
 
     
 
@@ -319,125 +530,6 @@ Introduction to Race Condition Vulnerability and how to Exploit them.
       
       
 
-      
-        <a href="/2019/12/21/Winning-Race-Conditions.html">More &hellip;</a>
-      
-    
-  </article>
-  
-  <article class="post-body">
-    <h2 class="post-title">
-      <a href="/2019/12/04/Effortless-Feature-Extraction.html">
-        Effortless Feature Extraction for your ML based Android Malware Detection project
-      </a>
-    </h2>
-    <div class="post-meta">
-  <span class="post-date">04 Dec 2019</span>
-  <span class="post-categories">
-    
-  </span>
-</div>
-
-
-    
-      <div class="message">
-Streamline Permission-Based Feature Extraction for android data-set with one Python Script.
-</div>
-
-
-    
-
-    
-      
-      
-      
-
-      
-        <a href="/2019/12/04/Effortless-Feature-Extraction.html">More &hellip;</a>
-      
-    
-  </article>
-  
-  <article class="post-body">
-    <h2 class="post-title">
-      <a href="/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">
-        Taking over a software by Instruction Rewriting.
-      </a>
-    </h2>
-    <div class="post-meta">
-  <span class="post-date">25 Nov 2019</span>
-  <span class="post-categories">
-    
-      &bull;
-
-      
-      
-      
-
-      
-        Article
-      
-    
-  </span>
-</div>
-
-
-    
-      <div class="message">
-  Baby steps to binary rewriting and reverse engineering.
-</div>
-
-
-    
-
-    
-      
-      
-      
-
-      
-        <a href="/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">More &hellip;</a>
-      
-    
-  </article>
-  
-  <article class="post-body">
-    <h2 class="post-title">
-      <a href="/article/2019/07/27/Pipe-Brute-force-Attack-via-Password-Generator.html">
-        Pipe Brute-force Attack via Password Generator
-      </a>
-    </h2>
-    <div class="post-meta">
-  <span class="post-date">27 Jul 2019</span>
-  <span class="post-categories">
-    
-      &bull;
-
-      
-      
-      
-
-      
-        Article
-      
-    
-  </span>
-</div>
-
-
-    
-      <div class="message">(Efficient and resource saving trick that was there for decades)</div>
-
-
-    
-
-    
-      
-      
-      
-
-      
-        <a href="/article/2019/07/27/Pipe-Brute-force-Attack-via-Password-Generator.html">More &hellip;</a>
       
     
   </article>
