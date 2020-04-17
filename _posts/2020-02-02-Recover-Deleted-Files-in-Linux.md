@@ -1,5 +1,6 @@
 ---
 layout: post
+excerpt_separator: "<!--more-->"
 title: Recover Deleted Files in Linux from Live Running Processes
 tags:
   - Linux
@@ -9,16 +10,19 @@ tags:
 Recover recently deleted file (if it’s still open in some process) using properties of procfs
 </div>
 
+<!--more-->
 
-Ever deleted an important file while it’s still open in some other process? or Someone opened a PDF file in your PC from pen drive and removed the pen drive while it’s still open in some PDF-Viewer and you wanted to save it first and now you are just not touching that process because that’s the last trace of that file left in your computer?
+Ever deleted an important file while it’s still open in some other process?
+or Someone opened a PDF file in your PC from pen drive and removed the pen drive while it’s still open in some PDF-Viewer and you wanted to save it first and now you are just not touching that process because that’s the last trace of that file left in your computer?
 
 Well, luckily you have **procfs** to your rescue. Let’s check the definition :
+
 
 > **/proc** is very special in that it is also a virtual filesystem. It’s sometimes referred to as a process information pseudo-file system. It doesn’t contain ‘real’ files but runtime system information (e.g. system memory, devices mounted, hardware configuration, etc). For this reason it can be regarded as a control and information centre for the kernel. In fact, quite a lot of system utilities are simply calls to files in this directory. For example, **‘lsmod’** is the same as ‘**cat /proc/modules’** while ***‘lspci’ is a synonym for ‘cat /proc/pci’***. By altering files located in this directory you can even read/change kernel parameters (sysctl) while the system is running.
 
 <sup>source : <a href="https://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html">www.tldp.org</a></sup>
 
----
+
 
 ### Setup.
 
@@ -61,7 +65,7 @@ so now we have our PID = **5201.**
 
 #### STEP 3:
 
-Let’s go to /proc/**\<pid\>**,yes that’s how your Linux PC keeps track of processes.
+Let's go to /proc/**\<pid\>**,yes that’s how your Linux PC keeps track of processes.
 
 In our case it’s ***/proc/5201/***
 
@@ -107,4 +111,5 @@ This is one of the things I found interesting enough while reading about Linux f
 
 [What is a File Descriptor?](https://www.computerhope.com/jargon/f/file-descriptor.htm)
 
---- 
+
+---
