@@ -4,7 +4,7 @@ title: About Me
 sidebar_link: true
 ---
 
-Hi! I am `<get(sidebar.name)>`.
+Hi! I am Saket Upadhyay.
 <br>
 Passionate Cybersecurity Student and wannabe Malware Researcher.
 <br>
