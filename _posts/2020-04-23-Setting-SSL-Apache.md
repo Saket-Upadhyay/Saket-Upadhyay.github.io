@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Why to set up SSL and How?
+excerpt_separator: "<!--more-->"
 tags:
   - Software Security
   - Crypto
@@ -10,7 +11,7 @@ tags:
 <div class="message">
 Let's see how we can encrypt our own apache server with SSL and get that beautiful "green lock" on our locally/remotely hoasted server.
 </div>
-
+<!--more-->
 So I learned this when i was setting up an app server for one of my project and that app needed user to be logged in.\\
 All that was okay on local testing but until i needed to deploy it. As the deployment is concerned, a web login with plain HTML without any security is a BIG NO GO.
 
