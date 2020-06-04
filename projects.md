@@ -4,7 +4,7 @@ title: Projects
 sidebar_link: true
 ---
 
-### SAMPARK : Website Security Scanner
+### SAMPARK : Website Security Scanning Framework
 <p>{% include svg/github.svg%}<a href="https://github.com/Saket-Upadhyay/SAMPARK">GitHub</a></p>
 National Hack-a-thon project (Won 1st Rank in Information Security Domain)
 
