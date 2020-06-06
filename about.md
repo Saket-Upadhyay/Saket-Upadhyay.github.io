@@ -6,7 +6,7 @@ sidebar_link: true
 
 Hi! I am `<get(sidebar.name)>`.
 <br>
-Passionate Cybersecurity Student and wannabe Malware Researcher.
+Passionate Cybersecurity Student and wannabe Security Researcher.
 <br>
 Active participant of `Research`, `CTFs`, `HackTheBox` (and similar platforms), `Security Conferences` and `Talks`.
 <br>
@@ -19,10 +19,10 @@ Participates in CTFs and other cool stuff under alias : <strong>x64Mayhem</stron
 <p>&bull; Reverse Engineering &bull; Binary Analysis &bull; Network Security &bull; Penetration Testing &bull; Vulnerability Assessment &bull; Public Speaking &bull; Technical Reporting &bull; </p>
 
 ### Major Programming Languages 
-<p>&bull; Assembly (8086,x86,x64,arm) &bull; C &bull; C++ &bull; Python &bull;</p>
+<p>&bull; Assembly (8086,x86,x64,arm) &bull; C &bull; C++ &bull; Python &bull; Ruby &bull;</p>
 
 #### but can also hack around with
-<p>&bull; Java &bull; Java for Android &bull; Ruby &bull; HTML &bull; JS &bull; PHP &bull; Perl &bull; </p>
+<p>&bull; Java &bull; Java for Android &bull;  HTML &bull; JS &bull; PHP &bull; Perl &bull; </p>
 
 ### Tools I generally use
 <p>&bull; IDA pro &bull; OllyDBG &bull; Ghidra &bull; x32/x64 Debugger &bull; GDB &bull; RaDare2 &bull; Nmap &bull; Metasploit-Framework &bull; Autopsy &bull; Hydra &bull; Hashcat &bull; Aircrack &bull; BurpSuite &bull; WireShark &bull; Powershell &bull; <sup>and some custom ones ofc.</sup> &bull; </p>
