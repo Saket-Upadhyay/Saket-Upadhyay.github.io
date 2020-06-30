@@ -4,11 +4,11 @@ title: About Me
 sidebar_link: true
 ---
 
-Hi! I am `<get(sidebar.name)>`.
+Hi! I am Saket.
 <br>
 Passionate Cybersecurity Student and wannabe Security Researcher.
 <br>
-Active participant of `Research`, `CTFs`, `HackTheBox` (and similar platforms), `Security Conferences` and `Talks`.
+Active participant in `Research`, `CTFs`, `HackTheBox` (and similar platforms), `Security Conferences` and `Talks`.
 <br>
 Participates in CTFs and other cool stuff under alias : <strong>x64Mayhem</strong> 
 <br>
