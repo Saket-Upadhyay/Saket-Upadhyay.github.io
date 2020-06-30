@@ -4,7 +4,7 @@ title: About Me
 sidebar_link: true
 ---
 
-Hi! I am `Saket`.
+Hi! I am `Saket` (say it like : S as in 'Superman', A as in 'Astronaut', K as in 'Kite', E as 'A and E together', T as in 'Transparent') (in native : साकेत)
 <br>
 Passionate Cybersecurity Student and wannabe Security Researcher.
 <br>
