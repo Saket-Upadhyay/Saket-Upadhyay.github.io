@@ -4,18 +4,21 @@ title: About Me
 sidebar_link: true
 ---
 
-Hi! I am `Saket` (say it like : S as in 'Superman', A as in 'Astronaut', K as in 'Kite', E as 'A and E together', T as in 'Transparent') (in native : साकेत)
+Hi! I am `Saket`
+<br>
+(say it like : S as in 'Superman', A as in 'Astronaut', K as in 'Kite', E as 'Aye yo!', T as in 'Transparent') (in native : साकेत)
+<br>
 <br>
 Passionate Cybersecurity Student and wannabe Security Researcher.
 <br>
 Active participant in `Research`, `CTFs`, `HackTheBox` (and similar platforms), `Security Conferences` and `Talks`.
 <br>
-Participates in CTFs and other cool stuff under alias : <strong>x64Mayhem</strong> 
+Do cool stuff under Alias : <strong>x64Mayhem</strong> 
 <br>
 <sup>For work exp. and other related stuff,checkout linked-in.</sup>
 <p>{% include svg/linkedin.svg %} <a href="https://www.linkedin.com/in/saketupadhyay/">/saketupadhyay</a> {% include svg/github.svg %}<a href="https://github.com/Saket-Upadhyay">/Saket-Upadhyay</a>, {% include svg/twitter.svg %}<a href="https://twitter.com/x64mayhem">/x64mayhem</a>, {% include svg/htb.svg %}<a href="https://www.hackthebox.eu/profile/125090">/x64mayhem</a></p>
 
-[Download Resume](https://github.com/Saket-Upadhyay/Saket-Upadhyay.github.io/raw/master/assets/resume/ResumeJune2020.pdf)
+[Download Resume](https://github.com/Saket-Upadhyay/Saket-Upadhyay.github.io/raw/master/assets/resume/SaketResume2020Aug.pdf)
 
 ### Skillset
 <p>&bull; Reverse Engineering &bull; Binary Analysis &bull; Network Security &bull; Penetration Testing &bull; Vulnerability Assessment &bull; Public Speaking &bull; Technical Reporting &bull; </p>
@@ -38,4 +41,4 @@ Participates in CTFs and other cool stuff under alias : <strong>x64Mayhem</stron
 
 #### Badges
 ![HackTheBox Badge](https://www.hackthebox.eu/badge/image/125090 "HackTheBox Rank")
-![TryHackMe Badge](https://tryhackme-badges.s3.amazonaws.com/x64mayhem.png "TryHackMe Rank")
+<!-- ![TryHackMe Badge](https://tryhackme-badges.s3.amazonaws.com/x64mayhem.png "TryHackMe Rank") -->
