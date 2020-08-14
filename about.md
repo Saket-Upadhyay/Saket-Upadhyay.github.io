@@ -42,4 +42,7 @@ Alias : <strong>x64Mayhem</strong>
  
 #### Badges
 ![HackTheBox Badge](https://www.hackthebox.eu/badge/image/125090 "HackTheBox Rank")
+
+![X64M Avatar](/assets/images/avatar.png "Alias Avatar")
+
  <!-- <script src="https://www.hackthebox.eu/badge/125090"></script> -->
