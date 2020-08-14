@@ -1,0 +1,154 @@
+<div class="message">
+Distributed Denial of Service Attack Simuation Build from scratch in C++
+</div>
+
+<p><img src="https://miro.medium.com/max/700/1*Gaixy9imX-y-q7NJQY5qog.png" alt="" /></p>
+
+<h3 id="what-is-this">What is this?</h3>
+<p>This article is about coding a Distributed Denial of Service Attack simulation in NS-3 discrete event network simulator.</p>
+
+<h3 id="why-do-we-need-it">Why do we need it?</h3>
+
+<p>Because visual representation of basic concepts which you can play around with is better right?</p>
+
+<h3 id="where-can-you-get-the-code">Where can you get the code?</h3>
+
+<p>As part of a community project I am collecting / building multiple cybersecurity simulations and scenarios in NS3 and logging them in GitHub.</p>
+
+<p>You can check the repo from<code class="highlighter-rouge">PROJECTS</code> section of this site.</p>
+
+<h3 id="how-to-">How to ?</h3>
+<p>Now this is what this article is all about. Let’s jump into it.</p>
+
+<h4 id="creating-base-model">Creating Base Model</h4>
+<p>The base model for this attack is relatively simple : We have 3 main nodes Alice [n0] (Legitimate Client), Bob [ n2] (Server Application) and a connecting node in between let’s say Dave [n1].</p>
+
+<p><img src="https://miro.medium.com/max/512/1*V3PJ6E4Mba2zMnW71GwbgQ.png" alt="" />(“Legitimate Connection Model”)</p>
+
+<p>Now we will add as many bots we want to attack the network and let’s call them Mallory <code class="highlighter-rouge">[bi | i∈ (N)]</code>.</p>
+
+<h4 id="code-c">Code [C++]</h4>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span><span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">,</span><span class="kt">char</span> <span class="o">**</span><span class="n">envp</span><span class="p">);</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>argc = no of arguments
+
+argv = argument pointer
+
+envp = enviornment pointer
+
+It initializes bunch of variables and then stack setting routine.
+</code></pre></div></div>
+
+<p>we also see that it compares argc with 1 followed by JE condition</p>
+
+<p>checking number of arguments should be equal to 2, argv[0] is always program name and argv[1] is our supplied password. That means we have to give <strong>exactly ONE parameter</strong> to the program.</p>
+
+<p><img src="https://miro.medium.com/max/1000/1*WrOeYnyhUO_IukWtAGUb8Q.png" alt="" /></p>
+
+<p>If the condition is not satisfied it’s putting 1 in EAX (that’s our return register) and then returning from the main() routine, that’s equivalent to <code class="highlighter-rouge">exit(1);</code>, but here implemented through <code class="highlighter-rouge">return 1;</code></p>
+
+<h4 id="2nd-block">2nd Block</h4>
+
+<p><img src="https://miro.medium.com/max/1000/1*pkXCvu2IckRwOkC4UCNHXg.png" alt="" /></p>
+
+<p>Most of this block is just initialization of some variables and then a jump statement to get to next block.</p>
+
+<p>also interesting thing to notice is that address spaces are separated by 4bytes each, looks similar? Yes, it’s character <strong>array allocation of 15 characters.</strong></p>
+
+<p>then it sets <strong>var_4h = 1</strong></p>
+
+<p>Let’s start building the program to side by side…</p>
+
+<p><img src="https://miro.medium.com/max/2000/1*ucuhdJV_NSM0XJqK_LZnWw.png" alt="" title="Array Recreated in Python" /></p>
+
+<h4 id="3rd-block">3rd Block</h4>
+
+<p><img src="https://miro.medium.com/max/1000/1*baW1SBXF4GzcBL_vmlhuVg.png" alt="" /></p>
+
+<p>Now this looks like</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Initialize a var &gt; do something &gt; add 1 to it&gt; check if var =&gt;0xf i.e (15)base &gt; repeat
+</code></pre></div></div>
+
+<p>Looks familiar? loops something with increasing variable?</p>
+
+<p>It’s nothing but a <strong>for()/while()</strong> loop implementation which iterates for 15 times, same as our character array length.</p>
+
+<p>so let’s define it as</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="err">≤</span><span class="mi">15</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span> <span class="n">loop</span> <span class="n">body</span> <span class="p">}</span>
+</code></pre></div></div>
+<p>also, at the end of loop body it compares something and if it fails it shows “Better Luck next time” and then exit.</p>
+
+<p>Other wise it completes the loop and exit with “c0ngrats!” message.</p>
+
+<h4 id="the-loop-body">The Loop Body</h4>
+
+<p><img src="https://miro.medium.com/max/898/1*zsGBKxn_DxW26ofiVq6_Bw.png" alt="" /></p>
+
+<p>The loop body is pretty interesting, it might look intimidating to new reverse engineer but it’s really simple.With some experience, you can already tell what it’s doing.</p>
+
+<p>Let’s have a look at it.</p>
+
+<p>now as we know it’s a loop and var_4h is our control variable let’s call it “i”. First we load the value of i in EAX, then we load the address of rax*8 to RDX, and then move our ARGUMENT(var_60h) into RAX. Then we do logical and RAX,RDX and mov Quad Word value at address of RAX to RAX, now we Move with Zero extended (movzx) byte value of RAX to …… ahhhhh… i am pretty sure this does not make it easier for you to understand it, all i am doing is dictating the instructions one by one…</p>
+
+<blockquote>
+  <p>Know this : Look at it, remember the pattern and know that it is one of the methods compilers implement <strong>fetching an element at some given index.</strong></p>
+</blockquote>
+
+<p>You can ofcourse take some values yourself and try this but the full explaination is out of scope for this writeup, also it will make it boring and long enough.</p>
+
+<p>Some important instruction reference (links):</p>
+
+<p><a href="https://www.felixcloutier.com/x86/cbw:cwde:cdqe">Convert Doubleword to Quadword (CDQE)</a></p>
+
+<p><a href="https://www.felixcloutier.com/x86/movzx">Move with Zero-Extend (MOVZX)</a></p>
+
+<p><a href="https://www.felixcloutier.com/x86/movsx:movsxd">Move with Sign-Extension (MOVSX)</a></p>
+
+<p>Okay so what it actually did? Lemme explain:</p>
+
+<ol>
+  <li>Take value at [i-1] index from our argument <strong>=argv[i-1] let’s say = arg</strong></li>
+  <li>Take value at [i-1] index from our character array = charp[i-1]</li>
+  <li>Add i to our charp = charp[i-1]+i</li>
+  <li>Add 1 to Step3 = <strong>charp[i-1]+i+1 , let’s say = charpnew</strong></li>
+  <li>Compare <strong>arg == charpnew</strong>.</li>
+</ol>
+
+<p><img src="https://miro.medium.com/max/200/1*bdGkZ4cylX17rnq36F7DJA.png" alt="" /></p>
+
+<p>These instructions are responsible for step 3 and 4, remember we stored our i in EAX ? and then we add EAX (i.e. i )to ECX, our element which is stored in EAX and then again add 1 to new EAX.</p>
+
+<p>and now converting it to code we have :</p>
+
+<p><img src="https://miro.medium.com/max/1324/1*SnTdBpFKV0kYQU_rqXCEvA.png" alt="" title="Code reversed from Assembly Graph" /></p>
+
+<p>Now instead of checking the flag we can print it !!</p>
+
+<p>Here’s is relatively clean Python Implementation of above algorithm, Running it spits out the flag.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/bin/python3
+</span><span class="n">given_array</span><span class="o">=</span><span class="p">[</span><span class="mh">0x71</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x61</span><span class="p">,</span> <span class="mh">0x6e</span><span class="p">,</span> 
+             <span class="mh">0x2c</span><span class="p">,</span> <span class="mh">0x6a</span><span class="p">,</span> <span class="mh">0x56</span><span class="p">,</span> <span class="mh">0x68</span><span class="p">,</span> <span class="mh">0x5a</span><span class="p">,</span>
+             <span class="mh">0x68</span><span class="p">,</span> <span class="mh">0x68</span><span class="p">,</span> <span class="mh">0x64</span><span class="p">,</span> <span class="mh">0x5f</span><span class="p">,</span> <span class="mh">0x63</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">given_array</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">given_array</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+
+
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://miro.medium.com/max/1400/1*-Cw8YRpP7UzyLHpl7eFzWg.png" alt="" /></p>
+
+<p>And we got the flag <strong>HE{shift3r_returns}</strong> we can also check it with the C++ program we reconstructed.</p>
+
+<p><img src="https://miro.medium.com/max/2000/1*TKgw7s99BDWM9zeHEcGHew.png" alt="" /></p>
+
+<p>That’s it for this challenge, actually an easy one, just some basic experience in reverse engineering needed.</p>
+
+<hr />

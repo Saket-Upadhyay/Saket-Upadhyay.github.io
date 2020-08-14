@@ -1,0 +1,69 @@
+<div class="message">
+Streamline Permission-Based Feature Extraction for android data-set with one Python Script.
+</div>
+
+<h3 id="background">Background</h3>
+
+<p>Malware detection and analysis has been the hot topic in security for a long time, overtime the malware writers upgraded their skills and complexity and this has been the main reason for us to find new effective methodologies for malware detection and classification.</p>
+
+<p>As with the boom of AI and ML to solve general problems,the malware analysis and detection is not left untouched. Many researches has been published in the domain of malware detection using Machine Learning approach. But before doing all the gizmo of model training and neural network formation or any of those wires in brain magic, we need to collect certain information from the target to train our machine, and that is what we call <strong>features</strong> and that is what this article is all about, to get you started in the field.</p>
+
+<h3 id="baseline">Baseline</h3>
+
+<p>The following article only focus on feature generation and formatting, specifically permission-based feature generation for android application.</p>
+
+<p>Here we will only see how we can speed up this process by using simple script which Does It All will break it down in some other article where we will discuss feature extraction in general followed my training our own ML model to detect Android malware !</p>
+
+<h3 id="the-script">The Script</h3>
+
+<p>Lets get to the fun part, and explore the script itself.</p>
+
+<blockquote>
+  <p>Get the Project in <a href="https://github.com/Saket-Upadhyay/Android-Permission-Extraction-and-Dataset-Creation-with-Python">GitHub</a></p>
+</blockquote>
+
+<p>This script will extract permission information from Malware and Benign applications in their respective folders and then create one Comma Separated Values (.csv) file to store them in one place ready to be fed into ML algorithms.</p>
+
+<h3 id="how-to-use-the-script">HOW TO USE THE SCRIPT?</h3>
+
+<p>Just copy your <code class="highlighter-rouge">Malware</code> and <code class="highlighter-rouge">Benign</code> applications on which you want to train your ML Model into <code class="highlighter-rouge">respective folders</code> and run the script by following command in terminal.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 ExtractorAIO.py
+</code></pre></div></div>
+<p>And that’s it. yes. done. rest, the script will handle</p>
+
+<h3 id="how-to-use-the-generated-data-set">HOW TO USE THE GENERATED DATA-SET?</h3>
+
+<p>The generated data will be in <code class="highlighter-rouge">*.csv</code> format and can be parsed with the help of many already available libraries or modules. (pandas module in python is suggested)</p>
+
+<h4 id="formatting">Formatting</h4>
+
+<script src="https://gist.github.com/Saket-Upadhyay/e713aa3fe50fd68895c0b50ebf83508b.js"></script>
+
+<p><sup>This is sample data set of 6 applications (3 Malware &amp; 3 Benign)</sup></p>
+
+<p>The 1st column contains <strong>NAME</strong> of respective application and last column <strong>“CLASS”</strong> contains information if the application if from benign or malware family of training set. <strong>[0=Benign, 1=Malware]</strong>. In between there are all the permissions (common + all found in 1st phase) with respective information bit, <em>[0=The application do not use this permission, 1=This permission is used in the application]</em></p>
+
+<h3 id="importing-data-example-in-sklearn">Importing Data Example in sklearn</h3>
+
+<p>Suppose you want to import your new data set into sklearn and train your new model from there, here’s a way you can do that.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">file</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"data.csv"</span><span class="p">)</span>
+<span class="n">coulmnNames</span> <span class="o">=</span> <span class="nb">file</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">FeatureNames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">coulmnNames</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">LabelName</span> <span class="o">=</span> <span class="n">coulmnNames</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="nb">file</span><span class="p">[</span><span class="n">FeatureNames</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="nb">file</span><span class="p">[</span><span class="n">LabelName</span><span class="p">]</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+<span class="n">feature_vectors</span> <span class="o">=</span> <span class="n">X</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">Y</span>
+<span class="n">train_x</span><span class="p">,</span> <span class="n">test_x</span><span class="p">,</span> <span class="n">train_y</span><span class="p">,</span> <span class="n">test_y</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">feature_vectors</span><span class="p">,</span><span class="n">labels</span><span class="p">,</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+</code></pre></div></div>
+<p>The above code will remove <strong>NAME</strong> column and then store <strong>FEATURE_MATRIX</strong> (from column after  NAME  to second last column) and <strong>LABEL_VECTOR</strong> ( CLASS column) in X and Y respectively, which later can be split into desired training and testing sets.</p>
+
+<h3 id="conclusion">CONCLUSION</h3>
+
+<p>I hope this article will get you started with feature extraction for malware analysis using machine learning. It isn’t the end of it, but we just completed one step !</p>
+
+<hr />

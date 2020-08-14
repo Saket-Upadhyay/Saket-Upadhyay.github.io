@@ -1,0 +1,323 @@
+<p>Android already have accurate Geo location capabilities by using multiple sources like Cellular Networks, G.P.S. and nearby Wi-Fi connections. And that’s handful of sources to extract information from, but their working and synchronisation among each other is real beauty.</p>
+
+<p>I also want to share my views on “Location Detection” and “Location Tracing”, there is a difference between “Locating” something and Tracking/Tracing something, android’s pretty accurate in pointing you on globe, and of course we can use classes with some location permissions to request for location information but that would only give us a set of LAT,LON format integers to work with ; from that information we can only point someone/something (cause now-a-days things do have internet) so how to trace that movement?
+<img src="https://miro.medium.com/max/500/1*7FVgHe-XObuWDbCOYM4wdA.jpeg" alt="Screen Shot 1" title="Application Screen Shot" /></p>
+
+<div class="message">In this write up i will use my selected location which is less concentrated like city to make things more clear and i had more space to roam here and there in any direction to test the application.</div>
+
+<h3 id="some-thoughts-on-security-and-location-tracing">Some thoughts on Security and Location Tracing</h3>
+<p>As a citizen of digital age and a cybersecurity student you cannot stop yourself thinking about implementation of things on the field.</p>
+
+<p>As we know knowing someone’s current location can give attacker a high attacking ground but knowing exactly where someone is going with which path is generally followed will help him in creating better plotted trap!</p>
+
+<p>The attacker can know where you are actually going and what’s your daily commute routine and plan accordingly.</p>
+
+<h4 id="prevention">Prevention?</h4>
+
+<p>Just turning off the GPS will not help much, as you will see in this post later, we can get location based on mobile network and nearby wifi networks too.</p>
+
+<p>Just lookout for unknown apps and sudden/ suspicious activation of GPS / Location services. as google tries to get most precise information so it may trigger “Networks+WiFi+GPS High Performance” which you usually can’t miss.</p>
+
+<h3 id="idea-behind-movement-tracing">Idea behind Movement Tracing.</h3>
+
+<p>So, the idea is pretty basic and actually we all learn it in our highschool mathematics, and that’s GRAPHS and how plotting works.</p>
+
+<p>We already know that we can get longitudes and latitudes from google itself in our app, just like points on graph of globe, the idea is to collect those points and then make a line from one to each other … easy? yeah its kind of easy.</p>
+
+<h3 id="applying-idea-via-code">Applying Idea via code.</h3>
+
+<p>So first we need to get permissions from the user to use location and internet.</p>
+
+<blockquote>
+  <p>&lt;uses-permission android:name=”android.permission.ACCESS_FINE_LOCATION” /&gt;
+&lt;uses-permission android:name=”android.permission.INTERNET” /&gt;</p>
+</blockquote>
+
+<p>after setting up permissions in Manifest.xml, we can proceed further and get our Google API key to use, yeah, to use google maps and related functions we need to grab those, but it’s easy process, here lemme attach a link to a dedicated tutorial if you need.</p>
+
+<h5 id="google-api-android-sdk"><a href="https://developers.google.com/maps/documentation/android-sdk/get-api-key">Google API, Android SDK</a></h5>
+
+<p>so, as now you have the keys time to setup our app and get going …</p>
+
+<p>The code is actually long enough to take up 2–3 pages here so I think it would be better to just port the code directly and from GitHub and then modify as it pleases you.</p>
+
+<blockquote>
+  <p>Get the Repo from <a href="https://github.com/Saket-Upadhyay/LiveLocationTriangulation">GitHub</a></p>
+</blockquote>
+
+<h5 id="things-you-need-to-change-in-that-">Things you need to change in that :</h5>
+
+<p>ENTER YOUR API KEY IN app/src/debug/res/values/google_maps_api.xml</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">”google_maps_key”</span> <span class="na">templateMergeStrategy=</span><span class="s">”preserve”</span> <span class="na">translatable=</span><span class="s">”false”</span><span class="nt">&gt;</span>YOUR-KEY-HERE<span class="nt">&lt;/string&gt;</span>
+</code></pre></div></div>
+<p>And that would just do it.</p>
+
+<p>Clone the Repo and open it up in Android Studio, you may need to change some more code maybe to build it perfectly, cause no code I have ever cloned till now works in first go. ¯\<em>(ツ)</em>/¯</p>
+
+<h3 id="lets-understand-the-working">Let’s understand the working</h3>
+
+<p>For the first time I would suggest you to just build the application as it is so that you can follow with this write-up after that feel free to modify the app and use it as it pleases your creativity.</p>
+
+<p>The app is divided in to 3 parts -</p>
+
+<ul>
+  <li>Text Location Update</li>
+  <li>Location on Map</li>
+  <li>Using Polygraph and Algorithm to trace it on map</li>
+</ul>
+
+<h3 id="part-1">Part 1:</h3>
+
+<p>This just tests the location set we can request from Google Maps API and represent them in text, also we can get which MODE is used in the process (GPS,NETWORK,WIFI).
+<img src="https://miro.medium.com/max/1400/1*DAv3Pe_cFAZATxCxcu7GTg.jpeg" alt="Screen Shot2.jpg" title="Screen Shot2" /></p>
+
+<h3 id="part-2">Part 2:</h3>
+
+<p>This part integrates “Google Maps Activity” layout already available in Android Studio. The idea is to collect information from provider and then pass it to Maps Activity which will then place a marker on that location.
+<img src="https://miro.medium.com/max/1400/1*wq792anmgYKQ29zK10ONvw.jpeg" alt="Screen Shot3.jpg" title="Screen Shot3" /></p>
+
+<h3 id="part-3">Part 3:</h3>
+
+<p>Well this is main section of the application which actually traces your location on map.</p>
+
+<p>The steps executed in this part are important,</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. Get location from provider
+2. Set Red marker on starting point / initial location
+3. Set Location Listener to check for location change
+4. When ever location change is detected will add a point over map
+5. Draw line joining those points
+6. Place Green marker over last point.
+7. Loop 1–6 until application is closed / location provide is not available.
+</code></pre></div></div>
+
+<p>Check out this Code for a moment …</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">locationpolymorph</span><span class="o">.</span><span class="na">test</span><span class="o">.</span><span class="na">sacredcoder</span><span class="o">.</span><span class="na">livelocationtriangulation</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">android.Manifest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.app.Activity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.content.pm.PackageManager</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.graphics.Color</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.location.Address</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.location.Geocoder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.location.Location</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.location.LocationListener</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.location.LocationManager</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.os.Build</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.support.annotation.RequiresApi</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.support.v4.app.ActivityCompat</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.support.v4.app.FragmentActivity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.os.Bundle</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.view.WindowManager</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.android.gms.maps.CameraUpdateFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.android.gms.maps.GoogleMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.android.gms.maps.OnMapReadyCallback</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.android.gms.maps.SupportMapFragment</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.android.gms.maps.model.BitmapDescriptorFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.android.gms.maps.model.JointType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.android.gms.maps.model.LatLng</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.android.gms.maps.model.Marker</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.android.gms.maps.model.MarkerOptions</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.android.gms.maps.model.Polyline</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.android.gms.maps.model.PolylineOptions</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PolyMap</span> <span class="kd">extends</span> <span class="nc">FragmentActivity</span> <span class="kd">implements</span> <span class="nc">OnMapReadyCallback</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">GoogleMap</span> <span class="n">mMap</span><span class="o">;</span>
+    <span class="nc">Marker</span> <span class="n">marker</span><span class="o">;</span>
+    <span class="nc">Marker</span> <span class="n">marker2</span><span class="o">;</span>
+    <span class="nc">LocationListener</span> <span class="n">locationListener</span><span class="o">;</span>
+    <span class="nc">LocationManager</span> <span class="n">locationManager</span><span class="o">;</span>
+    <span class="kd">protected</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">REQUEST_LOCATION_PERMISSION</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+
+    <span class="c1">//for line</span>
+    <span class="kd">private</span> <span class="nc">Polyline</span> <span class="n">polyline</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Activity</span> <span class="n">activity</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Boolean</span> <span class="n">flag</span><span class="o">=</span><span class="kc">true</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">LatLng</span><span class="o">&gt;</span> <span class="n">polylinePoints</span><span class="o">;</span>
+    <span class="nd">@RequiresApi</span><span class="o">(</span><span class="n">api</span> <span class="o">=</span> <span class="nc">Build</span><span class="o">.</span><span class="na">VERSION_CODES</span><span class="o">.</span><span class="na">P</span><span class="o">)</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="nc">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+        <span class="n">setContentView</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">activity_poly_map</span><span class="o">);</span>
+        <span class="n">getWindow</span><span class="o">().</span><span class="na">addFlags</span><span class="o">(</span><span class="nc">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">FLAG_KEEP_SCREEN_ON</span><span class="o">);</span>
+        <span class="c1">// Obtain the SupportMapFragment and get notified when the map is ready to be used.</span>
+        <span class="nc">SupportMapFragment</span> <span class="n">mapFragment</span> <span class="o">=</span> <span class="o">(</span><span class="nc">SupportMapFragment</span><span class="o">)</span> <span class="n">getSupportFragmentManager</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">findFragmentById</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">mapp</span><span class="o">);</span>
+        <span class="n">mapFragment</span><span class="o">.</span><span class="na">getMapAsync</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+        <span class="n">polylinePoints</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="n">locationManager</span> <span class="o">=</span> <span class="o">(</span><span class="nc">LocationManager</span><span class="o">)</span> <span class="n">getSystemService</span><span class="o">(</span><span class="no">LOCATION_SERVICE</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nc">ActivityCompat</span><span class="o">.</span><span class="na">checkSelfPermission</span><span class="o">(</span><span class="k">this</span><span class="o">,</span>
+                <span class="nc">Manifest</span><span class="o">.</span><span class="na">permission</span><span class="o">.</span><span class="na">ACCESS_FINE_LOCATION</span><span class="o">)</span>
+                <span class="o">!=</span> <span class="nc">PackageManager</span><span class="o">.</span><span class="na">PERMISSION_GRANTED</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">ActivityCompat</span><span class="o">.</span><span class="na">requestPermissions</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="k">new</span> <span class="nc">String</span><span class="o">[]</span>
+                            <span class="o">{</span><span class="nc">Manifest</span><span class="o">.</span><span class="na">permission</span><span class="o">.</span><span class="na">ACCESS_FINE_LOCATION</span><span class="o">},</span>
+                    <span class="no">REQUEST_LOCATION_PERMISSION</span><span class="o">);</span>
+        <span class="o">}</span>
+<span class="c1">//polyline.setColor(Color.GREEN);</span>
+
+        <span class="n">locationListener</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LocationListener</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onLocationChanged</span><span class="o">(</span><span class="nc">Location</span> <span class="n">location</span><span class="o">)</span> <span class="o">{</span>
+
+                <span class="c1">//if(location.hasAccuracy()) {</span>
+                  <span class="c1">//  if (location.getAccuracy() &lt; 20.0f) {</span>
+                        <span class="kt">double</span> <span class="n">latitude</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="na">getLatitude</span><span class="o">();</span>
+                        <span class="kt">double</span> <span class="n">longitude</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="na">getLongitude</span><span class="o">();</span>
+
+                        <span class="c1">//get the location name from latitude and longitude</span>
+                        <span class="nc">Geocoder</span> <span class="n">geocoder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Geocoder</span><span class="o">(</span><span class="n">getApplicationContext</span><span class="o">());</span>
+                        <span class="k">try</span> <span class="o">{</span>
+                            <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Address</span><span class="o">&gt;</span> <span class="n">addresses</span> <span class="o">=</span>
+                                    <span class="n">geocoder</span><span class="o">.</span><span class="na">getFromLocation</span><span class="o">(</span><span class="n">latitude</span><span class="o">,</span> <span class="n">longitude</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+                            <span class="nc">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">addresses</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">getLocality</span><span class="o">()</span> <span class="o">+</span> <span class="s">":"</span><span class="o">;</span>
+                            <span class="n">result</span> <span class="o">+=</span> <span class="n">addresses</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">getCountryName</span><span class="o">();</span>
+                            <span class="nc">LatLng</span> <span class="n">latLng</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LatLng</span><span class="o">(</span><span class="n">latitude</span><span class="o">,</span> <span class="n">longitude</span><span class="o">);</span>
+
+
+                            <span class="k">if</span> <span class="o">(</span><span class="n">flag</span><span class="o">)</span> <span class="o">{</span>
+                                <span class="n">marker2</span> <span class="o">=</span> <span class="n">mMap</span><span class="o">.</span><span class="na">addMarker</span><span class="o">(</span><span class="k">new</span> <span class="nc">MarkerOptions</span><span class="o">().</span><span class="na">position</span><span class="o">(</span><span class="n">latLng</span><span class="o">).</span><span class="na">title</span><span class="o">(</span><span class="n">result</span><span class="o">).</span><span class="na">icon</span><span class="o">(</span><span class="nc">BitmapDescriptorFactory</span><span class="o">.</span><span class="na">defaultMarker</span><span class="o">(</span><span class="nc">BitmapDescriptorFactory</span><span class="o">.</span><span class="na">HUE_ROSE</span><span class="o">)));</span>
+                            <span class="o">}</span>
+
+
+                            <span class="k">if</span> <span class="o">(</span><span class="n">marker</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                                <span class="n">marker</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+
+                                <span class="n">marker</span> <span class="o">=</span> <span class="n">mMap</span><span class="o">.</span><span class="na">addMarker</span><span class="o">(</span><span class="k">new</span> <span class="nc">MarkerOptions</span><span class="o">().</span><span class="na">position</span><span class="o">(</span><span class="n">latLng</span><span class="o">).</span><span class="na">title</span><span class="o">(</span><span class="n">result</span><span class="o">).</span><span class="na">icon</span><span class="o">(</span><span class="nc">BitmapDescriptorFactory</span><span class="o">.</span><span class="na">defaultMarker</span><span class="o">(</span><span class="nc">BitmapDescriptorFactory</span><span class="o">.</span><span class="na">HUE_GREEN</span><span class="o">)));</span>
+                                <span class="n">mMap</span><span class="o">.</span><span class="na">setMaxZoomPreference</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>
+                                <span class="n">mMap</span><span class="o">.</span><span class="na">moveCamera</span><span class="o">(</span><span class="nc">CameraUpdateFactory</span><span class="o">.</span><span class="na">newLatLngZoom</span><span class="o">(</span><span class="n">latLng</span><span class="o">,</span> <span class="mf">18.0f</span><span class="o">));</span>
+
+                            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                                <span class="n">marker</span> <span class="o">=</span> <span class="n">mMap</span><span class="o">.</span><span class="na">addMarker</span><span class="o">(</span><span class="k">new</span> <span class="nc">MarkerOptions</span><span class="o">().</span><span class="na">position</span><span class="o">(</span><span class="n">latLng</span><span class="o">).</span><span class="na">title</span><span class="o">(</span><span class="n">result</span><span class="o">).</span><span class="na">icon</span><span class="o">(</span><span class="nc">BitmapDescriptorFactory</span><span class="o">.</span><span class="na">defaultMarker</span><span class="o">(</span><span class="mf">120.0f</span><span class="o">)));</span>
+                                <span class="n">mMap</span><span class="o">.</span><span class="na">setMaxZoomPreference</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>
+                                <span class="n">mMap</span><span class="o">.</span><span class="na">moveCamera</span><span class="o">(</span><span class="nc">CameraUpdateFactory</span><span class="o">.</span><span class="na">newLatLngZoom</span><span class="o">(</span><span class="n">latLng</span><span class="o">,</span> <span class="mf">18.0f</span><span class="o">));</span>
+                            <span class="o">}</span>
+
+                            <span class="n">polylinePoints</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">latLng</span><span class="o">);</span>
+
+
+                            <span class="k">if</span> <span class="o">(</span><span class="n">polyline</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                                <span class="n">polyline</span><span class="o">.</span><span class="na">setPoints</span><span class="o">(</span><span class="n">polylinePoints</span><span class="o">);</span>
+
+                            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                                <span class="n">polyline</span> <span class="o">=</span> <span class="n">mMap</span><span class="o">.</span><span class="na">addPolyline</span><span class="o">(</span><span class="k">new</span> <span class="nc">PolylineOptions</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="n">polylinePoints</span><span class="o">).</span><span class="na">color</span><span class="o">(</span><span class="nc">Color</span><span class="o">.</span><span class="na">MAGENTA</span><span class="o">).</span><span class="na">jointType</span><span class="o">(</span><span class="nc">JointType</span><span class="o">.</span><span class="na">ROUND</span><span class="o">).</span><span class="na">width</span><span class="o">(</span><span class="mf">3.0f</span><span class="o">));</span>
+                            <span class="o">}</span>
+
+                            <span class="n">flag</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+
+                        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+                        <span class="o">}</span>
+                  <span class="c1">//  }</span>
+                <span class="c1">//}</span>
+            <span class="o">}</span>
+
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onStatusChanged</span><span class="o">(</span><span class="nc">String</span> <span class="n">provider</span><span class="o">,</span> <span class="kt">int</span> <span class="n">status</span><span class="o">,</span> <span class="nc">Bundle</span> <span class="n">extras</span><span class="o">)</span> <span class="o">{</span>
+
+            <span class="o">}</span>
+
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onProviderEnabled</span><span class="o">(</span><span class="nc">String</span> <span class="n">provider</span><span class="o">)</span> <span class="o">{</span>
+
+            <span class="o">}</span>
+
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onProviderDisabled</span><span class="o">(</span><span class="nc">String</span> <span class="n">provider</span><span class="o">)</span> <span class="o">{</span>
+
+            <span class="o">}</span>
+        <span class="o">};</span>
+        <span class="n">locationManager</span><span class="o">.</span><span class="na">requestLocationUpdates</span><span class="o">(</span><span class="nc">LocationManager</span><span class="o">.</span><span class="na">NETWORK_PROVIDER</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">locationListener</span><span class="o">);</span>
+        <span class="n">locationManager</span><span class="o">.</span><span class="na">requestLocationUpdates</span><span class="o">(</span><span class="nc">LocationManager</span><span class="o">.</span><span class="na">GPS_PROVIDER</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">locationListener</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="c1">//TO MANAGE THE MAP AS ONE WHEN THE MAP VIEW IS AVAILABLE FOR THE USER.</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onMapReady</span><span class="o">(</span><span class="nc">GoogleMap</span> <span class="n">googleMap</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">mMap</span> <span class="o">=</span> <span class="n">googleMap</span><span class="o">;</span>
+        <span class="n">mMap</span><span class="o">.</span><span class="na">setMapType</span><span class="o">(</span><span class="n">mMap</span><span class="o">.</span><span class="na">MAP_TYPE_SATELLITE</span><span class="o">);</span>
+
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onStop</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">onStop</span><span class="o">();</span>
+        <span class="n">locationManager</span><span class="o">.</span><span class="na">removeUpdates</span><span class="o">(</span><span class="n">locationListener</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//CLOSE THE SESSION WHEN THE BACK IS PRESSED.</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onBackPressed</span><span class="o">()</span>
+    <span class="o">{</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">onBackPressed</span><span class="o">();</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">finish</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We can see here what ‘Location Listener’ is actually doing,</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">locationListener</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LocationListener</span><span class="o">()</span> <span class="o">{</span> <span class="nd">@Override</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onLocationChanged</span><span class="o">(</span><span class="nc">Location</span> <span class="n">location</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>It is also interesting to see how we choose most precise location provider available</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">onProviderDisabled</span><span class="o">(</span><span class="nc">String</span> <span class="n">provider</span><span class="o">)</span> <span class="o">{</span> <span class="o">}</span> <span class="o">};</span><span class="n">locationManager</span><span class="o">.</span><span class="na">requestLocationUpdates</span><span class="o">(</span><span class="nc">LocationManager</span><span class="o">.</span><span class="na">NETWORK_PROVIDER</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">locationListener</span><span class="o">);</span> <span class="n">locationManager</span><span class="o">.</span><span class="na">requestLocationUpdates</span><span class="o">(</span><span class="nc">LocationManager</span><span class="o">.</span><span class="na">GPS_PROVIDER</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">locationListener</span><span class="o">);</span> <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The next thing in this code to notice is how we are managing Polygraph Lines and Markers together to create lines on map</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">com.google.android.gms.maps.model.Marker</span><span class="o">;</span>   
+<span class="kn">import</span> <span class="nn">com.google.android.gms.maps.model.MarkerOptions</span><span class="o">;</span> 
+<span class="kn">import</span> <span class="nn">com.google.android.gms.maps.model.Polyline</span><span class="o">;</span>    
+<span class="kn">import</span> <span class="nn">com.google.android.gms.maps.model.PolylineOptions</span><span class="o">;</span>
+</code></pre></div></div>
+<p>next comes the code for step 2,4 and 5</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">(</span><span class="n">marker</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">marker</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+<span class="n">marker</span> <span class="o">=</span> <span class="n">mMap</span><span class="o">.</span><span class="na">addMarker</span><span class="o">(</span><span class="k">new</span> <span class="nc">MarkerOptions</span><span class="o">().</span><span class="na">position</span><span class="o">(</span><span class="n">latLng</span><span class="o">).</span><span class="na">title</span><span class="o">(</span><span class="n">result</span><span class="o">).</span><span class="na">icon</span><span class="o">(</span><span class="nc">BitmapDescriptorFactory</span><span class="o">.</span><span class="na">defaultMarker</span><span class="o">(</span><span class="nc">BitmapDescriptorFactory</span><span class="o">.</span><span class="na">HUE_GREEN</span><span class="o">)));</span>
+<span class="n">mMap</span><span class="o">.</span><span class="na">setMaxZoomPreference</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>
+<span class="n">mMap</span><span class="o">.</span><span class="na">moveCamera</span><span class="o">(</span><span class="nc">CameraUpdateFactory</span><span class="o">.</span><span class="na">newLatLngZoom</span><span class="o">(</span><span class="n">latLng</span><span class="o">,</span> <span class="mf">18.0f</span><span class="o">));</span>
+<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+<span class="n">marker</span> <span class="o">=</span> <span class="n">mMap</span><span class="o">.</span><span class="na">addMarker</span><span class="o">(</span><span class="k">new</span> <span class="nc">MarkerOptions</span><span class="o">().</span><span class="na">position</span><span class="o">(</span><span class="n">latLng</span><span class="o">).</span><span class="na">title</span><span class="o">(</span><span class="n">result</span><span class="o">).</span><span class="na">icon</span><span class="o">(</span><span class="nc">BitmapDescriptorFactory</span><span class="o">.</span><span class="na">defaultMarker</span><span class="o">(</span><span class="mf">120.0f</span><span class="o">)));</span>
+<span class="n">mMap</span><span class="o">.</span><span class="na">setMaxZoomPreference</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>
+<span class="n">mMap</span><span class="o">.</span><span class="na">moveCamera</span><span class="o">(</span><span class="nc">CameraUpdateFactory</span><span class="o">.</span><span class="na">newLatLngZoom</span><span class="o">(</span><span class="n">latLng</span><span class="o">,</span> <span class="mf">18.0f</span><span class="o">));</span>
+<span class="o">}</span>
+<span class="n">polylinePoints</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">latLng</span><span class="o">);</span>
+</code></pre></div></div>
+<p>here we check marker position and add new points to our PolyLine</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">(</span><span class="n">polyline</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">polyline</span><span class="o">.</span><span class="na">setPoints</span><span class="o">(</span><span class="n">polylinePoints</span><span class="o">);</span>
+<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+<span class="n">polyline</span> <span class="o">=</span> <span class="n">mMap</span><span class="o">.</span><span class="na">addPolyline</span><span class="o">(</span><span class="k">new</span> <span class="nc">PolylineOptions</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="n">polylinePoints</span><span class="o">).</span><span class="na">color</span><span class="o">(</span><span class="nc">Color</span><span class="o">.</span><span class="na">MAGENTA</span><span class="o">).</span><span class="na">jointType</span><span class="o">(</span><span class="nc">JointType</span><span class="o">.</span><span class="na">ROUND</span><span class="o">).</span><span class="na">width</span><span class="o">(</span><span class="mf">3.0f</span><span class="o">));</span>
+<span class="o">}</span>  
+<span class="n">flag</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span><span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>                           
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>above code checks PolyLine and draws it over GoogleMap activity.</p>
+
+<p>Compiling all above steps and logic, we got a cute and precise trace line over Satellite Map.</p>
+
+<p><img src="https://miro.medium.com/max/1000/1*qpEIDypfzkTvHotYjn6Tdw.jpeg" alt="Sat. Trace SS.jpg" title="Sat Screenshot" /></p>
+
+<h3 id="what-next">What next?</h3>
+
+<p>Well… Now you know how to trace location over maps, like a cool modern cartographer 😬. Your imagination is the limit.</p>
+
+<p>some ideas :</p>
+
+<ul>
+  <li>The points of polygraphs, if stored in arrays or any of your fav. data structure can be passed to your database and then share that with your other apps to live track group of friends together.</li>
+  <li>Can run this service in background to store data points and then draw them whenever needed.</li>
+</ul>

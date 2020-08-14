@@ -4,6 +4,11 @@ title: Projects
 sidebar_link: true
 ---
 
+### NS3 Cybersecurity Simulations 
+<p>{% include svg/github.svg%}<a href="https://github.com/Saket-Upadhyay/ns3-cybersecurity-simulations">GitHub</a></p>
+Collection of cybersecurity simulations in NS3 and C++ for academia. Some of the simulations are build from scratch and some are build upon existing solutions. With common aim to aid in understanding Cybersecurity Concepts and be able to play with them.
+
+---
 ### SAMPARK : Website Security Scanning Framework
 <p>{% include svg/github.svg%}<a href="https://github.com/Saket-Upadhyay/SAMPARK">GitHub</a></p>
 National Hack-a-thon project (Won 1st Rank in Information Security Domain)

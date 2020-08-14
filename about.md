@@ -4,16 +4,17 @@ title: About Me
 sidebar_link: true
 ---
 
-Hi! I am `Saket`
+Hi! I am `Saket`.
 <br>
-(say it like : S as in 'Superman', A as in 'Astronaut', K as in 'Kite', E as 'Aye yo!', T as in 'Transparent') (in native : साकेत)
+(native : साकेत)
 <br>
 <br>
 Passionate Cybersecurity Student and wannabe Security Researcher.
 <br>
-Active participant in `Research`, `CTFs`, `HackTheBox` (and similar platforms), `Security Conferences` and `Talks`.
+I am interested in `Research`, `CTFs`, `HackTheBox` (and similar training platforms), `Security Conferences` and `Talks`.
 <br>
-Do cool stuff under Alias : <strong>x64Mayhem</strong> 
+<br>
+Alias : <strong>x64Mayhem</strong> 
 <br>
 <sup>For work exp. and other related stuff,checkout linked-in.</sup>
 <p>{% include svg/linkedin.svg %} <a href="https://www.linkedin.com/in/saketupadhyay/">/saketupadhyay</a> {% include svg/github.svg %}<a href="https://github.com/Saket-Upadhyay">/Saket-Upadhyay</a>, {% include svg/twitter.svg %}<a href="https://twitter.com/x64mayhem">/x64mayhem</a>, {% include svg/htb.svg %}<a href="https://www.hackthebox.eu/profile/125090">/x64mayhem</a></p>
@@ -38,7 +39,7 @@ Do cool stuff under Alias : <strong>x64Mayhem</strong>
 
 
 
-
+ 
 #### Badges
 ![HackTheBox Badge](https://www.hackthebox.eu/badge/image/125090 "HackTheBox Rank")
-<!-- ![TryHackMe Badge](https://tryhackme-badges.s3.amazonaws.com/x64mayhem.png "TryHackMe Rank") -->
+ <!-- <script src="https://www.hackthebox.eu/badge/125090"></script> -->

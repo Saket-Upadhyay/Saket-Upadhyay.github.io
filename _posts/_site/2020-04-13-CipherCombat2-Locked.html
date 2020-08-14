@@ -1,0 +1,49 @@
+<div class="message">
+Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
+</div>
+
+<p><img src="https://miro.medium.com/max/976/1*er3VhPR2dIn2nI7BXu_uVg.png" alt="" title="Question Header" /></p>
+
+<h3 id="what-we-get-">What we get ?</h3>
+
+<p>We get a zip file with our binary in it with password hackerearth.
+<img src="https://miro.medium.com/max/1400/1*YlLxAp6kziXd1d_db8HIUA.png" alt="" /></p>
+
+<p>After unzipping the file, we can start looking at the binary.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*gYTW45PJ_L2Zap_-KENFlw.png" alt="" /></p>
+
+<p>Important stuff : it’s Linux Executable and not stripped… This makes task easier.</p>
+
+<h3 id="solving-the-challenge">Solving the challenge</h3>
+
+<p>Let’s make the file executable by chmod.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*zLCzrFMLMXOzhGJfirn2Bg.png" alt="" /></p>
+
+<p>now let’s run it once and see what it actually does…</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*X657SCKYqyTcoQsLsdrSvA.png" alt="" /></p>
+
+<p>So seems like some type password check, and the name of challenge checks out !</p>
+
+<p>Let’s Disassemble it and try to understand the checking mechanism.</p>
+
+<p>doing Strings on the file we get something interesting…</p>
+
+<p><img src="https://miro.medium.com/max/1262/1*jcUCXvcFuhsdFUZUODtQEQ.png" alt="" /></p>
+
+<p>Looks like good password? Also if we see the disassembly we see main calls the <strong>fun2()</strong> function before <strong>test eax,eax</strong> at <strong>0x000012d7</strong> which controls the flow of program… and see what it compares! the same string !</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*MvkJYxg2J9qjStMB20DYIw.png" alt="" />
+<img src="https://miro.medium.com/max/1400/1*s1VfuFXEvf_Z5GjST_vXVg.png" alt="" /></p>
+
+<p>Let’s just try this as password…</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*3oQeagCI-u_3zWlyJxgr6g.png" alt="" /></p>
+
+<p>And that works ! submit the flag and get them points…</p>
+
+<h3 id="about-ctf">About CTF</h3>
+
+<p>Hacker Earth’s CipherCombat2.0 was great CTF for beginners in the security field. Overall nice refresher.</p>
