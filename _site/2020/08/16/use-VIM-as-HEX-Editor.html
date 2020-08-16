@@ -10,7 +10,7 @@
 
   <title>
     
-      Pipe Brute-force Attack via Password Generator &middot; Saket Upadhyay
+      Use VIM as HEX editor like a boss &middot; Saket Upadhyay
     
   </title>
 
@@ -289,86 +289,125 @@
 
     <main class="container">
       <header>
-  <h1 class="post-title">Pipe Brute-force Attack via Password Generator</h1>
+  <h1 class="post-title">Use VIM as HEX editor like a boss</h1>
 </header>
 <div class="content">
   <div class="post-meta">
-  <span class="post-date">27 Jul 2019</span>
+  <span class="post-date">16 Aug 2020</span>
   <span class="post-categories">
-    
-      &bull;
-
-      
-      
-      
-
-      
-        Article
-      
     
   </span>
 </div>
 
 
   <div class="post-body">
-    <div class="message">(Efficient and resource saving trick that was there for decades)</div>
+    <div class="message">
+VIM's already OP. Here's how to do more.
+</div>
 
-<p>During password cracking you might decide to brute force a target hash,any service or online website, for that you may need/create heavy dictionaries which can take terabytes of data. But we can skip that step and feed the password directly from generator to brute-force automation software.</p>
+<h3 id="background">Background</h3>
 
-<h3 id="how-much-an-eight-digit-long-numeric-password-take-on-disk">How much an eight digit long numeric password take on disk?</h3>
+<p>VIM in itself is pretty powerful text editor, and the fact we can integrate this with other programs and scripts make it stronger.</p>
 
-<p>Let’s have a look on most basic and may-be-doesn’t-even-happen-today kind of scenario, creating a 8 digit numerical password with crunch.</p>
+<p>In this article I want to share one such trick i learned recently to combine <code class="language-plaintext highlighter-rouge">vim</code> and <code class="language-plaintext highlighter-rouge">xxd</code> to edit a file at hex level.
+This actually helps a lot in situations where we want quick fix to something, let it be minor binary patching or some file header repair.</p>
 
-<p><img src="https://miro.medium.com/max/1400/1*G9AhPXlIYWLwoJkFD-z6GA.png" alt="Image1.png" />
-858 MB for 8 digit numeric? not too big right, with our 1–2TBs of hard-drives it will do no harm to us.</p>
+<h3 id="xxd">xxd</h3>
+<p>xxd creates a hex dump of a given file or standard input.  It can also convert a hex dump back to its original binary form.  Like  uuencode and  uudecode(1)  it allows the transmission of binary data in a ‘mail-safe’ ASCII representation, but has the advantage of decoding to  standard output.
+Moreover, it can be used to perform binary file patching.</p>
 
-<p>let’s come to real-life condition now, step-by-step …</p>
+<p><code class="language-plaintext highlighter-rouge">xxd &lt;filename&gt;</code> will give us hex dump of the file and <code class="language-plaintext highlighter-rouge">xxd -r &lt;hexdump&gt;</code> will recurect the file back from hexdump and these are the two properties we will use with vim to edit file in vim in its hex rep.</p>
 
-<p>8 letter lowercase alphabets ? …
-<img src="https://miro.medium.com/max/1400/1*HKpP62dqfxk7o_V1W78uYA.png" alt="" />
-1 TB ! just for our new word-list, and to be honest I am writing this from my PC with total storage of 1TB … if i remove all the files and OSes then i may store it, but again i need OS to perform attacks ¯_(ツ)_/¯.</p>
-
-<p>and this is last one fulfilling all the basic NEEDS OF MODERN WEBSITES.</p>
-
-<ul>
-  <li>at least one UPPERCASE</li>
-  <li>use of NUMBERS</li>
-  <li>lowecase</li>
-  <li>SPECIAL SYMBOLS</li>
-  <li>Alien species’s language and what ever your PC allows you to throw at login filed!</li>
-</ul>
-
-<p>CHAR-SET =</p>
-
+<h3 id="how-to-">How to ?</h3>
 <blockquote>
-  <p>0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!”#$%&amp;’()*+,-./:;&lt;=&gt;?@[]^_`{|}~
-<img src="https://miro.medium.com/max/1400/1*osEbNjaduUT5-BYTm0FvVQ.png" alt="" />
-now unless you own a data storage farm to store 54303 TB of data, that would be ~ 27150 common 2TB storage drives, so let’s get over this problem by ‘piping’ the output directly to software rather than storing it in the device itself.</p>
+  <p>In this we will use executable file with name <strong><em>executable</em></strong>
+you can change this to your target file</p>
 </blockquote>
 
-<h3 id="how-to-overcome-this-limitation">How to overcome this limitation?</h3>
+<h4 id="open-the-file-in-vim">Open the file in vim</h4>
+<p><code class="language-plaintext highlighter-rouge">vim executable</code>
+<img src="/assets/images/vim/1.png" alt="" /></p>
 
-<p>Suppose we want to crack the hash of password <strong>‘17652986’</strong> now md5 of this hash <strong>ce5cff0195a6b059a3241c1b6202ab49</strong> now we can either create a file of 8 digits numbers or can just pass the list from crunch directly to hashcat</p>
+<h4 id="execute-xxd-in-vim">Execute <code class="language-plaintext highlighter-rouge">xxd</code> in vim</h4>
+<p>in the vim command type,</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>crunch 8 8 123456789| hashcat <span class="nt">-m</span> 0 ce5cff0195a6b059a32411b6202ab49
-</code></pre></div></div>
+<p><code class="language-plaintext highlighter-rouge">: %!xxd</code></p>
 
-<p>notice the <strong>‘|’</strong> in the command? this is called <strong>‘pipe’</strong> it will change the standard output of the crunch command to to hashcat and the hashcat when supplied no word-lists, listens on standard input.
-<img src="https://miro.medium.com/max/720/1*9adBjAYUSoDUAIB2TEnPnQ.png" alt="" title="Figure 1" />
-<img src="https://miro.medium.com/max/552/1*_gFnA_SDFEufJ00sdbVo-A.png" alt="" title="Figure 2" /></p>
+<p><img src="/assets/images/vim/2.png" alt="" />
+this will convert the file to hex rep.</p>
 
-<p>Flow of data from buffer to brute-force program directly (left figure) — (1)</p>
+<p><img src="/assets/images/vim/3.png" alt="" /></p>
 
-<p>Flow of data to hard-disk and then to the program (right figure) — (2)</p>
+<h4 id="search-for-specific-hex-pattern">Search for specific hex pattern</h4>
+<p>Searching is same as regular vim usage, pattern preceded by <code class="language-plaintext highlighter-rouge">/</code></p>
 
-<p>Here we can already see (1) is much faster and efficient in practice as it does not interact with the hard-disk at all.</p>
+<p><code class="language-plaintext highlighter-rouge">/837d fc00 752a</code></p>
 
-<p><img src="https://miro.medium.com/max/1400/1*SUUvuNKweFdpjLSMVaabcg.png" alt="" />
-and you can see it took just 31 seconds to crack 8 digit numeric password <em>highlighted</em>, but that’s predictable and speed here was not our concern.</p>
+<p><img src="/assets/images/vim/4.png" alt="" />
+Here I am searching for <code class="language-plaintext highlighter-rouge">752a</code> opcode which I want to patch in this case, in short <code class="language-plaintext highlighter-rouge">75 = JNE</code> and <code class="language-plaintext highlighter-rouge">74 = JE</code> so this will change flow of control in the application.</p>
+
+<p>to know more about this check my <a href="/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">Taking over a software by Instruction Rewriting.</a> article.</p>
+
+<p>Now as we have the pattern we can just change the opcode <code class="language-plaintext highlighter-rouge">75</code> to <code class="language-plaintext highlighter-rouge">74</code></p>
+
+<p><img src="/assets/images/vim/5.png" alt="" /></p>
+
+<h4 id="reverse-the-hex-dump-into-binary-file">Reverse the HEX-dump into binary file</h4>
+<p>again in vim command, type,</p>
+
+<p><code class="language-plaintext highlighter-rouge">:%!xxd -r</code></p>
+
+<p><img src="/assets/images/vim/6.png" alt="" />
+this will convert it back to binary
+<img src="/assets/images/vim/7.png" alt="" /></p>
+
+<h4 id="save-exit-and-youre-done">Save, Exit and you’re done.</h4>
+<p><code class="language-plaintext highlighter-rouge">:wq</code></p>
+
+<p>is all it takes to complete the process.</p>
 
 <h3 id="conclusion">Conclusion</h3>
+<p>We have edited the file at hex level !</p>
 
-<p>So, our motive here is complete as we have saved resources and hacking with all the skills is also all about speed, accuracy and efficiency.</p>
+<p>here is the quick check for above <code class="language-plaintext highlighter-rouge">executable</code>, the file was <code class="language-plaintext highlighter-rouge">ELF x64 executable</code> duh! hence the name :-)</p>
+
+<p><img src="/assets/images/vim/8.png" alt="" /></p>
+
+<p>The first execution is before patching and the second is after the patch..</p>
+
+<p>Well, at this point the article is over but if you are curious about what we exactly did above here it is …</p>
+
+<p>we compiled this program :</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include&lt;iostream&gt;
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+	<span class="p">{</span>
+
+		<span class="kt">int</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+			<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"zero"</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span><span class="p">{</span>
+			<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"not zero"</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>And then patched the <code class="language-plaintext highlighter-rouge">if statement</code> by patching <code class="language-plaintext highlighter-rouge">75</code> opcode to <code class="language-plaintext highlighter-rouge">74</code></p>
+
+<p>in simple term converting <code class="language-plaintext highlighter-rouge">if(x == 0)</code> to <code class="language-plaintext highlighter-rouge">if(x != 0)</code> statement.</p>
+
+<p>But as it said earlier, check out  <a href="/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">Taking over a software by Instruction Rewriting.</a> article.</p>
+
+<p>See ya in the next one !</p>
+
+<hr />
 
     
 
@@ -377,14 +416,25 @@ and you can see it took just 31 seconds to crack 8 digit numeric password <em>hi
 <div class="post-tags">
   
     
-    <a href="/topics.html#password-cracking">
+    <a href="/topics.html#tricks">
     
       <span class="icon">
         <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
     <path d="M0 0h24v24H0z" fill="none"/>
     <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
 </svg>
-      </span>&nbsp;<span class="tag-name">Password Cracking</span>
+      </span>&nbsp;<span class="tag-name">Tricks</span>
+    </a>
+  
+    
+    <a href="/topics.html#ctf">
+    
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">CTF</span>
     </a>
   
 </div>
@@ -408,9 +458,9 @@ and you can see it took just 31 seconds to crack 8 digit numeric password <em>hi
   *  https://disqus.com/admin/universalcode/#configuration-variables
   */
   var disqus_config = function () {
-    this.page.url = "http://localhost:4000/article/2019/07/27/Pipe-Brute-force-Attack-via-Password-Generator.html";
+    this.page.url = "http://localhost:4000/2020/08/16/use-VIM-as-HEX-Editor.html";
     this.page.identifier = "" ||
-                           "http://localhost:4000/article/2019/07/27/Pipe-Brute-force-Attack-via-Password-Generator.html";
+                           "http://localhost:4000/2020/08/16/use-VIM-as-HEX-Editor.html";
   }
   function loadDisqusComments() { // DON'T EDIT BELOW THIS LINE
     var d = document, s = d.createElement('script');
@@ -434,15 +484,6 @@ and you can see it took just 31 seconds to crack 8 digit numeric password <em>hi
     
       <li>
         <h3>
-          <a href="/2020/08/16/use-VIM-as-HEX-Editor.html">
-            Use VIM as HEX editor like a boss
-            <small>16 Aug 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
           <a href="/2020/08/15/Custom-Signature-PHP-Payloads.html">
             Custom Signature PHP Payloads
             <small>15 Aug 2020</small>
@@ -455,6 +496,15 @@ and you can see it took just 31 seconds to crack 8 digit numeric password <em>hi
           <a href="/2020/08/10/DDoS-Simulation-in-NS3-C++.html">
             DDoS attack Simulation in NS3
             <small>10 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/04/13/CipherCombat2-Shifter2.html">
+            Shifter2 [CipherCombat2.0 CTF write-up]
+            <small>13 Apr 2020</small>
           </a>
         </h3>
       </li>

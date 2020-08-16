@@ -1,4 +1,188 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-08-14T09:20:43+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Saket Upadhyay</title><subtitle>Cybersecurity Student. Security Researcher Wannabe. </subtitle><author><name>Saket Upadhyay</name></author><entry><title type="html">DDoS attack Simulation in NS3</title><link href="http://localhost:4000/2020/08/10/DDoS-Simulation-in-NS3-C++.html" rel="alternate" type="text/html" title="DDoS attack Simulation in NS3" /><published>2020-08-10T00:00:00+05:30</published><updated>2020-08-10T00:00:00+05:30</updated><id>http://localhost:4000/2020/08/10/DDoS-Simulation-in-NS3-C++</id><content type="html" xml:base="http://localhost:4000/2020/08/10/DDoS-Simulation-in-NS3-C++.html">&lt;div class=&quot;message&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-08-16T11:01:18+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Saket Upadhyay</title><subtitle>Cybersecurity Student. Security Researcher Wannabe. </subtitle><author><name>Saket Upadhyay</name></author><entry><title type="html">Use VIM as HEX editor like a boss</title><link href="http://localhost:4000/2020/08/16/use-VIM-as-HEX-Editor.html" rel="alternate" type="text/html" title="Use VIM as HEX editor like a boss" /><published>2020-08-16T00:00:00+05:30</published><updated>2020-08-16T00:00:00+05:30</updated><id>http://localhost:4000/2020/08/16/use-VIM-as-HEX-Editor</id><content type="html" xml:base="http://localhost:4000/2020/08/16/use-VIM-as-HEX-Editor.html">&lt;div class=&quot;message&quot;&gt;
+VIM's already OP. Here's how to do more.
+&lt;/div&gt;
+
+&lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
+
+&lt;p&gt;VIM in itself is pretty powerful text editor, and the fact we can integrate this with other programs and scripts make it stronger.&lt;/p&gt;
+
+&lt;p&gt;In this article I want to share one such trick i learned recently to combine &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vim&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;xxd&lt;/code&gt; to edit a file at hex level.
+This actually helps a lot in situations where we want quick fix to something, let it be minor binary patching or some file header repair.&lt;/p&gt;
+
+&lt;h3 id=&quot;xxd&quot;&gt;xxd&lt;/h3&gt;
+&lt;p&gt;xxd creates a hex dump of a given file or standard input.  It can also convert a hex dump back to its original binary form.  Like  uuencode and  uudecode(1)  it allows the transmission of binary data in a ‘mail-safe’ ASCII representation, but has the advantage of decoding to  standard output.
+Moreover, it can be used to perform binary file patching.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;xxd &amp;lt;filename&amp;gt;&lt;/code&gt; will give us hex dump of the file and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;xxd -r &amp;lt;hexdump&amp;gt;&lt;/code&gt; will recurect the file back from hexdump and these are the two properties we will use with vim to edit file in vim in its hex rep.&lt;/p&gt;
+
+&lt;h3 id=&quot;how-to-&quot;&gt;How to ?&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;In this we will use executable file with name &lt;strong&gt;&lt;em&gt;executable&lt;/em&gt;&lt;/strong&gt;
+you can change this to your target file&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;open-the-file-in-vim&quot;&gt;Open the file in vim&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vim executable&lt;/code&gt;
+&lt;img src=&quot;/assets/images/vim/1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;execute-xxd-in-vim&quot;&gt;Execute &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;xxd&lt;/code&gt; in vim&lt;/h4&gt;
+&lt;p&gt;in the vim command type,&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;: %!xxd&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vim/2.png&quot; alt=&quot;&quot; /&gt;
+this will convert the file to hex rep.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vim/3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;search-for-specific-hex-pattern&quot;&gt;Search for specific hex pattern&lt;/h4&gt;
+&lt;p&gt;Searching is same as regular vim usage, pattern preceded by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/837d fc00 752a&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vim/4.png&quot; alt=&quot;&quot; /&gt;
+Here I am searching for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;752a&lt;/code&gt; opcode which I want to patch in this case, in short &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;75 = JNE&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;74 = JE&lt;/code&gt; so this will change flow of control in the application.&lt;/p&gt;
+
+&lt;p&gt;to know more about this check my &lt;a href=&quot;/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html&quot;&gt;Taking over a software by Instruction Rewriting.&lt;/a&gt; article.&lt;/p&gt;
+
+&lt;p&gt;Now as we have the pattern we can just change the opcode &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;75&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;74&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vim/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;reverse-the-hex-dump-into-binary-file&quot;&gt;Reverse the HEX-dump into binary file&lt;/h4&gt;
+&lt;p&gt;again in vim command, type,&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;:%!xxd -r&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vim/6.png&quot; alt=&quot;&quot; /&gt;
+this will convert it back to binary
+&lt;img src=&quot;/assets/images/vim/7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;save-exit-and-youre-done&quot;&gt;Save, Exit and you’re done.&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;:wq&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;is all it takes to complete the process.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;We have edited the file at hex level !&lt;/p&gt;
+
+&lt;p&gt;here is the quick check for above &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;executable&lt;/code&gt;, the file was &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ELF x64 executable&lt;/code&gt; duh! hence the name :-)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vim/8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The first execution is before patching and the second is after the patch..&lt;/p&gt;
+
+&lt;p&gt;Well, at this point the article is over but if you are curious about what we exactly did above here it is …&lt;/p&gt;
+
+&lt;p&gt;we compiled this program :&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include&amp;lt;iostream&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+		&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;zero&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;not zero&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And then patched the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if statement&lt;/code&gt; by patching &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;75&lt;/code&gt; opcode to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;74&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;in simple term converting &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if(x == 0)&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if(x != 0)&lt;/code&gt; statement.&lt;/p&gt;
+
+&lt;p&gt;But as it said earlier, check out  &lt;a href=&quot;/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html&quot;&gt;Taking over a software by Instruction Rewriting.&lt;/a&gt; article.&lt;/p&gt;
+
+&lt;p&gt;See ya in the next one !&lt;/p&gt;
+
+&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="Tricks" /><category term="CTF" /><summary type="html">VIM's already OP. Here's how to do more.</summary></entry><entry><title type="html">Custom Signature PHP Payloads</title><link href="http://localhost:4000/2020/08/15/Custom-Signature-PHP-Payloads.html" rel="alternate" type="text/html" title="Custom Signature PHP Payloads" /><published>2020-08-15T00:00:00+05:30</published><updated>2020-08-15T00:00:00+05:30</updated><id>http://localhost:4000/2020/08/15/Custom-Signature-PHP-Payloads</id><content type="html" xml:base="http://localhost:4000/2020/08/15/Custom-Signature-PHP-Payloads.html">&lt;div class=&quot;message&quot;&gt;
+Easily generating PHP Payloads with Custom file signatures to bypass input sanitisation
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/cpngh/h2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;what-is-this&quot;&gt;What is this?&lt;/h3&gt;
+&lt;p&gt;A tip on bypassing input sanitation by changing payload signature.
+This process is generally done in packet analyser or proxy application like burp but this can be done easily without that.
+We will look into two basic ways to achieve this.&lt;/p&gt;
+
+&lt;h3 id=&quot;why-this-works&quot;&gt;Why this works?&lt;/h3&gt;
+&lt;p&gt;PHP generally start interpreting the script whereever &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;?php&lt;/code&gt; tag starts so anything gibberish preceding that will not be executed and that’s good news for us as we can now append the payload after some file descripters so that meta data of the file will show whatever we want it to show but it will still be a valid PHP script.&lt;/p&gt;
+
+&lt;h3 id=&quot;methods&quot;&gt;Methods&lt;/h3&gt;
+
+&lt;h4 id=&quot;python-script&quot;&gt;Python script&lt;/h4&gt;
+
+&lt;p&gt;Don’t worry I have done the hard work for you, you just need to prepare your payload, we will put burden of signature management to script.&lt;/p&gt;
+
+&lt;p&gt;Actually this is small project where I am colleting some of the commonly used file signatures from real files (not the internet and file format wikis) this should give all the payload more convincing results.&lt;/p&gt;
+
+&lt;p&gt;You can get the project from GitHub &lt;a href=&quot;https://github.com/Saket-Upadhyay/CustomPhpPayloadSignature&quot;&gt;HERE&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;With custom python script&lt;/em&gt;&lt;/strong&gt;
+&lt;br /&gt;
+As simple as&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python cupps.py &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; png
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;this will create PHP payload &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;?php system($_GET['cmd']);?&amp;gt;&lt;/code&gt; with PNG signature. this is one of the commonly  known tricks to bypass most of the basic image upload scenarios.&lt;/p&gt;
+
+&lt;p&gt;All the available signatures can be seen by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-h&lt;/code&gt; parameter.&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python cupps.py &lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;
+
+usage: cupps.py &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; target_signature]
+
+Script to create PHP Payloads with custom file signatures
+
+optional arguments:
+  &lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;, &lt;span class=&quot;nt&quot;&gt;--help&lt;/span&gt;            show this &lt;span class=&quot;nb&quot;&gt;help &lt;/span&gt;message and &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; target_signature, &lt;span class=&quot;nt&quot;&gt;--signature&lt;/span&gt; target_signature
+                        accepted inputs : png,jpg,exe,elf,gif,bmp,jar,pdf,iso
+
+~ with &amp;lt;3 by X64M
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;NOTE: This is active project as of 15-08-2020 and I am trying to add more signatures to it so feel free to contribute.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;By appending output of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cat&lt;/code&gt;&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;This is one of the neat tricks to achieve this.&lt;/p&gt;
+
+&lt;p&gt;just do this :&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;image.png | &lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 3 &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;exploit.php.png
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;this will take the image header and will write to the file &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exploit.php.png&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;and then&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;payload.php &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;exploit.php.png
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;This will append the payload to the file with existing image header.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/cpngh/bt.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And that would just do it.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;Well, that’s it for this article. See ya in next one!&lt;/p&gt;
+
+&lt;p&gt;Till then stay caffenated enough !&lt;/p&gt;
+
+&lt;p&gt;–&lt;/p&gt;</content><author><name>Saket Upadhyay</name></author><category term="Tool" /><category term="Pentest" /><summary type="html">Easily generating PHP Payloads with Custom file signatures to bypass input sanitisation</summary></entry><entry><title type="html">DDoS attack Simulation in NS3</title><link href="http://localhost:4000/2020/08/10/DDoS-Simulation-in-NS3-C++.html" rel="alternate" type="text/html" title="DDoS attack Simulation in NS3" /><published>2020-08-10T00:00:00+05:30</published><updated>2020-08-10T00:00:00+05:30</updated><id>http://localhost:4000/2020/08/10/DDoS-Simulation-in-NS3-C++</id><content type="html" xml:base="http://localhost:4000/2020/08/10/DDoS-Simulation-in-NS3-C++.html">&lt;div class=&quot;message&quot;&gt;
 Distributed Denial of Service Attack Simuation Build from scratch in C++
 &lt;/div&gt;
 
@@ -1385,147 +1569,4 @@ Streamline Permission-Based Feature Extraction for android data-set with one Pyt
 
 &lt;p&gt;I hope this article will get you started with feature extraction for malware analysis using machine learning. It isn’t the end of it, but we just completed one step !&lt;/p&gt;
 
-&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="Malware Detection" /><category term="Machine Learning" /><summary type="html">Streamline Permission-Based Feature Extraction for android data-set with one Python Script.</summary></entry><entry><title type="html">Taking over a software by Instruction Rewriting.</title><link href="http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html" rel="alternate" type="text/html" title="Taking over a software by Instruction Rewriting." /><published>2019-11-25T00:00:00+05:30</published><updated>2019-11-25T00:00:00+05:30</updated><id>http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting</id><content type="html" xml:base="http://localhost:4000/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">&lt;div class=&quot;message&quot;&gt;
-  Baby steps to binary rewriting and reverse engineering.
-&lt;/div&gt;
-
-&lt;h3 id=&quot;background-story&quot;&gt;Background story&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;Almost every code we write and compile is converted into machine code and set of instructions.&quot;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Pretty basic definition for what compiler does huh?&lt;/p&gt;
-
-&lt;p&gt;Well, let me re-frame that with respect to a reverse engineer’s point of view,&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;It doesn’t matter if you write your code in C, C++ or C# it will be converted into machine code, which can be viewed as a common low level language, Assembly.&quot;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;In simpler terms, all we need to understand is the assembly of code and without having its actual source code we can conclude what it will do. Now what to do from here?&lt;/p&gt;
-
-&lt;p&gt;Imagine we got a program that will activate when provided with valid key, pretty common scenario right? You might say just buy the key, or download the crack etc. pretty boring solutions too… Now, what if I tell you, we can activate the program just by changing it’s binary, that too just 2–6 bytes! YES! And that’s what we will try to understand in this article.&lt;/p&gt;
-
-&lt;p&gt;Actually most of such programs use comparison statements to check if your key matches with the actual key or not, e.g. “if (input == key) {//do thing here}” etc.&lt;/p&gt;
-
-&lt;p&gt;And that very thing in assembly is done by “CMP” instruction and then followed by a “JMP” or similar instruction to shift the flow of controls according to the result of comparison.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;lets-do-it&quot;&gt;Let’s do it.&lt;/h3&gt;
-
-&lt;p&gt;Let us make an application, this application works in the same fashion, check for the key and activate if matches. The program is written in C and compiled by the GCC compiler.&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;string.h&amp;gt;
-#include &amp;lt;stdio.h&amp;gt;
-&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Checking License: %s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-                &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strlen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-			&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;	
-		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-			&lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Access Granted!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-			&lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;WRONG!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Usage: &amp;lt;key&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Here is one example where we use “saket” as the key.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*K_G78S10NaB8cpo5rCagRg.png&quot; alt=&quot;&quot; /&gt;
-As we expected it to behave, when provided with invalid key it will say “WRONG!”&lt;/p&gt;
-
-&lt;p&gt;When we observe the compiled binary in our favorite debugger we can see one instruction &lt;strong&gt;“CMP [RBP+VAR_18], 394H”&lt;/strong&gt; that checks the string passed and then compares it with &lt;em&gt;(394)h =(916)d&lt;/em&gt; that seems to be string length or something, the interesting part is that it is followed by &lt;strong&gt;“JNZ SHORT LOC_400657”&lt;/strong&gt; instruction, which makes &lt;strong&gt;EIP&lt;/strong&gt; or &lt;strong&gt;instruction pointer&lt;/strong&gt; to point at 400657th location. In simple words, &lt;strong&gt;shifts the control flow to 400657th&lt;/strong&gt; location in memory , and execute instruction from there. Further we can see that &lt;strong&gt;LOC_400657&lt;/strong&gt; contains instructions of &lt;strong&gt;WRONG KEY&lt;/strong&gt; part of software.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*QiRX5E9kSXkvrN7YyTFedg.png&quot; alt=&quot;&quot; /&gt;
-So what if we can just skip that jump statement and whatever the result of the CMP we will just continue to &lt;strong&gt;Access Granted&lt;/strong&gt; part. To do that we will just &lt;strong&gt;change jump address in HEX DUMP from “0C” to “00”&lt;/strong&gt; which will cause &lt;strong&gt;EIP&lt;/strong&gt; to just continue to the next instruction.&lt;/p&gt;
-
-&lt;p&gt;For that we will go to the hex equivalent of the instruction in dump and change the value in target address.
-&lt;img src=&quot;https://miro.medium.com/max/1400/1*Ndw-9qh6-jx-Pw79bJhUiQ.png&quot; alt=&quot;&quot; /&gt;
-here we can observe JNZ instruction starts at 400649 (relative address), we can go to same in hex dump to get equivalent hex values.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1378/1*uxriK_ycJjHxt-aYJYJ-3w.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;now we know that &lt;strong&gt;&lt;em&gt;JNZ SHORT LOC_400649 ~ 75 0C;&lt;/em&gt;&lt;/strong&gt; Now keeping JNZ intact, i.e. not changing 75, we can change 0C to 00 to try to null it’s effect. or we can just replace the next effective address,something like this :
-&lt;img src=&quot;https://miro.medium.com/max/1042/1*OLDef_3bUFDIOlGgpSA3rg.png&quot; alt=&quot;&quot; /&gt;
-But for this article, we will just replace 0C with 00…&lt;/p&gt;
-
-&lt;p&gt;THAT IS, THIS
-&lt;img src=&quot;https://miro.medium.com/max/121/1*9xX5CM7-5zkwUw-jLW_vsg.png&quot; alt=&quot;&quot; /&gt;
-TO
-&lt;img src=&quot;https://miro.medium.com/max/91/1*dUlh5aSmPdg0vdDGWOzXnw.png&quot; alt=&quot;&quot; /&gt;
-And now you can see our instruction continues to ACCESS GRANTED part, and no instruction points to WRONG KEY. That means we should be able to activate the software with any key we want!.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*BVYRUDW4dLcBwd2jCT16HQ.png&quot; alt=&quot;&quot; /&gt;
-Now let’s check that with the same key we provided, and just another key to check our modification.
-&lt;img src=&quot;https://miro.medium.com/max/1400/1*-In-V9fwv_pAMbyqhCYTJg.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;https://miro.medium.com/max/1400/1*wZb8fjJzQLS1MKEV0gO2xA.png&quot; alt=&quot;&quot; /&gt;
-And that works pretty good!&lt;/p&gt;
-
-&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
-
-&lt;p&gt;Binary rewriting in &lt;strong&gt;real-world scenarios is much more complex&lt;/strong&gt; than this example, but anyways this is just introduction with the aim to get the us familiar with the concept.&lt;/p&gt;
-
-&lt;p&gt;I hope you enjoyed this, have a super productive day ahead !&lt;/p&gt;</content><author><name>Saket Upadhyay</name></author><category term="[&quot;Article&quot;]" /><category term="Reverse Engineering" /><summary type="html">Baby steps to binary rewriting and reverse engineering.</summary></entry><entry><title type="html">Pipe Brute-force Attack via Password Generator</title><link href="http://localhost:4000/article/2019/07/27/Pipe-Brute-force-Attack-via-Password-Generator.html" rel="alternate" type="text/html" title="Pipe Brute-force Attack via Password Generator" /><published>2019-07-27T00:00:00+05:30</published><updated>2019-07-27T00:00:00+05:30</updated><id>http://localhost:4000/article/2019/07/27/Pipe-Brute-force-Attack-via-Password-Generator</id><content type="html" xml:base="http://localhost:4000/article/2019/07/27/Pipe-Brute-force-Attack-via-Password-Generator.html">&lt;div class=&quot;message&quot;&gt;(Efficient and resource saving trick that was there for decades)&lt;/div&gt;
-
-&lt;p&gt;During password cracking you might decide to brute force a target hash,any service or online website, for that you may need/create heavy dictionaries which can take terabytes of data. But we can skip that step and feed the password directly from generator to brute-force automation software.&lt;/p&gt;
-
-&lt;h3 id=&quot;how-much-an-eight-digit-long-numeric-password-take-on-disk&quot;&gt;How much an eight digit long numeric password take on disk?&lt;/h3&gt;
-
-&lt;p&gt;Let’s have a look on most basic and may-be-doesn’t-even-happen-today kind of scenario, creating a 8 digit numerical password with crunch.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*G9AhPXlIYWLwoJkFD-z6GA.png&quot; alt=&quot;Image1.png&quot; /&gt;
-858 MB for 8 digit numeric? not too big right, with our 1–2TBs of hard-drives it will do no harm to us.&lt;/p&gt;
-
-&lt;p&gt;let’s come to real-life condition now, step-by-step …&lt;/p&gt;
-
-&lt;p&gt;8 letter lowercase alphabets ? …
-&lt;img src=&quot;https://miro.medium.com/max/1400/1*HKpP62dqfxk7o_V1W78uYA.png&quot; alt=&quot;&quot; /&gt;
-1 TB ! just for our new word-list, and to be honest I am writing this from my PC with total storage of 1TB … if i remove all the files and OSes then i may store it, but again i need OS to perform attacks ¯_(ツ)_/¯.&lt;/p&gt;
-
-&lt;p&gt;and this is last one fulfilling all the basic NEEDS OF MODERN WEBSITES.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;at least one UPPERCASE&lt;/li&gt;
-  &lt;li&gt;use of NUMBERS&lt;/li&gt;
-  &lt;li&gt;lowecase&lt;/li&gt;
-  &lt;li&gt;SPECIAL SYMBOLS&lt;/li&gt;
-  &lt;li&gt;Alien species’s language and what ever your PC allows you to throw at login filed!&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;CHAR-SET =&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!”#$%&amp;amp;’()*+,-./:;&amp;lt;=&amp;gt;?@[]^_`{|}~
-&lt;img src=&quot;https://miro.medium.com/max/1400/1*osEbNjaduUT5-BYTm0FvVQ.png&quot; alt=&quot;&quot; /&gt;
-now unless you own a data storage farm to store 54303 TB of data, that would be ~ 27150 common 2TB storage drives, so let’s get over this problem by ‘piping’ the output directly to software rather than storing it in the device itself.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;how-to-overcome-this-limitation&quot;&gt;How to overcome this limitation?&lt;/h3&gt;
-
-&lt;p&gt;Suppose we want to crack the hash of password &lt;strong&gt;‘17652986’&lt;/strong&gt; now md5 of this hash &lt;strong&gt;ce5cff0195a6b059a3241c1b6202ab49&lt;/strong&gt; now we can either create a file of 8 digits numbers or can just pass the list from crunch directly to hashcat&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;crunch 8 8 123456789| hashcat &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 0 ce5cff0195a6b059a32411b6202ab49
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;notice the &lt;strong&gt;‘|’&lt;/strong&gt; in the command? this is called &lt;strong&gt;‘pipe’&lt;/strong&gt; it will change the standard output of the crunch command to to hashcat and the hashcat when supplied no word-lists, listens on standard input.
-&lt;img src=&quot;https://miro.medium.com/max/720/1*9adBjAYUSoDUAIB2TEnPnQ.png&quot; alt=&quot;&quot; title=&quot;Figure 1&quot; /&gt;
-&lt;img src=&quot;https://miro.medium.com/max/552/1*_gFnA_SDFEufJ00sdbVo-A.png&quot; alt=&quot;&quot; title=&quot;Figure 2&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Flow of data from buffer to brute-force program directly (left figure) — (1)&lt;/p&gt;
-
-&lt;p&gt;Flow of data to hard-disk and then to the program (right figure) — (2)&lt;/p&gt;
-
-&lt;p&gt;Here we can already see (1) is much faster and efficient in practice as it does not interact with the hard-disk at all.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*SUUvuNKweFdpjLSMVaabcg.png&quot; alt=&quot;&quot; /&gt;
-and you can see it took just 31 seconds to crack 8 digit numeric password &lt;em&gt;highlighted&lt;/em&gt;, but that’s predictable and speed here was not our concern.&lt;/p&gt;
-
-&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
-
-&lt;p&gt;So, our motive here is complete as we have saved resources and hacking with all the skills is also all about speed, accuracy and efficiency.&lt;/p&gt;</content><author><name>Saket Upadhyay</name></author><category term="[&quot;Article&quot;]" /><category term="Password Cracking" /><summary type="html">(Efficient and resource saving trick that was there for decades)</summary></entry></feed>
+&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="Malware Detection" /><category term="Machine Learning" /><summary type="html">Streamline Permission-Based Feature Extraction for android data-set with one Python Script.</summary></entry></feed>
