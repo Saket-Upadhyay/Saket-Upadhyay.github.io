@@ -2,7 +2,7 @@
 layout: post
 title: ASCWG CTF Impossible Dream Writeup  
 tags:
-  - CTF Writeups
+  - CTF Writeup
   - CTF
   - FrigidSec
 ---
