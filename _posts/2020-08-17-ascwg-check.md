@@ -201,9 +201,9 @@ Just see this ...
 
 Binary patching can be intimidating for some... check these articles out for some idea and how to do it at basic level as you should be good to go for this one. :)
 
-[Use VIM as HEX editor like a boss](/article/2020/08/16/use-VIM-as-HEX-Editor.html)
+[Use VIM as HEX editor like a boss](https://saket-upadhyay.github.io/2020/08/16/use-VIM-as-HEX-Editor.html)
 
-[Taking over a software by Instruction Rewriting.](/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html)
+[Taking over a software by Instruction Rewriting.](https://saket-upadhyay.github.io/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html)
 
 
 ### Conclusion 
