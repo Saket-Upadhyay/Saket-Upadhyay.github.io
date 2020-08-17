@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-08-16T21:38:41+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Saket Upadhyay</title><subtitle>Cybersecurity Student. Security Researcher Wannabe. </subtitle><author><name>Saket Upadhyay</name></author><entry><title type="html">ASCWG CTF Check Writeup</title><link href="http://localhost:4000/2020/08/16/ascwg-check.html" rel="alternate" type="text/html" title="ASCWG CTF Check Writeup" /><published>2020-08-16T00:00:00+05:30</published><updated>2020-08-16T00:00:00+05:30</updated><id>http://localhost:4000/2020/08/16/ascwg-check</id><content type="html" xml:base="http://localhost:4000/2020/08/16/ascwg-check.html">&lt;div class=&quot;message&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-08-17T10:31:39+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Saket Upadhyay</title><subtitle>Cybersecurity Student. Security Researcher Wannabe. </subtitle><author><name>Saket Upadhyay</name></author><entry><title type="html">ASCWG CTF Check Writeup</title><link href="http://localhost:4000/2020/08/17/ascwg-check.html" rel="alternate" type="text/html" title="ASCWG CTF Check Writeup" /><published>2020-08-17T00:00:00+05:30</published><updated>2020-08-17T00:00:00+05:30</updated><id>http://localhost:4000/2020/08/17/ascwg-check</id><content type="html" xml:base="http://localhost:4000/2020/08/17/ascwg-check.html">&lt;div class=&quot;message&quot;&gt;
 Writeup of Reverse Engineering Challenge of Arab Security Cyber WarGames.
 
 Points : 300
@@ -204,7 +204,157 @@ So the above function is just an xor function which XORs the passed data with pr
 
 &lt;p&gt;&lt;strong&gt;ASCWG{3nv_v4r5_4r3_u53ful}&lt;/strong&gt;&lt;/p&gt;
 
-&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="CTF Writeups" /><category term="CTF" /><category term="FrigidSec" /><summary type="html">Writeup of Reverse Engineering Challenge of Arab Security Cyber WarGames.</summary></entry><entry><title type="html">Use VIM as HEX editor like a boss</title><link href="http://localhost:4000/2020/08/16/use-VIM-as-HEX-Editor.html" rel="alternate" type="text/html" title="Use VIM as HEX editor like a boss" /><published>2020-08-16T00:00:00+05:30</published><updated>2020-08-16T00:00:00+05:30</updated><id>http://localhost:4000/2020/08/16/use-VIM-as-HEX-Editor</id><content type="html" xml:base="http://localhost:4000/2020/08/16/use-VIM-as-HEX-Editor.html">&lt;div class=&quot;message&quot;&gt;
+&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="CTF Writeups" /><category term="CTF" /><category term="FrigidSec" /><summary type="html">Writeup of Reverse Engineering Challenge of Arab Security Cyber WarGames.</summary></entry><entry><title type="html">ASCWG CTF Impossible Dream Writeup</title><link href="http://localhost:4000/2020/08/17/ascwg-impossible-dream.html" rel="alternate" type="text/html" title="ASCWG CTF Impossible Dream Writeup" /><published>2020-08-17T00:00:00+05:30</published><updated>2020-08-17T00:00:00+05:30</updated><id>http://localhost:4000/2020/08/17/ascwg-impossible-dream</id><content type="html" xml:base="http://localhost:4000/2020/08/17/ascwg-impossible-dream.html">&lt;div class=&quot;message&quot;&gt;
+Writeup of Forensics Challenge of Arab Security Cyber WarGames.
+
+Points : 600
+&lt;/div&gt;
+
+&lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
+&lt;p&gt;The description said :&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The notorious terrorist group known as the 10 rings got their elite hacker &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;5&lt;/code&gt; to hack into Stark Industries and steal the some sensitive files inlcuding the blueprints for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aRC&lt;/code&gt; Reactor second model, the hackers &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;messed up the data&lt;/code&gt; badly and encrypted the files. Can you retrieve the files?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;you see some marked text in the challange? that was not there, we put it there and will break it down later. holdon.&lt;/p&gt;
+
+&lt;h3 id=&quot;first-look&quot;&gt;First Look&lt;/h3&gt;
+&lt;p&gt;So we got a file which looks like a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;WAV&lt;/code&gt; file. But ofc it was corrupt.
+&lt;img src=&quot;/assets/images/tid/1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So the &lt;em&gt;header fixer guy&lt;/em&gt; of our team just fixed the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;WAV Header&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;See easy. Now what? now we did the following :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Played the song&lt;/li&gt;
+  &lt;li&gt;Tested in Audacity&lt;/li&gt;
+  &lt;li&gt;stegcrack&lt;/li&gt;
+  &lt;li&gt;steghide&lt;/li&gt;
+  &lt;li&gt;LSB Steg&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;but none of the above gave any kind of result so we kinda moved on to different channalge..&lt;/p&gt;
+
+&lt;h3 id=&quot;deepsound-extraction&quot;&gt;DeepSound Extraction&lt;/h3&gt;
+&lt;p&gt;after sometime we tried to see more WAV file hiding stuff and went with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DeepSound&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;I already had DeepSound installed in my VM. so just fired it up…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/4.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/images/tid/5.png&quot; alt=&quot;&quot; /&gt;
+And oh boy it was there &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;challenge.img&lt;/code&gt;, extracted it and transfered to our host machine for further analysis.&lt;/p&gt;
+
+&lt;h3 id=&quot;linux-file-system-readonly&quot;&gt;Linux File System (Readonly)&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So it was &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ext4&lt;/code&gt; linux disk image.&lt;/p&gt;
+
+&lt;p&gt;so next step was pretty obvious&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/7.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/images/tid/8.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/images/tid/9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So we found some files and only &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pastebin.txt&lt;/code&gt; seems to be readable.
+The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RAR&lt;/code&gt; files were password protected and we didn’t had any hint.&lt;/p&gt;
+&lt;h3 id=&quot;encryption-and-encodings&quot;&gt;Encryption and Encodings&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/10.png&quot; alt=&quot;&quot; /&gt;
+Initially we thought &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pastebin.txt&lt;/code&gt; is a hash as it resembled &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SHA-256 (RAW)&lt;/code&gt; but oh boy we wasted time on that lol..&lt;/p&gt;
+
+&lt;p&gt;After sometime we all again went reading challenge discription and noticed some special things in there like :&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Who names their team-mate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;5&lt;/code&gt; ?
+Why is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RC&lt;/code&gt; capital in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aRC Reactor&lt;/code&gt; ?
+They said hackers &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;encrypted&lt;/code&gt; the data&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;5, RC, encrypted ?? DAMN !!!&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RC5 ENCRYPTED !!!&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;so we fired up online decryption tool soon found out it was&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RC2 with key=5&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;so we got a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pastebin&lt;/code&gt; link, went there and saw some text which looks like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;base32&lt;/code&gt; OR &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;base64&lt;/code&gt; encoding. so again we put that into online decoders.. yes it was but gave some gibbrish but again &lt;em&gt;the header fixer guy&lt;/em&gt;
+pointed out that it was &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ROT47&lt;/code&gt; and yes sir it was!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/12.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/images/tid/13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We got something like an online tag and our &lt;em&gt;twitter guy&lt;/em&gt; said it was &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;twitter ID&lt;/code&gt; so we went there and found a tweet ..&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;By just seeing the tweet I knew it was substitution cipher and what to expect as the whole structure resembles URL, Caesar maybe.. that damn ape …&lt;/p&gt;
+
+&lt;p&gt;So fired up another online tool and it was indeed &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;substitution cipher with 13 shift&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/15.png&quot; alt=&quot;&quot; /&gt;
+and gave a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mega file service link&lt;/code&gt; which had a hash stored in there…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/16.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;and our &lt;em&gt;twitter guy&lt;/em&gt; was fast enough and gave us the type of hash &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MD5&lt;/code&gt; and also the password &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Password120&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;this can also be done via online services like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;crackstation&lt;/code&gt; but I will share hashcat screenshot as it looks cool and I love OG Hash Cracking.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/17.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;final-mind-f&quot;&gt;Final Mind F***&lt;/h3&gt;
+
+&lt;p&gt;So now we had password and a rar file but ofc it will not work for 600 points… so we have a non working password and a rar file.&lt;/p&gt;
+
+&lt;p&gt;We wasted almost 30 mins on figuring out why the password was not working and what’s wrong with obvious rar file.&lt;/p&gt;
+
+&lt;p&gt;and then after we tried everything we started studying all the steps and files we got..&lt;/p&gt;
+
+&lt;p&gt;and then I noticed something new….&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/18.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You see? these two files show similar trend of strings …&lt;/p&gt;
+
+&lt;p&gt;and after some more observation it was clear that this is also A RAR FILE !! but without propper header itself …. time for &lt;em&gt;header fixer guy&lt;/em&gt; again XD.&lt;/p&gt;
+
+&lt;p&gt;so we just patched the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RARv5&lt;/code&gt; header in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Null&lt;/code&gt; …&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/19.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/images/tid/20.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;and then we tried to extract this from &lt;em&gt;twitter guy’s&lt;/em&gt; password &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Password120&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/21.png&quot; alt=&quot;&quot; /&gt;
+and DONE !! we saw one of the most beautiful message of that day …&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tid/22.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;and we have the flag .. let me make a new header in this post for that …&lt;/p&gt;
+
+&lt;h3 id=&quot;flag&quot;&gt;FLAG&lt;/h3&gt;
+&lt;p&gt;And here you go :
+&lt;img src=&quot;/assets/images/tid/23.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;That’s all for this post … see ya in next one !&lt;/p&gt;
+
+&lt;p&gt;in the mean time check other writeups from my teammates in our github repo.. &lt;a href=&quot;https://github.com/FrigidSec/CTFWriteups&quot;&gt;FrigidSec GitHub&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;This chal. had significant ammount of header fixing, so if you are new to this check this article out on how to use vim to edit files in hexdecimal level. 
+&lt;a href=&quot;/article/2020/08/16/use-VIM-as-HEX-Editor.html&quot;&gt;Use VIM as HEX editor like a boss&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="CTF Writeups" /><category term="CTF" /><category term="FrigidSec" /><summary type="html">Writeup of Forensics Challenge of Arab Security Cyber WarGames.</summary></entry><entry><title type="html">Use VIM as HEX editor like a boss</title><link href="http://localhost:4000/2020/08/16/use-VIM-as-HEX-Editor.html" rel="alternate" type="text/html" title="Use VIM as HEX editor like a boss" /><published>2020-08-16T00:00:00+05:30</published><updated>2020-08-16T00:00:00+05:30</updated><id>http://localhost:4000/2020/08/16/use-VIM-as-HEX-Editor</id><content type="html" xml:base="http://localhost:4000/2020/08/16/use-VIM-as-HEX-Editor.html">&lt;div class=&quot;message&quot;&gt;
 VIM's already OP. Here's how to do more.
 &lt;/div&gt;
 
@@ -1420,292 +1570,4 @@ or Someone opened a PDF file in your PC from pen drive and removed the pen drive
 
 &lt;p&gt;&lt;a href=&quot;https://www.computerhope.com/jargon/f/file-descriptor.htm&quot;&gt;What is a File Descriptor?&lt;/a&gt;&lt;/p&gt;
 
-&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="Linux" /><summary type="html">Recover recently deleted file (if it’s still open in some process) using properties of procfs</summary></entry><entry><title type="html">Winning Race Conditions</title><link href="http://localhost:4000/2019/12/21/Winning-Race-Conditions.html" rel="alternate" type="text/html" title="Winning Race Conditions" /><published>2019-12-21T00:00:00+05:30</published><updated>2019-12-21T00:00:00+05:30</updated><id>http://localhost:4000/2019/12/21/Winning-Race-Conditions</id><content type="html" xml:base="http://localhost:4000/2019/12/21/Winning-Race-Conditions.html">&lt;div class=&quot;message&quot;&gt;
-Introduction to Race Condition Vulnerability and how to Exploit them.
-&lt;/div&gt;
-
-&lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
-
-&lt;p&gt;One fine day, someone, somewhere was absorbing random knowledge from the “great internet forums” and stumbled on a CTF challenge remake.&lt;/p&gt;
-
-&lt;p&gt;The challenge was to read the flag from a file [duh… “capture the FLAG(CTF)”]… but here the file was owned by root user and the programs checks for the same and if it is so, then it will not read it for us.&lt;/p&gt;
-
-&lt;p&gt;This actually took me hours of screaming and existential crisis, and then after looking at naked code for long enough with extensive internet researches, I found the solution (or the solution found me?). Anyways, this was cool enough for me to share with you, so here we go with an article.&lt;/p&gt;
-
-&lt;h3 id=&quot;so-what-its-all-about&quot;&gt;So what it’s all about?&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TL;DR :&lt;/code&gt; If the computer program tries to check for some condition more
-than once, we try to change the state of the condition in between two?
-transfers in attempt to deceive the program into behaving in the way we
-want or it’s not supposed to work.&lt;/p&gt;
-
-  &lt;p&gt;if you want to skip, &lt;a href=&quot;#exp&quot;&gt;jump to EXPLOIT&lt;/a&gt; section
-&lt;img src=&quot;https://miro.medium.com/max/1000/1*2I7e7fdKmE9JOBmSEJHrPQ.png&quot; alt=&quot;Joke_Image.png&quot; title=&quot;It's supposed to be funny&quot; /&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;In technical terms,&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;“A &lt;strong&gt;race condition&lt;/strong&gt; or &lt;strong&gt;race hazard&lt;/strong&gt; is the condition of an electronics, software, or other system where the system’s substantive behavior is dependent on the sequence or timing of other uncontrollable events. It becomes a bug when one or more of the possible behaviors is undesirable.” 
-— &lt;a href=&quot;https://en.wikipedia.org/wiki/Race_condition&quot;&gt;WikiPedia&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;In the light of computer security,&lt;/p&gt;
-
-&lt;p&gt;“In software development, &lt;strong&gt;time-of-check to time-of-use (TOCTOU, TOCTTOU or TOC/TOU)&lt;/strong&gt; is a class of software bugs caused by a race condition involving the checking of the state of a part of a system (such as a security credential) and the use of the results of that check.”&lt;/p&gt;
-
-&lt;p&gt;— says… guess who? …. &lt;a href=&quot;https://en.wikipedia.org/wiki/Race_condition&quot;&gt;WikiPedia&lt;/a&gt;, ofc.&lt;/p&gt;
-
-&lt;p&gt;Let’s try to understand this while attempting to do the challenge we got.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;recreating-the-challenge&quot;&gt;Recreating the challenge.&lt;/h3&gt;
-
-&lt;p&gt;Let’s first recreate the challenge in our own machine, so that we can try it while reading this article… cool? let’s go…&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;We will be using Linux for all the things, ’cause Linux is Love. If you are already working on Linux just go on, you are doing great in life, if otherwise, you can use virtual machine for this tutorial and we are good.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;step-1&quot;&gt;Step 1:&lt;/h4&gt;
-
-&lt;p&gt;Let’s create a file with root ownership which will create our flag. We can do this by following commands :&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;{th1s_fl@g_i5_wh@7_w3_s33k}&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; flag.txt
-&lt;span class=&quot;nb&quot;&gt;chown &lt;/span&gt;root:root flag.txt
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*pzsDxvYtEwgoDFNUV7OS7Q.png&quot; alt=&quot;ScreenShot.png&quot; title=&quot;ScreenShot&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;step-2&quot;&gt;Step 2:&lt;/h4&gt;
-
-&lt;p&gt;Here’s the &lt;strong&gt;&lt;em&gt;C code&lt;/em&gt;&lt;/strong&gt; of challenge binary, used to read the root flag.txt&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;string.h&amp;gt;
-#include &amp;lt;stdio.h&amp;gt;
-#include &amp;lt;sys/types.h&amp;gt;
-#include &amp;lt;sys/stat.h&amp;gt;
-#include &amp;lt;fcntl.h&amp;gt;
-#include &amp;lt;errno.h&amp;gt;
-&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]){&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;usage: %s &amp;lt;file&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);}&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stat_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stat_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Failed to stat %s: %s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strerror&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;errno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);}&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stat_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;st_uid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;File %s is owned by root&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);}&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O_RDONLY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Couldn’t open %s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);}&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);}&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;I know ! I know ! This is some aggressively jotted down code chunk and yes, but it works and it’s just packed by removing all unnecessary spaces and indentation.&lt;/p&gt;
-
-&lt;p&gt;For now just copy it can paste in a *.c file and this will work.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*J053Ay9Fe54ll59jXGvh8Q.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;after compiling we get the following behaviour from our program…&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*a6dcj44480Ugl9-LmSyKLg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;But we want it to somehow show the contents of the file, and that’s what we will try to do, but first let’s see what the program is actually doing and what we understand from it.&lt;/p&gt;
-
-&lt;h3 id=&quot;dissection-of-c-code&quot;&gt;Dissection of C Code&lt;/h3&gt;
-
-&lt;p&gt;Here’s beautified code for you,&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;string.h&amp;gt;
-#include &amp;lt;stdio.h&amp;gt;
-#include &amp;lt;sys/types.h&amp;gt;
-#include &amp;lt;sys/stat.h&amp;gt;
-#include &amp;lt;fcntl.h&amp;gt;
-#include &amp;lt;errno.h&amp;gt;
-&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;usage: %s &amp;lt;file&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stat_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stat_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Failed to stat %s: %s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strerror&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;errno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stat_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;st_uid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;File %s is owned by root&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O_RDONLY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Couldn't open %s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;a href=&quot;https://gist.github.com/Saket-Upadhyay/6f1c5e15c2b454d81f7826b64ae1df2d/raw/d7c083a03cce749158726b4131d1e50ab03e615f/raceconditionchallenge.c&quot;&gt;View Raw on GitHub&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Now, let’s try to understand its workings,&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Line 1 to 6&lt;/strong&gt; are just imports.(all hail header files)&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Line 9,10,11&lt;/strong&gt; declares some obvious variables.&lt;/p&gt;
-
-&lt;p&gt;Now we can see that we have 4 conditions before line 38 which will actually display the contents of the file. Let’s try to understand these.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;At line 13&lt;/strong&gt;, we have condition to check if the given arguments to the program equals “two” or not. actually that means we have to provide one file in the arguments, the other argument is just the program itself given by default. So according to this if we don’t provide a file to read this will execute&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;usage: %s &amp;lt;file&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;and then exit.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*5FzFVOSl4vsYHjVTd9WzDg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;At &lt;strong&gt;line 19&lt;/strong&gt;, we check if the file contains valid formatted data or not, we can see in &lt;strong&gt;line 18&lt;/strong&gt; we defined object for &lt;strong&gt;stat&lt;/strong&gt; structure from &lt;strong&gt;sys/stat.h&lt;/strong&gt; header. In line 19 “if” condition we just check if we are able to extract information from the supplied file or not. If not, then we execute&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Failed to stat %s: %s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strerror&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;errno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;which will print error message in standard error out and then exit.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://pubs.opengroup.org/onlinepubs/007908799/xsh/sysstat.h.html&quot;&gt;pubs.opengroup.org/onlinepubs/007908799/xsh/sysstat.h.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;At line 24, we check if the file is owned by root or not by checking the uid of the file. What’s UID ? check the link below…&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://geek-university.com/linux/uid-user-identifier-gid-group-identifier/&quot;&gt;UID AND GID IN LINUX&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;The last check is at &lt;strong&gt;Line 32&lt;/strong&gt;, just checks if we are able to successfully open the file as read only or not. Notice that file open at Line 30? it’s there to check for that only, no big deal here.&lt;/p&gt;
-
-&lt;h4 id=&quot;overall-working-&quot;&gt;Overall working :&lt;/h4&gt;
-
-&lt;p&gt;The program takes one argument as the file we want to open and then it will check if it’s a valid file or not and then checks for root ownership, and then if not owned by root it will try to open it as read only and then if successful in that it will show the contents.&lt;/p&gt;
-
-&lt;h3 id=&quot;what-we-need-to-do&quot;&gt;What we need to do?&lt;/h3&gt;
-
-&lt;p&gt;According to above information if we somehow convince the program that the file is not root we might be able to see the contents of the file, because this is the only barrier that out file has, it’s owned by root all other checks are just kind-of integrity checks.&lt;/p&gt;
-
-&lt;h4 id=&quot;finding-the-race-condition-flaw&quot;&gt;Finding the race condition flaw&lt;/h4&gt;
-
-&lt;p&gt;Now let’s see where’s the bug that we were talking about actually is…&lt;/p&gt;
-
-&lt;p&gt;Here we need to focus… let’s examine the flow of the program again, and we can see that it uses &lt;strong&gt;argument argv[1]&lt;/strong&gt; two times in the file at significant interval.&lt;/p&gt;
-
-&lt;p&gt;once at Line 19 :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt;if (stat(argv[1], &amp;amp;stat_data) &amp;lt; 0) {
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;And then in Line 30 :&lt;/p&gt;
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O_RDONLY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Interestingly, &lt;strong&gt;it check for the root ownership with the first use&lt;/strong&gt; and then actually opens the file to &lt;strong&gt;display the contents from second usage.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Now imagine if we are able to change the file in between two uses of the argument we might be able to tell the program that the file is not owned by root and then pass on the file owned by root to open !!&lt;/p&gt;
-
-&lt;p&gt;Let’s try to understand this with a diagram.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*rLkHV47bazGNdWza9kPkmQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;div id=&quot;exp&quot;&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;the-exploit&quot;&gt;The Exploit&lt;/h3&gt;
-
-&lt;p&gt;To exploit this vulnerability, we need to quickly swap the files before the other function calls it.&lt;/p&gt;
-
-&lt;p&gt;After watching lots and lots of tutorials on system calls, Linux file management etc. in hopes to find any solution to this, eventually bumped into one.&lt;/p&gt;
-
-&lt;p&gt;Okay, so we are going to use following things in our exploit&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;SYS_renameat2 [Systemcall] : &lt;a href=&quot;http://man7.org/linux/man-pages/man2/rename.2.html&quot;&gt;MAN7.ORG/LINUX/MAN-PAGES&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Our idea is to swap / rename the two files so fast that we are able to pull off above described maneuver.&lt;/p&gt;
-
-&lt;p&gt;Here is a small C code that can help us do that :&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#define _GNU_SOURCE
-#include &amp;lt;stdio.h&amp;gt;
-#include &amp;lt;fcntl.h&amp;gt;
-#include &amp;lt;stdio.h&amp;gt;
-#include &amp;lt;unistd.h&amp;gt;
-#include &amp;lt;sys/syscall.h&amp;gt;
-#include &amp;lt;linux/fs.h&amp;gt;
-&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// source https://github.com/sroettger/35c3ctf_chals/blob/master/logrotate/exploit/rename.c&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;syscall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SYS_renameat2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AT_FDCWD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AT_FDCWD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RENAME_EXCHANGE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Copy the C code and compile it normally with gcc, that being done, let’s understand the code :&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Line 1 to 7 are just imports&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Line 11&lt;/strong&gt; has infinite While loop as while(1) is always true&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Line 12 here has a super important&lt;/strong&gt; “syscall()” will call the system call from C program, here it calls renameat2 system call.&lt;/p&gt;
-
-&lt;p&gt;We pass the two arguments as filenames we want to rapidly swap as argv[1] and argv[2]. Let’s understand other parameters:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;AT_FDCWD&lt;/strong&gt; :If pathname is relative and dirfd is the special value AT_FDCWD, then pathname is interpreted relative to the current working directory of the calling process.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;RENAME_EXCHANGE&lt;/strong&gt; — does an atomic exchange. Atomic exchange? yeah that’s new to me too … here it is&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://www.embhack.com/atomic-operation-in-linux-kernel/&quot;&gt;Atomic Operation in Linx Kernel - EmbHack&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;how-to-use-the-exploit-&quot;&gt;HOW TO USE THE EXPLOIT ?&lt;/h3&gt;
-
-&lt;p&gt;Now as we have the exploit and we know how it works, let’s use it.&lt;/p&gt;
-
-&lt;p&gt;just create a temp. file with anything in it&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;./temp
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Now run the exploit program with the flag and temp file as its parameters&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*QUfK9dAuHDDBtg3RvYQitQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;this will not produce any output but let it run, it is swapping the two files rapidly.&lt;/p&gt;
-
-&lt;p&gt;Now OPEN NEW TERMINAL and run readFlag program with flag as parameter.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*MbvBeaL5aKkPsBycGRjEQw.png&quot; alt=&quot;Flag.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;AND THERE WE HAVE IT !! our F L A G…&lt;/p&gt;
-
-&lt;h4 id=&quot;sign-off&quot;&gt;Sign-off&lt;/h4&gt;
-
-&lt;p&gt;Phew! that was lots of information for one article, I understand … may be it’s not that simple as I intended to make it but believe me when i say this… I was just amazed and overwhelmed with the knowledge I gained on my way through it and wanted to share it asap.&lt;/p&gt;
-
-&lt;p&gt;Well I hope this was new to you too and you enjoyed it, if you have any suggestion or feedback, feel free to drop it in comments.&lt;/p&gt;
-
-&lt;p&gt;See ya all in next article, till then keep your bodies caffeinated enough!&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;NOTE: here is an awesome video by LiveOverflow on the same topic and actually this is the one which inspired me to write about it. &lt;a href=&quot;https://www.youtube.com/watch?v=5g137gsB9Wk&amp;amp;feature=youtu.be&quot;&gt;YOUTUBE LINK&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name>Saket Upadhyay</name></author><category term="Secure Coding" /><category term="Software Security" /><category term="CTF" /><summary type="html">Introduction to Race Condition Vulnerability and how to Exploit them.</summary></entry></feed>
+&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="Linux" /><summary type="html">Recover recently deleted file (if it’s still open in some process) using properties of procfs</summary></entry></feed>
