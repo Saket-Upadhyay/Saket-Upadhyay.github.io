@@ -2,7 +2,7 @@
 layout: post
 title: ASCWG CTF Check Writeup  
 tags:
-  - CTF Writeups
+  - CTF Writeup
   - CTF
   - FrigidSec
 ---
