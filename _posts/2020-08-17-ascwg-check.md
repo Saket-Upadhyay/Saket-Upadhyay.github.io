@@ -8,27 +8,27 @@ tags:
 ---
 
 <div class="message">
-Writeup of Reverse Engineering Challenge of Arab Security Cyber WarGames.
+A writeup of Reverse Engineering Challenge of Arab Security Cyber WarGames.
 
 Points : 300
 </div>
 
 ### Background
-Just a file `check` with no discription. Who gives discription for reverse challanges anyways?
+Just a file `check` with no description. Who gives a description of reverse challenges anyways?
 
 that being said let's dive into writeup.
 
-This was fairly easy challange.
+This was a fairly easy challenge.
 
 ### Solving
 
-First we just did `strings` but found nothing and will see why that's the case with this chal later.
+First, we just did `strings` but found nothing and will see why that's the case with this challenge later.
 
-#### Running for first time
+#### Running for the first time
 
 ![](/assets/images/check/1.png)
 
-ok that being done let's move to next part.
+ok that being done let's move to the next part.
 
 #### IDA Static Analysis
 
@@ -37,24 +37,24 @@ Just searching for the strings `checking machine...` we got our main function.
 
 ![](/assets/images/check/2.png)
 
-here we can see lots of strings being stored in the stack. okay let's trace more..
+here we can see lots of strings being stored in the stack. okay, let's trace more...
 
 
 ![](/assets/images/check/3.png)
 
-So now we see some new data being loaded to the stack and then passing at arguments to some function..
+So now we see some new data being loaded to the stack and then passing at arguments to some function...
 
 
 ![](/assets/images/check/4.png)
 
 #### The XOR function
 ![]()
-So the above function is just an xor function which XORs the passed data with preset key, in our case `87h` which can be seen here :
+So the above function is just a xor function which XORs the passed data with a preset key, in our case `87h` which can be seen here :
 
 
 ![](/assets/images/check/5.png)
 
-yes i have renamed the variables to make it easy to understand..
+yes, I have renamed the variables to make it easy to understand...
 
 then the function returns back to main... so let's follow...
 
@@ -66,7 +66,7 @@ The whole main function is then followed by the same scheme,
 
 and all the functions are also simple like above.
 
-so let's keep this in mind and moveon...
+so let's keep this in mind and move on...
 
 #### `_getenv` 
 this name is enough to understand what this is trying to do...
@@ -79,19 +79,19 @@ Lemme explain...
 
 1. Take DATA 
 2. XOR with key 
-3. GET SYSTEM ENVIORNMENT VARIABLE with same decoded name
+3. GET SYSTEM ENVIRONMENT VARIABLE with same decoded name
 4. then XOR one more value 
 5. Check this value with the obtained value from envvar
 6. Do this for 2 different env. vars and if they match then show the flag.
 
-the flag is loaded as a chunk of data in the start, and yes it's also XORed with `92h` as key.
+the flag is loaded as a chunk of data at the start, and yes it's also XORed with `92h` as key.
 
 #### Get the flag.
 
 so there are now three ways to get the flag.
 
 1. Decode the env. var and values and then run the binary
-2. Decode flag directly from stack
+2. Decode flag directly from the stack
 3. JUST DO BINARY PATCHING AND CHANGE LAST 2 `if statement` to change the program flow
 
 ##### Decode everythin' XORmayhem
@@ -176,7 +176,7 @@ for i in flag:
 
 print()
 ```
-The above script will give you all the enviornment variables and the flag too as it is also XORed lol....
+The above script will give you all the environment variables and the flag too as it is also XORed lol...
 
 
 ![](/assets/images/check/7.png)
@@ -199,16 +199,16 @@ Just see this ...
 ![](/assets/images/check/10.png)
 
 
-Binary patching can be intimidating for some... check these articles out for some idea and how to do it at basic level as you should be good to go for this one. :)
+Binary patching can be intimidating for some... check these articles out for some idea and how to do it at a basic level as you should be good to go for this one. :)
 
 [Use VIM as HEX editor like a boss](https://saket-upadhyay.github.io/2020/08/16/use-VIM-as-HEX-Editor.html)
 
-[Taking over a software by Instruction Rewriting.](https://saket-upadhyay.github.io/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html)
+[Taking over the software by Instruction Rewriting.](https://saket-upadhyay.github.io/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html)
 
 
 ### Conclusion 
 
-So we have the flag in `base64` format, by any of the above method.
+So we have the flag in `base64` format, by any of the above methods.
 
 we just need to decode it and it's pretty easy with is neat pipe trick:
 
