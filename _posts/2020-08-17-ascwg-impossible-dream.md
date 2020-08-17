@@ -156,6 +156,6 @@ in the mean time check other writeups from my teammates in our github repo.. [Fr
 ---
 
 This chal. had significant ammount of header fixing, so if you are new to this check this article out on how to use vim to edit files in hexdecimal level. 
-[Use VIM as HEX editor like a boss](/article/2020/08/16/use-VIM-as-HEX-Editor.html)
+[Use VIM as HEX editor like a boss](https://saket-upadhyay.github.io/2020/08/16/use-VIM-as-HEX-Editor.html)
 
 ---
