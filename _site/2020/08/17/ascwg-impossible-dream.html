@@ -310,7 +310,7 @@
 
   <div class="post-body">
     <div class="message">
-Writeup of Forensics Challenge of Arab Security Cyber WarGames.
+A writeup of the Forensics Challenge of Arab Security Cyber WarGames.
 
 Points : 600
 </div>
@@ -319,13 +319,13 @@ Points : 600
 <p>The description said :</p>
 
 <blockquote>
-  <p>The notorious terrorist group known as the 10 rings got their elite hacker <code class="language-plaintext highlighter-rouge">5</code> to hack into Stark Industries and steal the some sensitive files inlcuding the blueprints for the <code class="language-plaintext highlighter-rouge">aRC</code> Reactor second model, the hackers <code class="language-plaintext highlighter-rouge">messed up the data</code> badly and encrypted the files. Can you retrieve the files?</p>
+  <p>The notorious terrorist group known as the 10 rings got their elite hacker <code class="language-plaintext highlighter-rouge">5</code> to hack into Stark Industries and steal some sensitive files including the blueprints for the <code class="language-plaintext highlighter-rouge">aRC</code> Reactor second model, the hackers <code class="language-plaintext highlighter-rouge">messed up the data</code> badly and encrypted the files. Can you retrieve the files?</p>
 </blockquote>
 
-<p>you see some marked text in the challange? that was not there, we put it there and will break it down later. holdon.</p>
+<p>you see some marked text in the challenge? that was not there, we put it there and will break it down later. hold on.</p>
 
 <h3 id="first-look">First Look</h3>
-<p>So we got a file which looks like a <code class="language-plaintext highlighter-rouge">WAV</code> file. But ofc it was corrupt.
+<p>So we got a file that looks like a <code class="language-plaintext highlighter-rouge">WAV</code> file. But ofc it was corrupt.
 <img src="/assets/images/tid/1.png" alt="" /></p>
 
 <p>So the <em>header fixer guy</em> of our team just fixed the <code class="language-plaintext highlighter-rouge">WAV Header</code></p>
@@ -344,21 +344,21 @@ Points : 600
   <li>LSB Steg</li>
 </ul>
 
-<p>but none of the above gave any kind of result so we kinda moved on to different channalge..</p>
+<p>but none of the above gave any kind of result so we kinda moved on to the different challenges.</p>
 
 <h3 id="deepsound-extraction">DeepSound Extraction</h3>
-<p>after sometime we tried to see more WAV file hiding stuff and went with <code class="language-plaintext highlighter-rouge">DeepSound</code></p>
+<p>after some time we tried to see more WAV file hiding stuff and went with <code class="language-plaintext highlighter-rouge">DeepSound</code></p>
 
 <p>I already had DeepSound installed in my VM. so just fired it up…</p>
 
 <p><img src="/assets/images/tid/4.png" alt="" />
 <img src="/assets/images/tid/5.png" alt="" />
-And oh boy it was there <code class="language-plaintext highlighter-rouge">challenge.img</code>, extracted it and transfered to our host machine for further analysis.</p>
+And oh boy it was there <code class="language-plaintext highlighter-rouge">challenge.img</code>, extracted it and transferred it to our host machine for further analysis.</p>
 
 <h3 id="linux-file-system-readonly">Linux File System (Readonly)</h3>
 <p><img src="/assets/images/tid/6.png" alt="" /></p>
 
-<p>So it was <code class="language-plaintext highlighter-rouge">ext4</code> linux disk image.</p>
+<p>So it was <code class="language-plaintext highlighter-rouge">ext4</code> Linux disk image.</p>
 
 <p>so next step was pretty obvious</p>
 
@@ -367,17 +367,17 @@ And oh boy it was there <code class="language-plaintext highlighter-rouge">chall
 <img src="/assets/images/tid/9.png" alt="" /></p>
 
 <p>So we found some files and only <code class="language-plaintext highlighter-rouge">pastebin.txt</code> seems to be readable.
-The <code class="language-plaintext highlighter-rouge">RAR</code> files were password protected and we didn’t had any hint.</p>
+The <code class="language-plaintext highlighter-rouge">RAR</code> files were password protected and we didn’t have any hint.</p>
 <h3 id="encryption-and-encodings">Encryption and Encodings</h3>
 
 <p><img src="/assets/images/tid/10.png" alt="" />
-Initially we thought <code class="language-plaintext highlighter-rouge">pastebin.txt</code> is a hash as it resembled <code class="language-plaintext highlighter-rouge">SHA-256 (RAW)</code> but oh boy we wasted time on that lol..</p>
+Initially, we thought <code class="language-plaintext highlighter-rouge">pastebin.txt</code> is a hash as it resembled <code class="language-plaintext highlighter-rouge">SHA-256 (RAW)</code> but oh boy we wasted time on that lol.</p>
 
-<p>After sometime we all again went reading challenge discription and noticed some special things in there like :</p>
+<p>After some time we all again went reading challenge description and noticed some special things in there like :</p>
 
 <blockquote>
-  <p>Who names their team-mate <code class="language-plaintext highlighter-rouge">5</code> ?
-Why is <code class="language-plaintext highlighter-rouge">RC</code> capital in <code class="language-plaintext highlighter-rouge">aRC Reactor</code> ?
+  <p>Who names their team-mate <code class="language-plaintext highlighter-rouge">5</code>?
+Why is <code class="language-plaintext highlighter-rouge">RC</code> capital in <code class="language-plaintext highlighter-rouge">aRC Reactor</code>?
 They said hackers <code class="language-plaintext highlighter-rouge">encrypted</code> the data</p>
 </blockquote>
 
@@ -391,13 +391,13 @@ They said hackers <code class="language-plaintext highlighter-rouge">encrypted</
 
 <p><img src="/assets/images/tid/11.png" alt="" /></p>
 
-<p>so we got a <code class="language-plaintext highlighter-rouge">pastebin</code> link, went there and saw some text which looks like <code class="language-plaintext highlighter-rouge">base32</code> OR <code class="language-plaintext highlighter-rouge">base64</code> encoding. so again we put that into online decoders.. yes it was but gave some gibbrish but again <em>the header fixer guy</em>
+<p>so we got a <code class="language-plaintext highlighter-rouge">Pastebin</code> link, went there, and saw some text which looks like <code class="language-plaintext highlighter-rouge">base32</code> OR <code class="language-plaintext highlighter-rouge">base64</code> encoding. so again we put that into online decoders.. yes it was but gave some gibberish but again <em>the header fixer guy</em>
 pointed out that it was <code class="language-plaintext highlighter-rouge">ROT47</code> and yes sir it was!</p>
 
 <p><img src="/assets/images/tid/12.png" alt="" />
 <img src="/assets/images/tid/13.png" alt="" /></p>
 
-<p>We got something like an online tag and our <em>twitter guy</em> said it was <code class="language-plaintext highlighter-rouge">twitter ID</code> so we went there and found a tweet ..</p>
+<p>We got something like an online tag and our <em>twitter guy</em> said it was <code class="language-plaintext highlighter-rouge">twitter ID</code> so we went there and found a tweet.</p>
 
 <p><img src="/assets/images/tid/14.png" alt="" /></p>
 
@@ -412,23 +412,23 @@ and gave a <code class="language-plaintext highlighter-rouge">mega file service 
 
 <p>and our <em>twitter guy</em> was fast enough and gave us the type of hash <code class="language-plaintext highlighter-rouge">MD5</code> and also the password <code class="language-plaintext highlighter-rouge">Password120</code></p>
 
-<p>this can also be done via online services like <code class="language-plaintext highlighter-rouge">crackstation</code> but I will share hashcat screenshot as it looks cool and I love OG Hash Cracking.</p>
+<p>this can also be done via online services like <code class="language-plaintext highlighter-rouge">crack station</code> but I will share hashcat screenshot as it looks cool and I love OG Hash Cracking.</p>
 
 <p><img src="/assets/images/tid/17.png" alt="" /></p>
 
 <h3 id="final-mind-f">Final Mind F***</h3>
 
-<p>So now we had password and a rar file but ofc it will not work for 600 points… so we have a non working password and a rar file.</p>
+<p>So now we had a password and a rar file but ofc it will not work for 600 points… so we have a non-working password and a rar file.</p>
 
-<p>We wasted almost 30 mins on figuring out why the password was not working and what’s wrong with obvious rar file.</p>
+<p>We wasted almost 30 mins on figuring out why the password was not working and what’s wrong with the obvious rar file.</p>
 
 <p>and then after we tried everything we started studying all the steps and files we got..</p>
 
-<p>and then I noticed something new….</p>
+<p>and then I noticed something new…</p>
 
 <p><img src="/assets/images/tid/18.png" alt="" /></p>
 
-<p>You see? these two files show similar trend of strings …</p>
+<p>Do you see it? these two files show a similar trend of strings …</p>
 
 <p>and after some more observation it was clear that this is also A RAR FILE !! but without propper header itself …. time for <em>header fixer guy</em> again XD.</p>
 
@@ -440,7 +440,7 @@ and gave a <code class="language-plaintext highlighter-rouge">mega file service 
 <p>and then we tried to extract this from <em>twitter guy’s</em> password <code class="language-plaintext highlighter-rouge">Password120</code></p>
 
 <p><img src="/assets/images/tid/21.png" alt="" />
-and DONE !! we saw one of the most beautiful message of that day …</p>
+and DONE !! we saw one of the most beautiful messages of that day …</p>
 
 <p><img src="/assets/images/tid/22.png" alt="" /></p>
 
@@ -450,14 +450,14 @@ and DONE !! we saw one of the most beautiful message of that day …</p>
 <p>And here you go :
 <img src="/assets/images/tid/23.png" alt="" /></p>
 
-<p>That’s all for this post … see ya in next one !</p>
+<p>That’s all for this post … see ya in the next one!</p>
 
-<p>in the mean time check other writeups from my teammates in our github repo.. <a href="https://github.com/FrigidSec/CTFWriteups">FrigidSec GitHub</a></p>
+<p>in the meantime check other writeups from my teammates in our GitHub repo.. <a href="https://github.com/FrigidSec/CTFWriteups">FrigidSec GitHub</a></p>
 
 <hr />
 
-<p>This chal. had significant ammount of header fixing, so if you are new to this check this article out on how to use vim to edit files in hexdecimal level. 
-<a href="/article/2020/08/16/use-VIM-as-HEX-Editor.html">Use VIM as HEX editor like a boss</a></p>
+<p>This chal. had a significant amount of header fixing, so if you are new to this check this article out on how to use vim to edit files in hexadecimal level. 
+<a href="https://saket-upadhyay.github.io/2020/08/16/use-VIM-as-HEX-Editor.html">Use VIM as HEX editor like a boss</a></p>
 
 <hr />
 
@@ -468,14 +468,14 @@ and DONE !! we saw one of the most beautiful message of that day …</p>
 <div class="post-tags">
   
     
-    <a href="/topics.html#ctf-writeups">
+    <a href="/topics.html#ctf-writeup">
     
       <span class="icon">
         <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
     <path d="M0 0h24v24H0z" fill="none"/>
     <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
 </svg>
-      </span>&nbsp;<span class="tag-name">CTF Writeups</span>
+      </span>&nbsp;<span class="tag-name">CTF Writeup</span>
     </a>
   
     
@@ -547,6 +547,15 @@ and DONE !! we saw one of the most beautiful message of that day …</p>
     
       <li>
         <h3>
+          <a href="/2020/08/18/sstf-vault-wtireup.html">
+            Samsung CTF App Reverse Eng. Writeup
+            <small>18 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/17/ascwg-check.html">
             ASCWG CTF Check Writeup
             <small>17 Aug 2020</small>
@@ -559,15 +568,6 @@ and DONE !! we saw one of the most beautiful message of that day …</p>
           <a href="/2020/08/16/use-VIM-as-HEX-Editor.html">
             Use VIM as HEX editor like a boss
             <small>16 Aug 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/08/15/Custom-Signature-PHP-Payloads.html">
-            Custom Signature PHP Payloads
-            <small>15 Aug 2020</small>
           </a>
         </h3>
       </li>

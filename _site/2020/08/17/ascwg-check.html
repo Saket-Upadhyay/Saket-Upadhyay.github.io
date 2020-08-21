@@ -310,27 +310,27 @@
 
   <div class="post-body">
     <div class="message">
-Writeup of Reverse Engineering Challenge of Arab Security Cyber WarGames.
+A writeup of Reverse Engineering Challenge of Arab Security Cyber WarGames.
 
 Points : 300
 </div>
 
 <h3 id="background">Background</h3>
-<p>Just a file <code class="language-plaintext highlighter-rouge">check</code> with no discription. Who gives discription for reverse challanges anyways?</p>
+<p>Just a file <code class="language-plaintext highlighter-rouge">check</code> with no description. Who gives a description of reverse challenges anyways?</p>
 
 <p>that being said let’s dive into writeup.</p>
 
-<p>This was fairly easy challange.</p>
+<p>This was a fairly easy challenge.</p>
 
 <h3 id="solving">Solving</h3>
 
-<p>First we just did <code class="language-plaintext highlighter-rouge">strings</code> but found nothing and will see why that’s the case with this chal later.</p>
+<p>First, we just did <code class="language-plaintext highlighter-rouge">strings</code> but found nothing and will see why that’s the case with this challenge later.</p>
 
-<h4 id="running-for-first-time">Running for first time</h4>
+<h4 id="running-for-the-first-time">Running for the first time</h4>
 
 <p><img src="/assets/images/check/1.png" alt="" /></p>
 
-<p>ok that being done let’s move to next part.</p>
+<p>ok that being done let’s move to the next part.</p>
 
 <h4 id="ida-static-analysis">IDA Static Analysis</h4>
 
@@ -338,21 +338,21 @@ Points : 300
 
 <p><img src="/assets/images/check/2.png" alt="" /></p>
 
-<p>here we can see lots of strings being stored in the stack. okay let’s trace more..</p>
+<p>here we can see lots of strings being stored in the stack. okay, let’s trace more…</p>
 
 <p><img src="/assets/images/check/3.png" alt="" /></p>
 
-<p>So now we see some new data being loaded to the stack and then passing at arguments to some function..</p>
+<p>So now we see some new data being loaded to the stack and then passing at arguments to some function…</p>
 
 <p><img src="/assets/images/check/4.png" alt="" /></p>
 
 <h4 id="the-xor-function">The XOR function</h4>
 <p><img src="" alt="" />
-So the above function is just an xor function which XORs the passed data with preset key, in our case <code class="language-plaintext highlighter-rouge">87h</code> which can be seen here :</p>
+So the above function is just a xor function which XORs the passed data with a preset key, in our case <code class="language-plaintext highlighter-rouge">87h</code> which can be seen here :</p>
 
 <p><img src="/assets/images/check/5.png" alt="" /></p>
 
-<p>yes i have renamed the variables to make it easy to understand..</p>
+<p>yes, I have renamed the variables to make it easy to understand…</p>
 
 <p>then the function returns back to main… so let’s follow…</p>
 
@@ -366,7 +366,7 @@ So the above function is just an xor function which XORs the passed data with pr
 
 <p>and all the functions are also simple like above.</p>
 
-<p>so let’s keep this in mind and moveon…</p>
+<p>so let’s keep this in mind and move on…</p>
 
 <h4 id="_getenv"><code class="language-plaintext highlighter-rouge">_getenv</code></h4>
 <p>this name is enough to understand what this is trying to do…</p>
@@ -380,13 +380,13 @@ So the above function is just an xor function which XORs the passed data with pr
 <ol>
   <li>Take DATA</li>
   <li>XOR with key</li>
-  <li>GET SYSTEM ENVIORNMENT VARIABLE with same decoded name</li>
+  <li>GET SYSTEM ENVIRONMENT VARIABLE with same decoded name</li>
   <li>then XOR one more value</li>
   <li>Check this value with the obtained value from envvar</li>
   <li>Do this for 2 different env. vars and if they match then show the flag.</li>
 </ol>
 
-<p>the flag is loaded as a chunk of data in the start, and yes it’s also XORed with <code class="language-plaintext highlighter-rouge">92h</code> as key.</p>
+<p>the flag is loaded as a chunk of data at the start, and yes it’s also XORed with <code class="language-plaintext highlighter-rouge">92h</code> as key.</p>
 
 <h4 id="get-the-flag">Get the flag.</h4>
 
@@ -394,7 +394,7 @@ So the above function is just an xor function which XORs the passed data with pr
 
 <ol>
   <li>Decode the env. var and values and then run the binary</li>
-  <li>Decode flag directly from stack</li>
+  <li>Decode flag directly from the stack</li>
   <li>JUST DO BINARY PATCHING AND CHANGE LAST 2 <code class="language-plaintext highlighter-rouge">if statement</code> to change the program flow</li>
 </ol>
 
@@ -479,7 +479,7 @@ So the above function is just an xor function which XORs the passed data with pr
 
 <span class="k">print</span><span class="p">()</span>
 </code></pre></div></div>
-<p>The above script will give you all the enviornment variables and the flag too as it is also XORed lol….</p>
+<p>The above script will give you all the environment variables and the flag too as it is also XORed lol…</p>
 
 <p><img src="/assets/images/check/7.png" alt="" /></p>
 
@@ -497,15 +497,15 @@ So the above function is just an xor function which XORs the passed data with pr
 
 <p><img src="/assets/images/check/10.png" alt="" /></p>
 
-<p>Binary patching can be intimidating for some… check these articles out for some idea and how to do it at basic level as you should be good to go for this one. :)</p>
+<p>Binary patching can be intimidating for some… check these articles out for some idea and how to do it at a basic level as you should be good to go for this one. :)</p>
 
-<p><a href="/article/2020/08/16/use-VIM-as-HEX-Editor.html">Use VIM as HEX editor like a boss</a></p>
+<p><a href="https://saket-upadhyay.github.io/2020/08/16/use-VIM-as-HEX-Editor.html">Use VIM as HEX editor like a boss</a></p>
 
-<p><a href="/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">Taking over a software by Instruction Rewriting.</a></p>
+<p><a href="https://saket-upadhyay.github.io/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">Taking over the software by Instruction Rewriting.</a></p>
 
 <h3 id="conclusion">Conclusion</h3>
 
-<p>So we have the flag in <code class="language-plaintext highlighter-rouge">base64</code> format, by any of the above method.</p>
+<p>So we have the flag in <code class="language-plaintext highlighter-rouge">base64</code> format, by any of the above methods.</p>
 
 <p>we just need to decode it and it’s pretty easy with is neat pipe trick:</p>
 
@@ -524,14 +524,14 @@ So the above function is just an xor function which XORs the passed data with pr
 <div class="post-tags">
   
     
-    <a href="/topics.html#ctf-writeups">
+    <a href="/topics.html#ctf-writeup">
     
       <span class="icon">
         <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
     <path d="M0 0h24v24H0z" fill="none"/>
     <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
 </svg>
-      </span>&nbsp;<span class="tag-name">CTF Writeups</span>
+      </span>&nbsp;<span class="tag-name">CTF Writeup</span>
     </a>
   
     
@@ -603,6 +603,15 @@ So the above function is just an xor function which XORs the passed data with pr
     
       <li>
         <h3>
+          <a href="/2020/08/18/sstf-vault-wtireup.html">
+            Samsung CTF App Reverse Eng. Writeup
+            <small>18 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/17/ascwg-impossible-dream.html">
             ASCWG CTF Impossible Dream Writeup
             <small>17 Aug 2020</small>
@@ -615,15 +624,6 @@ So the above function is just an xor function which XORs the passed data with pr
           <a href="/2020/08/16/use-VIM-as-HEX-Editor.html">
             Use VIM as HEX editor like a boss
             <small>16 Aug 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/08/15/Custom-Signature-PHP-Payloads.html">
-            Custom Signature PHP Payloads
-            <small>15 Aug 2020</small>
           </a>
         </h3>
       </li>

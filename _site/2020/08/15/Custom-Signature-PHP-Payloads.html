@@ -310,26 +310,26 @@
 
   <div class="post-body">
     <div class="message">
-Easily generating PHP Payloads with Custom file signatures to bypass input sanitisation
+Easily generating PHP Payloads with Custom file signatures to bypass input sanitization
 </div>
 
 <p><img src="/assets/images/cpngh/h2.png" alt="" /></p>
 
 <h3 id="what-is-this">What is this?</h3>
-<p>A tip on bypassing input sanitation by changing payload signature.
-This process is generally done in packet analyser or proxy application like burp but this can be done easily without that.
+<p>A tip on bypassing input sanitation by changing the payload signature.
+This process is generally done in packet analyzer or proxy application like burp but this can be done easily without that.
 We will look into two basic ways to achieve this.</p>
 
 <h3 id="why-this-works">Why this works?</h3>
-<p>PHP generally start interpreting the script whereever <code class="language-plaintext highlighter-rouge">&lt;?php</code> tag starts so anything gibberish preceding that will not be executed and that’s good news for us as we can now append the payload after some file descripters so that meta data of the file will show whatever we want it to show but it will still be a valid PHP script.</p>
+<p>PHP generally start interpreting the script wherever <code class="language-plaintext highlighter-rouge">&lt;?php</code> tag starts so anything gibberish preceding that will not be executed and that’s good news for us as we can now append the payload after some file descriptors so that metadata of the file will show whatever we want it to show but it will still be a valid PHP script.</p>
 
 <h3 id="methods">Methods</h3>
 
 <h4 id="python-script">Python script</h4>
 
-<p>Don’t worry I have done the hard work for you, you just need to prepare your payload, we will put burden of signature management to script.</p>
+<p>Don’t worry I have done the hard work for you, you just need to prepare your payload, we will put the burden of signature management to a script.</p>
 
-<p>Actually this is small project where I am colleting some of the commonly used file signatures from real files (not the internet and file format wikis) this should give all the payload more convincing results.</p>
+<p>Actually this is a small project where I am collecting some of the commonly used file signatures from real files (not the internet and file format wikis) this should give all the payload more convincing results.</p>
 
 <p>You can get the project from GitHub <a href="https://github.com/Saket-Upadhyay/CustomPhpPayloadSignature">HERE</a></p>
 
@@ -342,7 +342,7 @@ As simple as</p>
 <p>this will create PHP payload <code class="language-plaintext highlighter-rouge">&lt;?php system($_GET['cmd']);?&gt;</code> with PNG signature. this is one of the commonly  known tricks to bypass most of the basic image upload scenarios.
 <img src="/assets/images/cpngh/cupps.png" alt="" /></p>
 
-<p>All the available signatures can be seen by <code class="language-plaintext highlighter-rouge">-h</code> parameter.</p>
+<p>All the available signatures can be seen by the <code class="language-plaintext highlighter-rouge">-h</code> parameter.</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python cupps.py <span class="nt">-h</span>
 
@@ -359,7 +359,7 @@ optional arguments:
 
 </code></pre></div></div>
 <blockquote>
-  <p>NOTE: This is active project as of 15-08-2020 and I am trying to add more signatures to it so feel free to contribute.</p>
+  <p>NOTE: This is an active project as of 15-08-2020 and I am trying to add more signatures to it so feel free to contribute.</p>
 </blockquote>
 
 <p><strong><em>By appending output of <code class="language-plaintext highlighter-rouge">cat</code></em></strong></p>
@@ -377,16 +377,16 @@ optional arguments:
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>payload.php <span class="o">&gt;&gt;</span>exploit.php.png
 </code></pre></div></div>
-<p>This will append the payload to the file with existing image header.</p>
+<p>This will append the payload to the file with an existing image header.</p>
 
 <p><img src="/assets/images/cpngh/bt.png" alt="" /></p>
 
 <p>And that would just do it.</p>
 
 <h3 id="conclusion">Conclusion</h3>
-<p>Well, that’s it for this article. See ya in next one!</p>
+<p>Well, that’s it for this article. See ya in the next one!</p>
 
-<p>Till then stay caffenated enough !</p>
+<p>Till then stay caffeinated enough!</p>
 
 <p>–</p>
 
@@ -465,6 +465,15 @@ optional arguments:
     
       <li>
         <h3>
+          <a href="/2020/08/18/sstf-vault-wtireup.html">
+            Samsung CTF App Reverse Eng. Writeup
+            <small>18 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/17/ascwg-impossible-dream.html">
             ASCWG CTF Impossible Dream Writeup
             <small>17 Aug 2020</small>
@@ -477,15 +486,6 @@ optional arguments:
           <a href="/2020/08/17/ascwg-check.html">
             ASCWG CTF Check Writeup
             <small>17 Aug 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/08/16/use-VIM-as-HEX-Editor.html">
-            Use VIM as HEX editor like a boss
-            <small>16 Aug 2020</small>
           </a>
         </h3>
       </li>

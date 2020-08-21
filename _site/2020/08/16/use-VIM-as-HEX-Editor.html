@@ -315,20 +315,20 @@ VIM's already OP. Here's how to do more.
 
 <h3 id="background">Background</h3>
 
-<p>VIM in itself is pretty powerful text editor, and the fact we can integrate this with other programs and scripts make it stronger.</p>
+<p>VIM in itself is a pretty powerful text editor, and the fact we can integrate this with other programs and scripts makes it stronger.</p>
 
-<p>In this article I want to share one such trick i learned recently to combine <code class="language-plaintext highlighter-rouge">vim</code> and <code class="language-plaintext highlighter-rouge">xxd</code> to edit a file at hex level.
-This actually helps a lot in situations where we want quick fix to something, let it be minor binary patching or some file header repair.</p>
+<p>In this article, I want to share one such trick I learned recently to combine <code class="language-plaintext highlighter-rouge">vim</code> and <code class="language-plaintext highlighter-rouge">xxd</code> to edit a file at hex level.
+This actually helps a lot in situations where we want a quick fix to something, let it be minor binary patching or some file header repair.</p>
 
 <h3 id="xxd">xxd</h3>
-<p>xxd creates a hex dump of a given file or standard input.  It can also convert a hex dump back to its original binary form.  Like  uuencode and  uudecode(1)  it allows the transmission of binary data in a ‘mail-safe’ ASCII representation, but has the advantage of decoding to  standard output.
+<p>xxd creates a hex dump of a given file or standard input.  It can also convert a hex dump back to its original binary form.  Like, uuencode and uudecode(1)  it allows the transmission of binary data in a ‘mail-safe’ ASCII representation but has the advantage of decoding to standard output.
 Moreover, it can be used to perform binary file patching.</p>
 
-<p><code class="language-plaintext highlighter-rouge">xxd &lt;filename&gt;</code> will give us hex dump of the file and <code class="language-plaintext highlighter-rouge">xxd -r &lt;hexdump&gt;</code> will recurect the file back from hexdump and these are the two properties we will use with vim to edit file in vim in its hex rep.</p>
+<p><code class="language-plaintext highlighter-rouge">xxd &lt;filename&gt;</code> will give us hex dump of the file and <code class="language-plaintext highlighter-rouge">xxd -r &lt;hexdump&gt;</code> will resurrect the file back from hexdump and these are the two properties we will use with vim to edit the file in vim in its hex rep.</p>
 
-<h3 id="how-to-">How to ?</h3>
+<h3 id="how-to">How to?</h3>
 <blockquote>
-  <p>In this we will use executable file with name <strong><em>executable</em></strong>
+  <p>In this we will use the executable file with name <strong><em>executable</em></strong>
 you can change this to your target file</p>
 </blockquote>
 
@@ -342,7 +342,7 @@ you can change this to your target file</p>
 <p><code class="language-plaintext highlighter-rouge">: %!xxd</code></p>
 
 <p><img src="/assets/images/vim/2.png" alt="" />
-this will convert the file to hex rep.</p>
+this will convert the file to the hex rep.</p>
 
 <p><img src="/assets/images/vim/3.png" alt="" /></p>
 
@@ -352,15 +352,15 @@ this will convert the file to hex rep.</p>
 <p><code class="language-plaintext highlighter-rouge">/837d fc00 752a</code></p>
 
 <p><img src="/assets/images/vim/4.png" alt="" />
-Here I am searching for <code class="language-plaintext highlighter-rouge">752a</code> opcode which I want to patch in this case, in short <code class="language-plaintext highlighter-rouge">75 = JNE</code> and <code class="language-plaintext highlighter-rouge">74 = JE</code> so this will change flow of control in the application.</p>
+Here I am searching for <code class="language-plaintext highlighter-rouge">752a</code> opcode which I want to patch in this case, in short, <code class="language-plaintext highlighter-rouge">75 = JNE</code> and <code class="language-plaintext highlighter-rouge">74 = JE</code> so this will change the flow of control in the application.</p>
 
-<p>to know more about this check my <a href="/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">Taking over a software by Instruction Rewriting.</a> article.</p>
+<p>to know more about this check my <a href="/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">Taking over the software by Instruction Rewriting.</a> article.</p>
 
 <p>Now as we have the pattern we can just change the opcode <code class="language-plaintext highlighter-rouge">75</code> to <code class="language-plaintext highlighter-rouge">74</code></p>
 
 <p><img src="/assets/images/vim/5.png" alt="" /></p>
 
-<h4 id="reverse-the-hex-dump-into-binary-file">Reverse the HEX-dump into binary file</h4>
+<h4 id="reverse-the-hex-dump-into-the-binary-file">Reverse the HEX-dump into the binary file</h4>
 <p>again in vim command, type,</p>
 
 <p><code class="language-plaintext highlighter-rouge">:%!xxd -r</code></p>
@@ -375,13 +375,13 @@ this will convert it back to binary
 <p>is all it takes to complete the process.</p>
 
 <h3 id="conclusion">Conclusion</h3>
-<p>We have edited the file at hex level !</p>
+<p>We have edited the file at the hex level!</p>
 
-<p>here is the quick check for above <code class="language-plaintext highlighter-rouge">executable</code>, the file was <code class="language-plaintext highlighter-rouge">ELF x64 executable</code> duh! hence the name :-)</p>
+<p>here is the quick check for the above <code class="language-plaintext highlighter-rouge">executable</code>, the file was <code class="language-plaintext highlighter-rouge">ELF x64 executable</code> duh! hence the name :-)</p>
 
 <p><img src="/assets/images/vim/8.png" alt="" /></p>
 
-<p>The first execution is before patching and the second is after the patch..</p>
+<p>The first execution is before patching and the second is after the patch…</p>
 
 <p>Well, at this point the article is over but if you are curious about what we exactly did above here it is …</p>
 
@@ -411,9 +411,9 @@ this will convert it back to binary
 
 <p>in simple term converting <code class="language-plaintext highlighter-rouge">if(x == 0)</code> to <code class="language-plaintext highlighter-rouge">if(x != 0)</code> statement.</p>
 
-<p>But as it said earlier, check out  <a href="/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">Taking over a software by Instruction Rewriting.</a> article.</p>
+<p>But as it said earlier, check out  <a href="/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">Taking over the software by Instruction Rewriting.</a> article.</p>
 
-<p>See ya in the next one !</p>
+<p>See ya in the next one!</p>
 
 <hr />
 
@@ -492,6 +492,15 @@ this will convert it back to binary
     
       <li>
         <h3>
+          <a href="/2020/08/18/sstf-vault-wtireup.html">
+            Samsung CTF App Reverse Eng. Writeup
+            <small>18 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/17/ascwg-impossible-dream.html">
             ASCWG CTF Impossible Dream Writeup
             <small>17 Aug 2020</small>
@@ -504,15 +513,6 @@ this will convert it back to binary
           <a href="/2020/08/17/ascwg-check.html">
             ASCWG CTF Check Writeup
             <small>17 Aug 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/08/15/Custom-Signature-PHP-Payloads.html">
-            Custom Signature PHP Payloads
-            <small>15 Aug 2020</small>
           </a>
         </h3>
       </li>
