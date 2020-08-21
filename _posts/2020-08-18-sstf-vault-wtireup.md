@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Samsung CTF App Reverse Eng. Writeup 
+title: Samsung CTF App Reverse Eng. Writeup (Detailed)
 tags:
   - CTF Writeup
   - CTF
@@ -16,6 +16,9 @@ Solves : 15
 </div>
 
 ### Background
+
+![](/assets/images/sctf/banner.png)
+
 I took part in Samsung's CTF event and tried to do some reverse engineering challenges, I was able to solve one but the sad part is i got the flag 1 min. after timeout so the points were not added :(
 
 Anyways this post is about my approach to the solution and the things learned from the challenge, so let's get into that.
