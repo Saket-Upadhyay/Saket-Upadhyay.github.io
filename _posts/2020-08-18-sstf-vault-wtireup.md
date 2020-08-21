@@ -21,19 +21,19 @@ I took part in Samsung's CTF event and tried to do some reverse engineering chal
 Anyways this post is about my approach to the solution and the things learned from the challenge, so let's get into that.
 
 
-### What we get as question.
+### What we get as a question.
 A file named `Vault101.0.1-release.apk` and a banner saying `Can you get the password?`
 
 #### Brief 
-The main goal of this challenge is `Security in obsecurity is not enough` and we will get to know this as this application is heavily obfuscated and encrypted. But the weakness being once you understand the working and decode the obfuscation the data and the key is hardcoded and is not being obtained by some server or keystore.
+The main goal of this challenge is `Security in obscurity is not enough` and we will get to know this as this application is heavily obfuscated and encrypted. But the weakness being once you understand the working and decode the obfuscation the data and the key is hardcoded and are not being obtained by some server or Keystore.
 
-That being said let's get into analysis. My approach in this is majorly Static Analysis and we will be using some custom scripts to recreate encryption algorithms. So this is gonna be long and detailed, I also wrote a smaller and compat version on Medium for all the people who don't have enough time in life. [READ IT HERE IF YOU ARE ONE OF THEM](https://medium.com/@saketupadhyay/vault-101-samsung-ctf-android-reverse-engineering-challenge-write-up-d5a2b16a9212)
+That being said let's get into the analysis. My approach in this is majorly Static Analysis and we will be using some custom scripts to recreate encryption algorithms. So this is gonna be long and detailed, I also wrote a smaller and compact version on Medium for all the people who don't have enough time in life. [READ IT HERE IF YOU ARE ONE OF THEM](https://medium.com/@saketupadhyay/vault-101-samsung-ctf-android-reverse-engineering-challenge-write-up-d5a2b16a9212)
 
 ### Decompilation and Initial Analysis 
 ![](/assets/images/sctf/ldt.jpg)
-We can decompile the application via anything we feel comfortable with, I chose `JADX` as this gives reasonable java code for the android application with usable directory structure.
+We can decompile the application via anything we feel comfortable with, I chose `JADX` as this gives reasonable java code for the android application with the usable directory structure.
 
-After decompilation the first step is pretty ususal for everone i think and that is _finding the Main.java_ file as this is usually responsible for initial code of the application _(and complication_
+After decompilation, the first step is pretty usual for everyone I think and that is _finding the Main.java_ file as this is usually responsible for initial code of the application _(and complication_
 
 So after decompilation we got the following structure and it's generally easy to find the `Main.java` at `./source/com/vendorname/.../Main.java` and that works here too as we are greeted with the files below :
 We found ours at `sources/com/sctf2020/vault101/`
@@ -123,7 +123,7 @@ Check out this part :
 
 So when we get `true` from `boolean function this.s.a()` we say password is accepted.
 
-Also note that you won't find any `s\a.java` in the folder structure, because see this :
+Also note that you won't find any `s\a.java` in the folder structure because see this :
 
 ```java
 public volatile b.c.a.b s;
@@ -131,13 +131,13 @@ public volatile b.c.a.b s;
 
 It's actually `b.c.a.b.a()` .
 
-So let's go analyse all these crazy functions...
+So let's go analyze all these crazy functions...
 
 ### Deep Analysis and Finding Obfuscation
 
 ![](/assets/images/sctf/deep.jpg)
-Let's analyse all the functions, plan is simple we will go branch by branch, i.e. : 
-> first analysise function X and if it calls Y we will go and check Y and come back when it returns.
+Let's analyze all the functions, the plan is simple we will go branch by branch, i.e. : 
+> first analysis function X and if it calls Y we will go and check Y and come back when it returns.
 
 So back to our class `b.c.a.b`'s function `a()` :
 
@@ -242,7 +242,7 @@ Now this is `function a()` of extended `a()` in `VaultService.java` so let's che
   boolean a2 = a(parcel.readString());
 ```
 
-So let's have a look on `VaultService.java`
+So let's have a look at `VaultService.java`
 
 ```java
 package com.sctf2020.vault101;
@@ -302,7 +302,7 @@ public class VaultService extends Service {
 }
 ```
 
-And yes, that's where actual headache starts ! All the above class is encoded... but we see some significant leads, and here they are :
+And yes, that's where the actual headache starts! All the above class is encoded... but we see some significant leads, and here they are :
 
 * This includes b.c.a.a class
 * We have multiple instance of `Class.forName()`, `invoke()` and `.getMethod()` calls
@@ -310,7 +310,7 @@ And yes, that's where actual headache starts ! All the above class is encoded...
 
 #### GetMethod(), Class.forName() and Invoke()
 
-On searching in java Docs (yes it exists) we can see that the `GetClass()` will actually do what it says.... gets the class by name and it is same for others.
+On searching in java Docs (yes it exists) we can see that the `GetClass()` will actually do what it says.... gets the class by name and it is the same for others.
 
 SO HERE'S THE DEAL :
 
@@ -326,9 +326,9 @@ OKAY now let's check `d()`.
 
 #### Custom encryption in the app.
 
-so basically the `c.java` is the class responsible for all general encryption in the app. It's main source of the obfuscation in all the major library calls.
+so basically the `c.java` is the class responsible for all general encryption in the app. It's the main source of the obfuscation in all the major library calls.
 
-Let's C `C.java` hehe you saw what i did there.
+Let's C `C.java` hehe you saw what I did there.
 
 ```java
 package b.c.a;
@@ -406,7 +406,7 @@ public class VaultApplication extends Application {
 ```
 
 
-Okay we as it's not dynamic so we can skip this class and hardcode the value for `f823a` in our recreation of this algo.
+Okay we as it's not dynamic so we can skip this class and hardcode the value for `f823a` in our recreation of this algorithm
 
 ### Recreating the Algo for de-obfuscation
 ![](/assets/images/sctf/start.jpg)
@@ -493,9 +493,9 @@ which actually is nothing but this ->
 Cipher AESCBC = Cipher.getInstance("AES/CBC/PKCS5Padding");
 ```
 
-So we are getting some code afterall huh ? NOICE !!
+So we are getting some code after all huh? NOICE !!
 ![](/assets/images/sctf/noice.gif)
-So as we are not doing via dynamic approach, we have to decode all the `d()` calls like this .... Don't worry i will do it for ya, just a sec, till then you can grab some coffee 'cause nect part is actually amusingly simple :)
+So as we are not doing via dynamic approach, we have to decode all the `d()` calls like this... Don't worry I will do it for ya, just a sec, till then you can grab some coffee 'cause next part is actually amusingly simple :)
 
 ### De-Obfuscaton and Code Cleaning
 ![](/assets/images/sctf/clean.jpeg)
@@ -633,9 +633,9 @@ return;
 
 I have commented the above code so we don't have to explain all again here, okay the new thing here is `class.getDeclaredFields[0].set()` call,
 
-this is actually easy, `getDeclaredFields` will return list of all declared vars in the class, we select the first one via `[0]` and then we use `set()` to change its value.
+this is actually easy, `getDeclaredFields` will return a list of all declared vars in the class, we select the first one via `[0]` and then we use `set()` to change its value.
 
-> java is actually like progamming in drunken english.
+> java is actually like programming in drunken English.
 
 Now moving on and getting the flag.
 
@@ -751,12 +751,12 @@ return null;}}
 
 ```
 
-Executing the above code will give us our love of CTFs : `SCTF{53CUr17Y_7Hr0U6H_085CUr17Y_15_N07_3N0U6H}`
+Executing the above code will give us our love of CTFs: `SCTF{53CUr17Y_7Hr0U6H_085CUr17Y_15_N07_3N0U6H}`
 
 ![](/assets/images/sctf/2.png)
 ![](/assets/images/sctf/final.jpg)
-PHEW ! That's all for this one.. see ya all in next one.
+PHEW! That's all for this one.. see ya all in the next one.
 
-And you know the drill right? Till then .... Stay Caffinenated Enough!
+And you know the drill right? Till then... Stay Caffinenated Enough!
 
 ---
