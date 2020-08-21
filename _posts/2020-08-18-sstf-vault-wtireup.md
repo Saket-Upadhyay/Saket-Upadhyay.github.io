@@ -136,6 +136,7 @@ So let's go analyze all these crazy functions...
 ### Deep Analysis and Finding Obfuscation
 
 ![](/assets/images/sctf/deep.jpg)
+
 Let's analyze all the functions, the plan is simple we will go branch by branch, i.e. : 
 > first analysis function X and if it calls Y we will go and check Y and come back when it returns.
 
@@ -409,7 +410,9 @@ public class VaultApplication extends Application {
 Okay we as it's not dynamic so we can skip this class and hardcode the value for `f823a` in our recreation of this algorithm
 
 ### Recreating the Algo for de-obfuscation
+
 ![](/assets/images/sctf/start.jpg)
+
 _I really hope de-obfuscation is valid techinical term_
 
 
@@ -494,11 +497,15 @@ Cipher AESCBC = Cipher.getInstance("AES/CBC/PKCS5Padding");
 ```
 
 So we are getting some code after all huh? NOICE !!
+
 ![](/assets/images/sctf/noice.gif)
+
 So as we are not doing via dynamic approach, we have to decode all the `d()` calls like this... Don't worry I will do it for ya, just a sec, till then you can grab some coffee 'cause next part is actually amusingly simple :)
 
 ### De-Obfuscaton and Code Cleaning
+
 ![](/assets/images/sctf/clean.jpeg)
+
 Okay, so these are the java files after processing :
 
 **b/c/a/a.java**
@@ -754,7 +761,9 @@ return null;}}
 Executing the above code will give us our love of CTFs: `SCTF{53CUr17Y_7Hr0U6H_085CUr17Y_15_N07_3N0U6H}`
 
 ![](/assets/images/sctf/2.png)
+
 ![](/assets/images/sctf/final.jpg)
+
 PHEW! That's all for this one.. see ya all in the next one.
 
 And you know the drill right? Till then... Stay Caffinenated Enough!
