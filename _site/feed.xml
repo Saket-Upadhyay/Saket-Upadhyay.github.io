@@ -1,4 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-08-21T10:40:52+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Saket Upadhyay</title><subtitle>Cybersecurity Student. Security Researcher Wannabe. </subtitle><author><name>Saket Upadhyay</name></author><entry><title type="html">Samsung CTF App Reverse Eng. Writeup</title><link href="http://localhost:4000/2020/08/18/sstf-vault-wtireup.html" rel="alternate" type="text/html" title="Samsung CTF App Reverse Eng. Writeup" /><published>2020-08-18T00:00:00+05:30</published><updated>2020-08-18T00:00:00+05:30</updated><id>http://localhost:4000/2020/08/18/sstf-vault-wtireup</id><content type="html" xml:base="http://localhost:4000/2020/08/18/sstf-vault-wtireup.html">&lt;div class=&quot;message&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-08-25T22:12:11+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Saket Upadhyay</title><subtitle>Cybersecurity Student. Security Researcher Wannabe. </subtitle><author><name>Saket Upadhyay</name></author><entry><title type="html">Intro to Unity Game Hacking (via CTF Writeup)</title><link href="http://localhost:4000/2020/08/23/hacking-unity-games-ctf.html" rel="alternate" type="text/html" title="Intro to Unity Game Hacking (via CTF Writeup)" /><published>2020-08-23T00:00:00+05:30</published><updated>2020-08-23T00:00:00+05:30</updated><id>http://localhost:4000/2020/08/23/hacking-unity-games-ctf</id><content type="html" xml:base="http://localhost:4000/2020/08/23/hacking-unity-games-ctf.html">&lt;div class=&quot;message&quot;&gt;
+Exploring Unity Game Security
+
+A writeup of Misc. Challange of PhantomCTF Unity Game Hack Challenge
+Points : 650
+&lt;/div&gt;
+
+&lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
+&lt;p&gt;As a part of #FrigidSec I participated in PhantomCTF where they made a very simple Unity Based Game for us to crack.&lt;/p&gt;
+
+&lt;p&gt;It looks like Angrybirds inspired, we need to kill the stacked up enimies to win the game and get the flag.&lt;/p&gt;
+
+&lt;p&gt;But here’s the catch : Hiting the Pigs will not decrease the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Health Value&lt;/code&gt; as we need to somehow hack that.&lt;/p&gt;
+
+&lt;h3 id=&quot;unity-binary-basics&quot;&gt;Unity Binary Basics&lt;/h3&gt;
+
+&lt;h4 id=&quot;official-docs&quot;&gt;Official Docs&lt;/h4&gt;
+
+&lt;h4 id=&quot;dependency-structure&quot;&gt;Dependency Structure&lt;/h4&gt;
+
+&lt;h3 id=&quot;analysing-visual-c-libraries&quot;&gt;Analysing Visual C++ Libraries&lt;/h3&gt;
+
+&lt;h3 id=&quot;getting-flag-of-this-challenge&quot;&gt;Getting flag of this challenge&lt;/h3&gt;
+
+&lt;h3 id=&quot;what-we-learn-from-this-and-baseline-for-future-posts&quot;&gt;What we learn from this and baseline for future posts.&lt;/h3&gt;
+
+&lt;p&gt;In future posts I plan to Explore more about this dependency and structure and how we can exploit this in different ways.&lt;/p&gt;
+
+&lt;p&gt;And also the ways to avoid this and try to create more robust games.&lt;/p&gt;
+
+&lt;h3 id=&quot;invitation-for-colaboration&quot;&gt;Invitation for Colaboration&lt;/h3&gt;
+
+&lt;p&gt;I am no GameDeveloper&lt;/p&gt;
+
+&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="CTF Writeup" /><category term="CTF" /><category term="FrigidSec" /><category term="Game Hacking" /><summary type="html">Exploring Unity Game Security</summary></entry><entry><title type="html">Samsung CTF App Reverse Eng. Writeup (Detailed)</title><link href="http://localhost:4000/2020/08/18/sstf-vault-wtireup.html" rel="alternate" type="text/html" title="Samsung CTF App Reverse Eng. Writeup (Detailed)" /><published>2020-08-18T00:00:00+05:30</published><updated>2020-08-18T00:00:00+05:30</updated><id>http://localhost:4000/2020/08/18/sstf-vault-wtireup</id><content type="html" xml:base="http://localhost:4000/2020/08/18/sstf-vault-wtireup.html">&lt;div class=&quot;message&quot;&gt;
 A writeup of Reverse Engineering Challenge of Samsung CTF &quot;Hacker's Playground 2020&quot;
 &lt;br /&gt;
 Points : 500
@@ -7,23 +41,26 @@ Solves : 15
 &lt;/div&gt;
 
 &lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/sctf/banner.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
 &lt;p&gt;I took part in Samsung’s CTF event and tried to do some reverse engineering challenges, I was able to solve one but the sad part is i got the flag 1 min. after timeout so the points were not added :(&lt;/p&gt;
 
 &lt;p&gt;Anyways this post is about my approach to the solution and the things learned from the challenge, so let’s get into that.&lt;/p&gt;
 
-&lt;h3 id=&quot;what-we-get-as-question&quot;&gt;What we get as question.&lt;/h3&gt;
+&lt;h3 id=&quot;what-we-get-as-a-question&quot;&gt;What we get as a question.&lt;/h3&gt;
 &lt;p&gt;A file named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Vault101.0.1-release.apk&lt;/code&gt; and a banner saying &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Can you get the password?&lt;/code&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;brief&quot;&gt;Brief&lt;/h4&gt;
-&lt;p&gt;The main goal of this challenge is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Security in obsecurity is not enough&lt;/code&gt; and we will get to know this as this application is heavily obfuscated and encrypted. But the weakness being once you understand the working and decode the obfuscation the data and the key is hardcoded and is not being obtained by some server or keystore.&lt;/p&gt;
+&lt;p&gt;The main goal of this challenge is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Security in obscurity is not enough&lt;/code&gt; and we will get to know this as this application is heavily obfuscated and encrypted. But the weakness being once you understand the working and decode the obfuscation the data and the key is hardcoded and are not being obtained by some server or Keystore.&lt;/p&gt;
 
-&lt;p&gt;That being said let’s get into analysis. My approach in this is majorly Static Analysis and we will be using some custom scripts to recreate encryption algorithms. So this is gonna be long and detailed, I also wrote a smaller and compat version on Medium for all the people who don’t have enough time in life. &lt;a href=&quot;https://medium.com/@saketupadhyay/vault-101-samsung-ctf-android-reverse-engineering-challenge-write-up-d5a2b16a9212&quot;&gt;READ IT HERE IF YOU ARE ONE OF THEM&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;That being said let’s get into the analysis. My approach in this is majorly Static Analysis and we will be using some custom scripts to recreate encryption algorithms. So this is gonna be long and detailed, I also wrote a smaller and compact version on Medium for all the people who don’t have enough time in life. &lt;a href=&quot;https://medium.com/@saketupadhyay/vault-101-samsung-ctf-android-reverse-engineering-challenge-write-up-d5a2b16a9212&quot;&gt;READ IT HERE IF YOU ARE ONE OF THEM&lt;/a&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;decompilation-and-initial-analysis&quot;&gt;Decompilation and Initial Analysis&lt;/h3&gt;
 &lt;p&gt;&lt;img src=&quot;/assets/images/sctf/ldt.jpg&quot; alt=&quot;&quot; /&gt;
-We can decompile the application via anything we feel comfortable with, I chose &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JADX&lt;/code&gt; as this gives reasonable java code for the android application with usable directory structure.&lt;/p&gt;
+We can decompile the application via anything we feel comfortable with, I chose &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JADX&lt;/code&gt; as this gives reasonable java code for the android application with the usable directory structure.&lt;/p&gt;
 
-&lt;p&gt;After decompilation the first step is pretty ususal for everone i think and that is &lt;em&gt;finding the Main.java&lt;/em&gt; file as this is usually responsible for initial code of the application &lt;em&gt;(and complication&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;After decompilation, the first step is pretty usual for everyone I think and that is &lt;em&gt;finding the Main.java&lt;/em&gt; file as this is usually responsible for initial code of the application &lt;em&gt;(and complication&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;So after decompilation we got the following structure and it’s generally easy to find the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Main.java&lt;/code&gt; at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;./source/com/vendorname/.../Main.java&lt;/code&gt; and that works here too as we are greeted with the files below :
 We found ours at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sources/com/sctf2020/vault101/&lt;/code&gt;&lt;/p&gt;
@@ -111,21 +148,22 @@ Check out this part :&lt;/p&gt;
 
 &lt;p&gt;So when we get &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt; from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;boolean function this.s.a()&lt;/code&gt; we say password is accepted.&lt;/p&gt;
 
-&lt;p&gt;Also note that you won’t find any &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;s\a.java&lt;/code&gt; in the folder structure, because see this :&lt;/p&gt;
+&lt;p&gt;Also note that you won’t find any &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;s\a.java&lt;/code&gt; in the folder structure because see this :&lt;/p&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;It’s actually &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;b.c.a.b.a()&lt;/code&gt; .&lt;/p&gt;
 
-&lt;p&gt;So let’s go analyse all these crazy functions…&lt;/p&gt;
+&lt;p&gt;So let’s go analyze all these crazy functions…&lt;/p&gt;
 
 &lt;h3 id=&quot;deep-analysis-and-finding-obfuscation&quot;&gt;Deep Analysis and Finding Obfuscation&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/sctf/deep.jpg&quot; alt=&quot;&quot; /&gt;
-Let’s analyse all the functions, plan is simple we will go branch by branch, i.e. :&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/sctf/deep.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s analyze all the functions, the plan is simple we will go branch by branch, i.e. :&lt;/p&gt;
 &lt;blockquote&gt;
-  &lt;p&gt;first analysise function X and if it calls Y we will go and check Y and come back when it returns.&lt;/p&gt;
+  &lt;p&gt;first analysis function X and if it calls Y we will go and check Y and come back when it returns.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;So back to our class &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;b.c.a.b&lt;/code&gt;’s function &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a()&lt;/code&gt; :&lt;/p&gt;
@@ -225,7 +263,7 @@ Let’s analyse all the functions, plan is simple we will go branch by branch, i
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parcel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;readString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;So let’s have a look on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;VaultService.java&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;So let’s have a look at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;VaultService.java&lt;/code&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sctf2020&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;vault101&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 
@@ -284,7 +322,7 @@ Let’s analyse all the functions, plan is simple we will go branch by branch, i
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;And yes, that’s where actual headache starts ! All the above class is encoded… but we see some significant leads, and here they are :&lt;/p&gt;
+&lt;p&gt;And yes, that’s where the actual headache starts! All the above class is encoded… but we see some significant leads, and here they are :&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;This includes b.c.a.a class&lt;/li&gt;
@@ -294,7 +332,7 @@ Let’s analyse all the functions, plan is simple we will go branch by branch, i
 
 &lt;h4 id=&quot;getmethod-classforname-and-invoke&quot;&gt;GetMethod(), Class.forName() and Invoke()&lt;/h4&gt;
 
-&lt;p&gt;On searching in java Docs (yes it exists) we can see that the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GetClass()&lt;/code&gt; will actually do what it says…. gets the class by name and it is same for others.&lt;/p&gt;
+&lt;p&gt;On searching in java Docs (yes it exists) we can see that the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GetClass()&lt;/code&gt; will actually do what it says…. gets the class by name and it is the same for others.&lt;/p&gt;
 
 &lt;p&gt;SO HERE’S THE DEAL :&lt;/p&gt;
 
@@ -312,9 +350,9 @@ I am actually doing : &lt;strong&gt;System.out.println(“HELLO WORLD”);&lt;/s
 
 &lt;h4 id=&quot;custom-encryption-in-the-app&quot;&gt;Custom encryption in the app.&lt;/h4&gt;
 
-&lt;p&gt;so basically the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;c.java&lt;/code&gt; is the class responsible for all general encryption in the app. It’s main source of the obfuscation in all the major library calls.&lt;/p&gt;
+&lt;p&gt;so basically the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;c.java&lt;/code&gt; is the class responsible for all general encryption in the app. It’s the main source of the obfuscation in all the major library calls.&lt;/p&gt;
 
-&lt;p&gt;Let’s C &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C.java&lt;/code&gt; hehe you saw what i did there.&lt;/p&gt;
+&lt;p&gt;Let’s C &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C.java&lt;/code&gt; hehe you saw what I did there.&lt;/p&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
@@ -389,11 +427,13 @@ I am actually doing : &lt;strong&gt;System.out.println(“HELLO WORLD”);&lt;/s
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Okay we as it’s not dynamic so we can skip this class and hardcode the value for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;f823a&lt;/code&gt; in our recreation of this algo.&lt;/p&gt;
+&lt;p&gt;Okay we as it’s not dynamic so we can skip this class and hardcode the value for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;f823a&lt;/code&gt; in our recreation of this algorithm&lt;/p&gt;
 
 &lt;h3 id=&quot;recreating-the-algo-for-de-obfuscation&quot;&gt;Recreating the Algo for de-obfuscation&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&quot;/assets/images/sctf/start.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;em&gt;I really hope de-obfuscation is valid techinical term&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/sctf/start.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;I really hope de-obfuscation is valid techinical term&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;So this is simple and here is my implementation for it:&lt;/p&gt;
 
@@ -471,13 +511,17 @@ I am actually doing : &lt;strong&gt;System.out.println(“HELLO WORLD”);&lt;/s
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nc&quot;&gt;Cipher&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;AESCBC&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cipher&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;AES/CBC/PKCS5Padding&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;So we are getting some code afterall huh ? NOICE !!
-&lt;img src=&quot;/assets/images/sctf/noice.gif&quot; alt=&quot;&quot; /&gt;
-So as we are not doing via dynamic approach, we have to decode all the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;d()&lt;/code&gt; calls like this …. Don’t worry i will do it for ya, just a sec, till then you can grab some coffee ‘cause nect part is actually amusingly simple :)&lt;/p&gt;
+&lt;p&gt;So we are getting some code after all huh? NOICE !!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/sctf/noice.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So as we are not doing via dynamic approach, we have to decode all the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;d()&lt;/code&gt; calls like this… Don’t worry I will do it for ya, just a sec, till then you can grab some coffee ‘cause next part is actually amusingly simple :)&lt;/p&gt;
 
 &lt;h3 id=&quot;de-obfuscaton-and-code-cleaning&quot;&gt;De-Obfuscaton and Code Cleaning&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&quot;/assets/images/sctf/clean.jpeg&quot; alt=&quot;&quot; /&gt;
-Okay, so these are the java files after processing :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/sctf/clean.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Okay, so these are the java files after processing :&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;b/c/a/a.java&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
@@ -610,10 +654,10 @@ This code generates the key :&lt;/p&gt;
 
 &lt;p&gt;I have commented the above code so we don’t have to explain all again here, okay the new thing here is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;class.getDeclaredFields[0].set()&lt;/code&gt; call,&lt;/p&gt;
 
-&lt;p&gt;this is actually easy, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getDeclaredFields&lt;/code&gt; will return list of all declared vars in the class, we select the first one via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[0]&lt;/code&gt; and then we use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;set()&lt;/code&gt; to change its value.&lt;/p&gt;
+&lt;p&gt;this is actually easy, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getDeclaredFields&lt;/code&gt; will return a list of all declared vars in the class, we select the first one via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[0]&lt;/code&gt; and then we use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;set()&lt;/code&gt; to change its value.&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;java is actually like progamming in drunken english.&lt;/p&gt;
+  &lt;p&gt;java is actually like programming in drunken English.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;Now moving on and getting the flag.&lt;/p&gt;
@@ -730,13 +774,15 @@ So here is what I came up with.&lt;/p&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Executing the above code will give us our love of CTFs : &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SCTF{53CUr17Y_7Hr0U6H_085CUr17Y_15_N07_3N0U6H}&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Executing the above code will give us our love of CTFs: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SCTF{53CUr17Y_7Hr0U6H_085CUr17Y_15_N07_3N0U6H}&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/sctf/2.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/assets/images/sctf/final.jpg&quot; alt=&quot;&quot; /&gt;
-PHEW ! That’s all for this one.. see ya all in next one.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/sctf/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;And you know the drill right? Till then …. Stay Caffinenated Enough!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/sctf/final.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;PHEW! That’s all for this one.. see ya all in the next one.&lt;/p&gt;
+
+&lt;p&gt;And you know the drill right? Till then… Stay Caffinenated Enough!&lt;/p&gt;
 
 &lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="CTF Writeup" /><category term="CTF" /><category term="FrigidSec" /><summary type="html">A writeup of Reverse Engineering Challenge of Samsung CTF &quot;Hacker's Playground 2020&quot; Points : 500 Solves : 15</summary></entry><entry><title type="html">ASCWG CTF Check Writeup</title><link href="http://localhost:4000/2020/08/17/ascwg-check.html" rel="alternate" type="text/html" title="ASCWG CTF Check Writeup" /><published>2020-08-17T00:00:00+05:30</published><updated>2020-08-17T00:00:00+05:30</updated><id>http://localhost:4000/2020/08/17/ascwg-check</id><content type="html" xml:base="http://localhost:4000/2020/08/17/ascwg-check.html">&lt;div class=&quot;message&quot;&gt;
 A writeup of Reverse Engineering Challenge of Arab Security Cyber WarGames.
@@ -2016,190 +2062,4 @@ It initializes bunch of variables and then stack setting routine.
 
 &lt;p&gt;That’s it for this challenge, actually an easy one, just some basic experience in reverse engineering needed.&lt;/p&gt;
 
-&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="CTF Writeup" /><category term="CTF" /><summary type="html">Reverse Engineering Challenge of Hacker Earth CipherCombat2.0</summary></entry><entry><title type="html">Extracting packer injected malware from memory [Remcos RAT]</title><link href="http://localhost:4000/2020/03/08/Extracting-packer-injected-malware.html" rel="alternate" type="text/html" title="Extracting packer injected malware from memory [Remcos RAT]" /><published>2020-03-08T00:00:00+05:30</published><updated>2020-03-08T00:00:00+05:30</updated><id>http://localhost:4000/2020/03/08/Extracting-packer-injected-malware</id><content type="html" xml:base="http://localhost:4000/2020/03/08/Extracting-packer-injected-malware.html">&lt;div class=&quot;message&quot;&gt;
-Extraction of injected malicious PE from dynamic memory in windows (Remcos malware)
-&lt;/div&gt;
-
-&lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
-
-&lt;p&gt;Usually, malware comes packed by some packer which obfuscates the original code and helps it to evade AV software or general human suspicion. When executed the packed binary inject actual binary in the memory and runs it from there.&lt;/p&gt;
-
-&lt;h3 id=&quot;what-we-will-cover-in-this-write-up&quot;&gt;What we will cover in this write-up?&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Approach for setting break-point in packed binary to stop it in midst of injecting the malicious code and executing it.&lt;/li&gt;
-  &lt;li&gt;Bypassing malware’s “debugger bypass tricks”&lt;/li&gt;
-  &lt;li&gt;Locate and dump injected code from the memory.&lt;/li&gt;
-  &lt;li&gt;Do necessary patching.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h5 id=&quot;setup-environment-&quot;&gt;Setup Environment :&lt;/h5&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;Operating_System :&lt;/strong&gt; Windows 10, Enterprise Evaluation 180914 
-&lt;strong&gt;Software_Arsenal :&lt;/strong&gt; x32debugger, PE bear, Hexadecimal Editor HxD 
-&lt;strong&gt;Malware_Binary :&lt;/strong&gt; Remcos&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;what-is-remcos-rat&quot;&gt;What is Remcos RAT?&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://blog.malwarebytes.com/detections/trojan-remcos/&quot;&gt;Here you go, blog.malwarebytes.com&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;want-to-follow-up-with-the-article&quot;&gt;Want to follow up with the article?&lt;/h4&gt;
-
-&lt;p&gt;Here’s your malware, handle with &lt;strong&gt;&lt;em&gt;care and caution.&lt;/em&gt;&lt;/strong&gt;
-&lt;a href=&quot;https://malshare.com/sample.php?action=detail&amp;amp;hash=15fdc5c025e9d1645df07110c455aa09&quot;&gt;Malshare RemCos Download Link&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;lab-setup-and-initial-inspection&quot;&gt;Lab setup and Initial Inspection&lt;/h3&gt;
-
-&lt;p&gt;We will be using our Windows 10 Virtual Machine. We have set networking to “HOST ONLY” to transfer the binary to VM via Python’s SimpleHTTPServer.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*diqgBrGTPCwzjJGAYxFbxA.png&quot; alt=&quot;&quot; title=&quot;python server in host&quot; /&gt;
-&lt;img src=&quot;https://miro.medium.com/max/1400/1*mdrm2R22TaYYN2yLXMzyYA.png&quot; alt=&quot;&quot; title=&quot;Downloading Binary in VM&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Now we have our binary, before starting we will &lt;strong&gt;shut down network and folder sharing in VM&lt;/strong&gt; to prevent chaos if things goes sideways.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*E4-CrEFvjonmBBkqG3FyJA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Let’s rename our binary to RemCOS.bin and start investigation with PE Bear.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*B_E8ArBPGcNpJ5LmcLQINw.png&quot; alt=&quot;&quot; title=&quot;MSVBVM60.DLL points at VisualBasic6 code&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The binary seems to be a VB6 packer. Lets fire up x32debugger and load our binary in it.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/2000/1*S7TM3SyUNdhvGnroDUBlXA.png&quot; alt=&quot;&quot; title=&quot;RemCOS.bin in x32Debugger&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;setting-break-point-at-createprocessinternalw&quot;&gt;Setting Break-point at CreateProcessInternalW&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;What’s &lt;a href=&quot;https://attack.mitre.org/techniques/T1106/&quot;&gt;CreateProcessInternalW&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*PUH4ZBp2sxWhY0ax97dp7A.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This API call allows the program to spawn a new process from itself, usually packers use this method to inject actual malware code in memory and execute them using CreateProcessInternalW.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/258/1*xCiuR-I0wHS5qbrCmUN48Q.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Without more delay let’s create a breakpoint here. Type:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bp CreateProcessInternalW&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;In cmd. section and press enter.&lt;/p&gt;
-
-&lt;h3 id=&quot;bypassing-debugger-detection&quot;&gt;Bypassing Debugger Detection&lt;/h3&gt;
-
-&lt;p&gt;As we continue to execute the binary, we stumble upon one interesting Exception. This can be an anti-debugger tactics or just some random exception from one of VB6 APIs. Anyways this is blocking us from hitting our intended break-point.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1072/1*OA_xBTt0ojDD3i_9yLOqlQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;To bypass this, do &lt;strong&gt;Debug &amp;gt; Advanced &amp;gt; Run (pass exceptions)&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*KZkkxfJU9hdxrum5iqNn-w.png&quot; alt=&quot;&quot; title=&quot;Passing all exceptions to binary, so that it’s not countered by debugger&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This will pass all the exceptions to program as it would do in normal execution. Now we can hit out break-point :&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/858/1*OsKEWja66BL5PRHLjOTbiw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;finding-and-dumping-injected-code&quot;&gt;Finding and Dumping Injected Code&lt;/h3&gt;
-
-&lt;p&gt;We now know that it’s trying to run something from memory, we need to find what is it.&lt;/p&gt;
-
-&lt;p&gt;For that goto &lt;strong&gt;Memory Map&lt;/strong&gt;. As we know that most of Portable Executable File (PE File) has a DOS header which says something like “This program cannot be run in DOS mode” or something like that. We can try to search for this string in our memory map, and let’s see what we get.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*1r1K9JRiYafo3vrMV3RL1Q.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;After the search we found following hits:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/2000/1*daYJlZpCbuRPdoiXwWW0xg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Now we need to find our injected code, but here’s a hurdle : any file that contains our string “This program..” will be listed, including most of the microsoft’s own DLLs and support libraries.&lt;/p&gt;
-
-&lt;h3 id=&quot;finding-the-injected-executable-code&quot;&gt;Finding the injected executable code&lt;/h3&gt;
-
-&lt;p&gt;Now we have to trace each of the hits to check if it’s the code we are looking for or something else.&lt;/p&gt;
-
-&lt;p&gt;Select one of all listed entries : &lt;strong&gt;Follow in Dump &amp;gt; Follow in Memory Map&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*Afh9hdo_TOMPeep1mpWYag.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1306/1*pF2iREtDJ8GHkIqwLvbykQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;You will know when you will find something unusual like : Unnamed section in memory with &lt;strong&gt;R&lt;/strong&gt;ead &lt;strong&gt;W&lt;/strong&gt;rite and &lt;strong&gt;E&lt;/strong&gt;xecutable permission.&lt;/p&gt;
-
-&lt;p&gt;Select and &lt;strong&gt;“Dump Memory to File”&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1200/1*pjOOoq-wN6tIJEzDELYmFg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*rKmW9wXkluX-nOOEYnCbTg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We named it “remcos_extracted.bin” , let’s test it with PE Bear to make sure it was injected executable :&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*AOa9LeBVpq7ClPjPUDauxA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Hmmmm… now what?&lt;/strong&gt; but we found our DOS header and all right?&lt;/p&gt;
-
-&lt;p&gt;Let’s inspect the file in Hex Editor&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*0ipjycn3vKmR1FwMxK8Uhw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*bLprdOz8P0UyZibX4SfNFw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;And we have our DOS header… then? WHY PE BEAR IS NOT WORKING?&lt;/p&gt;
-
-&lt;p&gt;This is because the file signature or magic number is not present !! Remember PE files start with &lt;strong&gt;“MZ.”&lt;/strong&gt; header?&lt;/p&gt;
-
-&lt;h3 id=&quot;fixing-extracted-binary-header-signature-fix&quot;&gt;Fixing Extracted Binary [Header Signature Fix]&lt;/h3&gt;
-
-&lt;p&gt;Now we know what’s missing, let’s repair the binary by placing missing header in place. But where to put it?&lt;/p&gt;
-
-&lt;p&gt;Let’s go to check list method :&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;MZ header usually aligns with starting offset.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;about ~60 bytes before DOS header&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://i.stack.imgur.com/0DdKh.png&quot;&gt;PE FORMAT &lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*PrBFxUXOvFotdMmVuhz-Fw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;So let’s clean all the Zero padding before 0x000600 as this seems to be good place for our signature and fits our checklist.&lt;/p&gt;
-
-&lt;p&gt;Clean all the padding above and modify first 2 Bytes as &lt;strong&gt;4D 5A&lt;/strong&gt; hexadecimal for &lt;strong&gt;MZ&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*xng5ZjsiO9CorNTfNSw6qA.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;https://miro.medium.com/max/1400/1*oWvk1kbCDw4f-RG2thpt7g.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Save the file and … Now let’s check this in PE BEAR&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/1400/1*d9FEHk3tvzF-SKjdp9qibg.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;https://miro.medium.com/max/1400/1*lYxvu0zotmOzAAkD1BAcVw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Cool ! everything is fine.&lt;/p&gt;
-
-&lt;p&gt;AND we have our memory injected malware out in open!&lt;/p&gt;
-
-&lt;p&gt;Now we can fire up IDA or whatever rocks your boat to further analyze the extracted malware.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://miro.medium.com/max/2000/1*RVcQFMYOL7U7Vb0uyx2rjw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;But we will leave that for another article, (’cause ofcourse you can see how excited IDA is with this RAT) it will take much more space and time to clear out all those crazy Call Graphs.&lt;/p&gt;
-
-&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
-
-&lt;p&gt;I hope this will come in handy for someone. This was actually super cool to me.&lt;/p&gt;
-
-&lt;p&gt;I was playing with windows memory recently and will share more as it comes. Till then… stay caffeinated enough and keep roaming in the memory lanes(pun intended)of windows.&lt;/p&gt;
-
-&lt;h3 id=&quot;references&quot;&gt;References&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://youtu.be/DIH4SvKuktM&quot;&gt;OA LABS ANALYSIS VIDEO&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://countuponsecurity.com/tag/finding-injected-code-into-memory/&quot;&gt;Finding injected code into memory - Count Upon Security&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="Reverse Engineering" /><category term="Malware Analysis" /><summary type="html">Extraction of injected malicious PE from dynamic memory in windows (Remcos malware)</summary></entry></feed>
+&lt;hr /&gt;</content><author><name>Saket Upadhyay</name></author><category term="CTF Writeup" /><category term="CTF" /><summary type="html">Reverse Engineering Challenge of Hacker Earth CipherCombat2.0</summary></entry></feed>
