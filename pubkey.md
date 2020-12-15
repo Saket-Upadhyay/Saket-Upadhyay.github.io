@@ -3,6 +3,7 @@ layout: page
 title: PGP PUBLIC KEY 
 sidebar_link: false
 ---
+[VIEW RAW FILE](https://raw.githubusercontent.com/Saket-Upadhyay/Saket-Upadhyay.github.io/master/assets/pubkey/Saket%20Upadhyay%20(Open%20Academic%20Key)_0x8C8AF5E9_PUBLIC.asc)
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 
