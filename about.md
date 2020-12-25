@@ -24,10 +24,10 @@ Alias : x64Mayhem, X64M, XSFM
 <br>
 <br>
 #### Connect:
-<p>{% include svg/linkedin.svg %} <a href="https://www.linkedin.com/in/saketupadhyay/">/saketupadhyay</a>
+<p>{% include svg/linkedin.svg %}<a href="https://www.linkedin.com/in/saketupadhyay/">/saketupadhyay</a>,
 <br>
 {% include svg/github.svg %}<a href="https://github.com/Saket-Upadhyay">/Saket-Upadhyay</a>,
 <br>
 {% include svg/twitter.svg %}<a href="https://twitter.com/x64mayhem">/x64mayhem</a>,
 <br>
-{% include svg/htb.svg %}<a href="https://www.hackthebox.eu/profile/125090">/x64mayhem</a></p>
+{% include svg/htb.svg %}<a href="https://www.hackthebox.eu/profile/125090">/x64mayhem</a>.</p>
