@@ -7,7 +7,7 @@ tags:
 ---
 
 <div class="message">
-I am starting a new type of post in this post, making some changes, etc. I want to talk about it.
+I am starting a new type of posts, making some changes, etc. I want to talk about it.
 </div>
 
 ## Updating `AboutMe` section.
