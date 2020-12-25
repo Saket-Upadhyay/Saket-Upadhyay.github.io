@@ -90,9 +90,6 @@
 
   
     
-      <a class="page-link "
-          href="/malware.html">Malware Analysis Reports</a>
-    
   
 
   
@@ -120,6 +117,13 @@
   
     
       <a class="page-link "
+          href="/toc.html">Index</a>
+    
+  
+
+  
+    
+      <a class="page-link "
           href="/topics.html">Topics</a>
     
   
@@ -133,36 +137,6 @@
   
 
   
-
-  
-    
-  
-
-  
-    
-  
-
-  
-    
-  
-
-  
-
-  
-
-
-  
-
-
-  
-    
-  
-
-  
-    
-  
-
-  
     
   
 
@@ -179,6 +153,14 @@
   
     
   
+
+  
+
+  
+
+
+  
+
 
   
     
@@ -198,6 +180,40 @@
     
   
 
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+
+  
+    
   
 
   
@@ -346,7 +362,7 @@ We found ours at <code class="language-plaintext highlighter-rouge">sources/com/
 
 <p>And here is <code class="language-plaintext highlighter-rouge">Main.java</code> :</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">sctf2020</span><span class="o">.</span><span class="na">vault101</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.sctf2020.vault101</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">a.b.k.e</span><span class="o">;</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">e</span> <span class="kd">implements</span> <span class="nc">OnClickListener</span> <span class="o">{</span>
@@ -446,7 +462,7 @@ Check out this part :</p>
 <p>So back to our class <code class="language-plaintext highlighter-rouge">b.c.a.b</code>’s function <code class="language-plaintext highlighter-rouge">a()</code> :</p>
 
 <p>This is out <code class="language-plaintext highlighter-rouge">b.java</code></p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">b</span><span class="o">.</span><span class="na">c</span><span class="o">.</span><span class="na">a</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">b.c.a</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">android.os.Binder</span><span class="o">;</span><span class="kn">import</span> <span class="nn">android.os.IBinder</span><span class="o">;</span><span class="kn">import</span> <span class="nn">android.os.IInterface</span><span class="o">;</span><span class="kn">import</span> <span class="nn">android.os.Parcel</span><span class="o">;</span>
 <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">b</span> <span class="kd">extends</span> <span class="nc">IInterface</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="kd">static</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">a</span> <span class="kd">extends</span> <span class="nc">Binder</span> <span class="kd">implements</span> <span class="n">b</span> <span class="o">{</span>
@@ -542,7 +558,7 @@ Check out this part :</p>
 
 <p>So let’s have a look at <code class="language-plaintext highlighter-rouge">VaultService.java</code></p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">sctf2020</span><span class="o">.</span><span class="na">vault101</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.sctf2020.vault101</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">android.app.Service</span><span class="o">;</span><span class="kn">import</span> <span class="nn">android.content.Intent</span><span class="o">;</span><span class="kn">import</span> <span class="nn">android.os.IBinder</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.lang.reflect.Array</span><span class="o">;</span>
 
@@ -631,7 +647,7 @@ I am actually doing : <strong>System.out.println(“HELLO WORLD”);</strong></p
 
 <p>Let’s C <code class="language-plaintext highlighter-rouge">C.java</code> hehe you saw what I did there.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">b</span><span class="o">.</span><span class="na">c</span><span class="o">.</span><span class="na">a</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">b.c.a</span><span class="o">;</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">c</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">f823a</span><span class="o">;</span>
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">char</span> <span class="nf">a</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span><span class="o">,</span> <span class="kt">int</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
@@ -689,7 +705,7 @@ I am actually doing : <strong>System.out.println(“HELLO WORLD”);</strong></p
 
 <p>here <code class="language-plaintext highlighter-rouge">f823a</code> is local variable whose value is set via <code class="language-plaintext highlighter-rouge">VaultApplication.java</code></p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">sctf2020</span><span class="o">.</span><span class="na">vault101</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.sctf2020.vault101</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">android.app.Application</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">b.c.a.c</span><span class="o">;</span>
@@ -714,7 +730,7 @@ I am actually doing : <strong>System.out.println(“HELLO WORLD”);</strong></p
 
 <p>So this is simple and here is my implementation for it:</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">x64mayhem</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.x64mayhem</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">javax.crypto.BadPaddingException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.Cipher</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.IllegalBlockSizeException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.NoSuchPaddingException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.spec.IvParameterSpec</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.spec.SecretKeySpec</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.io.UnsupportedEncodingException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.lang.reflect.Array</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.security.InvalidAlgorithmParameterException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.security.InvalidKeyException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.security.NoSuchAlgorithmException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.util.Base64</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
@@ -801,7 +817,7 @@ I am actually doing : <strong>System.out.println(“HELLO WORLD”);</strong></p
 <p>Okay, so these are the java files after processing :</p>
 
 <p><strong>b/c/a/a.java</strong></p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">b</span><span class="o">.</span><span class="na">c</span><span class="o">.</span><span class="na">a</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">b.c.a</span><span class="o">;</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">a</span> <span class="o">{</span>
     <span class="cm">/* renamed from: a reason: collision with root package name */</span>
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">f821a</span><span class="o">;</span>
@@ -830,7 +846,7 @@ I am actually doing : <strong>System.out.println(“HELLO WORLD”);</strong></p
 </code></pre></div></div>
 
 <p><strong>VaultService.java</strong></p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">sctf2020</span><span class="o">.</span><span class="na">vault101</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.sctf2020.vault101</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">android.app.Service</span><span class="o">;</span><span class="kn">import</span> <span class="nn">android.content.Intent</span><span class="o">;</span><span class="kn">import</span> <span class="nn">android.os.IBinder</span><span class="o">;</span><span class="kn">import</span> <span class="nn">b.c.a.c</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.lang.reflect.Array</span><span class="o">;</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">VaultService</span> <span class="kd">extends</span> <span class="nc">Service</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="nc">IBinder</span> <span class="n">f873b</span> <span class="o">=</span> <span class="k">new</span> <span class="n">b</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
@@ -949,7 +965,7 @@ So here is what I came up with.</p>
 </blockquote>
 
 <p><strong>SOLVE.java</strong></p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">x64mayhem</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.x64mayhem</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">javax.crypto.BadPaddingException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.Cipher</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.IllegalBlockSizeException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.NoSuchPaddingException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.spec.IvParameterSpec</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.spec.SecretKeySpec</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.io.UnsupportedEncodingException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.lang.reflect.Array</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.security.InvalidAlgorithmParameterException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.security.InvalidKeyException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.security.NoSuchAlgorithmException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.util.Base64</span><span class="o">;</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IllegalAccessException</span><span class="o">,</span> <span class="nc">UnsupportedEncodingException</span> <span class="o">{</span>
@@ -1018,7 +1034,7 @@ So here is what I came up with.</p>
 </code></pre></div></div>
 
 <p><strong>OUR <code class="language-plaintext highlighter-rouge">a.java</code></strong></p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">x64mayhem</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.x64mayhem</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">javax.crypto.BadPaddingException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.Cipher</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.IllegalBlockSizeException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.NoSuchPaddingException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.spec.IvParameterSpec</span><span class="o">;</span><span class="kn">import</span> <span class="nn">javax.crypto.spec.SecretKeySpec</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.security.InvalidAlgorithmParameterException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.security.InvalidKeyException</span><span class="o">;</span><span class="kn">import</span> <span class="nn">java.security.NoSuchAlgorithmException</span><span class="o">;</span>
 
@@ -1149,9 +1165,9 @@ So here is what I came up with.</p>
     
       <li>
         <h3>
-          <a href="/2020/08/23/hacking-unity-games-ctf.html">
-            Intro to Unity Game Hacking (via CTF Writeup)
-            <small>23 Aug 2020</small>
+          <a href="/2020/12/24/blogupdate0.html">
+            Blog.update(0) - New additions and modifications.
+            <small>24 Dec 2020</small>
           </a>
         </h3>
       </li>

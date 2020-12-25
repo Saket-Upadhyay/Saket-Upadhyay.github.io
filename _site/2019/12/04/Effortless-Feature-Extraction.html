@@ -90,9 +90,6 @@
 
   
     
-      <a class="page-link "
-          href="/malware.html">Malware Analysis Reports</a>
-    
   
 
   
@@ -120,6 +117,13 @@
   
     
       <a class="page-link "
+          href="/toc.html">Index</a>
+    
+  
+
+  
+    
+      <a class="page-link "
           href="/topics.html">Topics</a>
     
   
@@ -133,36 +137,6 @@
   
 
   
-
-  
-    
-  
-
-  
-    
-  
-
-  
-    
-  
-
-  
-
-  
-
-
-  
-
-
-  
-    
-  
-
-  
-    
-  
-
-  
     
   
 
@@ -179,6 +153,14 @@
   
     
   
+
+  
+
+  
+
+
+  
+
 
   
     
@@ -198,6 +180,40 @@
     
   
 
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+
+  
+    
   
 
   
@@ -359,14 +375,14 @@ Streamline Permission-Based Feature Extraction for android data-set with one Pyt
 
 <p>Suppose you want to import your new data set into sklearn and train your new model from there, here’s a way you can do that.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">file</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"data.csv"</span><span class="p">)</span>
-<span class="n">coulmnNames</span> <span class="o">=</span> <span class="nb">file</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">columns</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">file</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"data.csv"</span><span class="p">)</span>
+<span class="n">coulmnNames</span> <span class="o">=</span> <span class="nb">file</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:].</span><span class="n">columns</span>
 <span class="n">FeatureNames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">coulmnNames</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">LabelName</span> <span class="o">=</span> <span class="n">coulmnNames</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">X</span> <span class="o">=</span> <span class="nb">file</span><span class="p">[</span><span class="n">FeatureNames</span><span class="p">]</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="n">Y</span> <span class="o">=</span> <span class="nb">file</span><span class="p">[</span><span class="n">LabelName</span><span class="p">]</span>
-<span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
 <span class="n">feature_vectors</span> <span class="o">=</span> <span class="n">X</span>
 <span class="n">labels</span> <span class="o">=</span> <span class="n">Y</span>
 <span class="n">train_x</span><span class="p">,</span> <span class="n">test_x</span><span class="p">,</span> <span class="n">train_y</span><span class="p">,</span> <span class="n">test_y</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">feature_vectors</span><span class="p">,</span><span class="n">labels</span><span class="p">,</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
@@ -454,9 +470,9 @@ Streamline Permission-Based Feature Extraction for android data-set with one Pyt
     
       <li>
         <h3>
-          <a href="/2020/08/23/hacking-unity-games-ctf.html">
-            Intro to Unity Game Hacking (via CTF Writeup)
-            <small>23 Aug 2020</small>
+          <a href="/2020/12/24/blogupdate0.html">
+            Blog.update(0) - New additions and modifications.
+            <small>24 Dec 2020</small>
           </a>
         </h3>
       </li>

@@ -90,9 +90,6 @@
 
   
     
-      <a class="page-link "
-          href="/malware.html">Malware Analysis Reports</a>
-    
   
 
   
@@ -120,6 +117,13 @@
   
     
       <a class="page-link "
+          href="/toc.html">Index</a>
+    
+  
+
+  
+    
+      <a class="page-link "
           href="/topics.html">Topics</a>
     
   
@@ -133,36 +137,6 @@
   
 
   
-
-  
-    
-  
-
-  
-    
-  
-
-  
-    
-  
-
-  
-
-  
-
-
-  
-
-
-  
-    
-  
-
-  
-    
-  
-
-  
     
   
 
@@ -179,6 +153,14 @@
   
     
   
+
+  
+
+  
+
+
+  
+
 
   
     
@@ -198,6 +180,40 @@
     
   
 
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+
+  
+    
   
 
   
@@ -403,24 +419,24 @@ So the above function is just a xor function which XORs the passed data with a p
 <p>Here is a small python script to do what program is doing</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">env1a</span><span class="o">=</span><span class="p">[</span><span class="mh">0xd3</span><span class="p">,</span><span class="mh">0xd4</span><span class="p">,</span><span class="mh">0xc8</span><span class="p">,</span><span class="mh">0xcf</span><span class="p">]</span>
-<span class="n">env1a</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">env1a</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
 <span class="n">env1b</span><span class="o">=</span><span class="p">[</span><span class="mh">0xc2</span><span class="p">,</span><span class="mh">0xca</span><span class="p">,</span><span class="mh">0xc6</span><span class="p">,</span><span class="mh">0xc9</span><span class="p">]</span>
-<span class="n">env1b</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">env1b</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
 <span class="n">env1</span><span class="o">=</span><span class="n">env1a</span><span class="o">+</span><span class="n">env1b</span>
 
 <span class="n">env2</span><span class="o">=</span><span class="p">[</span><span class="mh">0xc3</span><span class="p">,</span><span class="mh">0xd4</span><span class="p">,</span><span class="mh">0xc2</span><span class="p">,</span><span class="mh">0xc4</span><span class="p">]</span>
-<span class="n">env2</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">env2</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
 
 <span class="n">envvar1valueA</span><span class="o">=</span><span class="p">[</span><span class="mh">0xfe</span><span class="p">,</span><span class="mh">0xf5</span><span class="p">,</span><span class="mh">0xf7</span><span class="p">,</span><span class="mh">0xdb</span><span class="p">]</span>
-<span class="n">envvar1valueA</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">envvar1valueA</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
 <span class="n">envvar1valueB</span><span class="o">=</span><span class="p">[</span><span class="mh">0xf3</span><span class="p">,</span><span class="mh">0xf8</span><span class="p">,</span><span class="mh">0xff</span><span class="p">]</span>
-<span class="n">envvar1valueB</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">envvar1valueB</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
 <span class="n">envvar1value</span><span class="o">=</span><span class="n">envvar1valueA</span><span class="o">+</span><span class="n">envvar1valueB</span>
 
 <span class="n">envvar2valueA</span><span class="o">=</span><span class="p">[</span><span class="mh">0xf7</span><span class="p">,</span><span class="mh">0xfc</span><span class="p">,</span><span class="mh">0xfc</span><span class="p">,</span><span class="mh">0xeb</span><span class="p">]</span>
-<span class="n">envvar2valueA</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">envvar2valueA</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
 <span class="n">envvar2valueB</span><span class="o">=</span><span class="p">[</span><span class="mh">0xfc</span><span class="p">,</span><span class="mh">0xf7</span><span class="p">,</span><span class="mh">0xfe</span><span class="p">,</span><span class="mh">0xf0</span><span class="p">]</span>
-<span class="n">envvar2valueB</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">envvar2valueB</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
 
 <span class="n">envvar2value</span><span class="o">=</span><span class="n">envvar2valueA</span><span class="o">+</span><span class="n">envvar2valueB</span>
 
@@ -434,15 +450,15 @@ So the above function is just a xor function which XORs the passed data with a p
 <span class="n">flagH</span><span class="o">=</span><span class="p">[</span><span class="mh">0xa3</span><span class="p">,</span><span class="mh">0xc8</span><span class="p">,</span><span class="mh">0xa0</span><span class="p">,</span><span class="mh">0xdf</span><span class="p">]</span>
 <span class="n">flagI</span><span class="o">=</span><span class="p">[</span><span class="mh">0xaf</span><span class="p">,</span><span class="mh">0xa2</span><span class="p">,</span><span class="mh">0xda</span><span class="p">,</span><span class="mh">0xf0</span><span class="p">]</span>
 
-<span class="n">flagA</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
-<span class="n">flagB</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
-<span class="n">flagC</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
-<span class="n">flagD</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
-<span class="n">flagE</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
-<span class="n">flagF</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
-<span class="n">flagG</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
-<span class="n">flagH</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
-<span class="n">flagI</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">flagA</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">flagB</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">flagC</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">flagD</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">flagE</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">flagF</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">flagG</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">flagH</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">flagI</span><span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
 
 <span class="n">flag</span><span class="o">=</span><span class="n">flagA</span><span class="o">+</span><span class="n">flagB</span><span class="o">+</span><span class="n">flagC</span><span class="o">+</span><span class="n">flagD</span><span class="o">+</span><span class="n">flagE</span><span class="o">+</span><span class="n">flagF</span><span class="o">+</span><span class="n">flagG</span><span class="o">+</span><span class="n">flagH</span><span class="o">+</span><span class="n">flagI</span>
 
@@ -603,9 +619,9 @@ So the above function is just a xor function which XORs the passed data with a p
     
       <li>
         <h3>
-          <a href="/2020/08/23/hacking-unity-games-ctf.html">
-            Intro to Unity Game Hacking (via CTF Writeup)
-            <small>23 Aug 2020</small>
+          <a href="/2020/12/24/blogupdate0.html">
+            Blog.update(0) - New additions and modifications.
+            <small>24 Dec 2020</small>
           </a>
         </h3>
       </li>

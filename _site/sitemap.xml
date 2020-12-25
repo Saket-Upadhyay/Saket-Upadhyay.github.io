@@ -69,8 +69,8 @@
 <lastmod>2020-08-18T00:00:00+05:30</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/2020/08/23/hacking-unity-games-ctf.html</loc>
-<lastmod>2020-08-23T00:00:00+05:30</lastmod>
+<loc>http://localhost:4000/2020/12/24/blogupdate0.html</loc>
+<lastmod>2020-12-24T00:00:00+05:30</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/about.html</loc>
@@ -94,6 +94,9 @@
 <loc>http://localhost:4000/search.html</loc>
 </url>
 <url>
+<loc>http://localhost:4000/toc.html</loc>
+</url>
+<url>
 <loc>http://localhost:4000/topics.html</loc>
 </url>
 <url>
@@ -101,6 +104,9 @@
 </url>
 <url>
 <loc>http://localhost:4000/category/CTFWriteups.html</loc>
+</url>
+<url>
+<loc>http://localhost:4000/assets/pubkey/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/page2/</loc>
@@ -112,7 +118,7 @@
 <loc>http://localhost:4000/page4/</loc>
 </url>
 <url>
-<loc>http://localhost:4000/assets/resume/SaketResume2020Aug.pdf</loc>
-<lastmod>2020-08-13T19:49:15+05:30</lastmod>
+<loc>http://localhost:4000/assets/resume/SaketUpadhyayResume_Nov2020.pdf</loc>
+<lastmod>2020-12-25T10:52:52+05:30</lastmod>
 </url>
 </urlset>

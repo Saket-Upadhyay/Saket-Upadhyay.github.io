@@ -4,45 +4,30 @@ title: About Me
 sidebar_link: true
 ---
 
-Hi! I am `Saket`.
+Hi! I am **Saket**.
 <br>
 (native : साकेत)
 <br>
 <br>
-Passionate Cybersecurity Student and wannabe Security Researcher.
+I am interested in exploring the field of advance `adaptive cyber defense` systems. 
+Currently an undergraduate student, Researcher wannabe.
+
+If you are *interested* in my field of work or want to *collaborate* in any project or research, please check out my more serious and formal -- LinkedIn profile, and feel free to connect via Linked-IN, Twitter, or Email [ProtonMail](mailto:saketupadhyay@protonmail.com?subject=Hey%20Saket!) / [G Mail]( mailto:saketupadhya@gmail.com?subject=Hey%20Saket! ). (GitHub also works but that would be kinda weird xD).
+
 <br>
-I am interested in `Research`, `CTFs`, `HackTheBox` (and similar training platforms), `Security Conferences` and `Talks`.
+<strong><center><a href="https://github.com/Saket-Upadhyay/Saket-Upadhyay.github.io/raw/master/assets/resume/SaketUpadhyayResume_Nov2020.pdf">Download Resume</a></center></strong>
+<br>
+
+---
+
+Alias : x64Mayhem, X64M, XSFM
 <br>
 <br>
-Alias : <strong>x64Mayhem</strong> 
+#### Connect:
+<p>{% include svg/linkedin.svg %} <a href="https://www.linkedin.com/in/saketupadhyay/">/saketupadhyay</a>
 <br>
-<sup>For work exp. and other related stuff,checkout linked-in.</sup>
-<p>{% include svg/linkedin.svg %} <a href="https://www.linkedin.com/in/saketupadhyay/">/saketupadhyay</a> {% include svg/github.svg %}<a href="https://github.com/Saket-Upadhyay">/Saket-Upadhyay</a>, {% include svg/twitter.svg %}<a href="https://twitter.com/x64mayhem">/x64mayhem</a>, {% include svg/htb.svg %}<a href="https://www.hackthebox.eu/profile/125090">/x64mayhem</a></p>
-
-[Download Resume](https://github.com/Saket-Upadhyay/Saket-Upadhyay.github.io/raw/master/assets/resume/SaketResume2020Aug.pdf)
-
-### Skillset
-<p>&bull; Reverse Engineering &bull; Binary Analysis &bull; Network Security &bull; Penetration Testing &bull; Vulnerability Assessment &bull; Public Speaking &bull; Technical Reporting &bull; </p>
-
-### Major Programming Languages 
-<p>&bull; Assembly (8086,x86,x64,arm) &bull; C &bull; C++ &bull; Python &bull; Ruby &bull;</p>
-
-#### but can also hack around with
-<p>&bull; Java &bull; Java for Android &bull;  HTML &bull; JS &bull; PHP &bull; Perl &bull; </p>
-
-### Tools I generally use
-<p>&bull; IDA pro &bull; OllyDBG &bull; Ghidra &bull; x32/x64 Debugger &bull; GDB &bull; RaDare2 &bull; Nmap &bull; Metasploit-Framework &bull; Autopsy &bull; Hydra &bull; Hashcat &bull; Aircrack &bull; BurpSuite &bull; WireShark &bull; Powershell &bull; <sup>and some custom ones ofc.</sup> &bull; </p>
-
-### For CTF
-#### Intermediate Level
-<p>&bull; Reversing &bull; PWN &bull; Forensics &bull;</p>
-
-
-
- 
-#### Badges
-![HackTheBox Badge](https://www.hackthebox.eu/badge/image/125090 "HackTheBox Rank")
-
-![X64M Avatar](/assets/images/avatar.png "Alias Avatar")
-
- <!-- <script src="https://www.hackthebox.eu/badge/125090"></script> -->
+{% include svg/github.svg %}<a href="https://github.com/Saket-Upadhyay">/Saket-Upadhyay</a>,
+<br>
+{% include svg/twitter.svg %}<a href="https://twitter.com/x64mayhem">/x64mayhem</a>,
+<br>
+{% include svg/htb.svg %}<a href="https://www.hackthebox.eu/profile/125090">/x64mayhem</a></p>
