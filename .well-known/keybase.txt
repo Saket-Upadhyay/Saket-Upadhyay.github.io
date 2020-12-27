@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/saketupadhyay
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://saket-upadhyay.github.io
+  * I am saketupadhyay (https://keybase.io/saketupadhyay) on keybase.
+  * I have a public key ASBSn_xdicrPmrVcBwiDTqMihM0_f0OczKmNYKeilfi2mwo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120529ffc5d89cacf9ab55c0708834ea32284cd3f7f439ccca98d60a7a295f8b69b0a",
+      "host": "keybase.io",
+      "kid": "0120529ffc5d89cacf9ab55c0708834ea32284cd3f7f439ccca98d60a7a295f8b69b0a",
+      "uid": "f1d28b510f3af8b3206afc0c5e3d4019",
+      "username": "saketupadhyay"
+    },
+    "merkle_root": {
+      "ctime": 1609075120,
+      "hash": "815770c71643952b85fef3be556fcfd9115daf0ac0a7c8b4e8937a6a954163eb3fd46705a33e6bc35d222937cc67b2a5a353504262d12c899fc24738f4c048eb",
+      "hash_meta": "961195a1f0faa53e0753f5a59885840d774173700aa699a7aa4a645a0a622576",
+      "seqno": 18518150
+    },
+    "service": {
+      "entropy": "T/rBOq/v+wFhfMP48CQ9a84s",
+      "hostname": "saket-upadhyay.github.io",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "5.5.0"
+  },
+  "ctime": 1609075186,
+  "expire_in": 504576000,
+  "prev": "8a3249715516fb14be78f5152da170ca6c52aac2195f91f0831bec29f8d56d7f",
+  "seqno": 8,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgUp/8XYnKz5q1XAcIg06jIoTNP39DnMypjWCnopX4tpsKp3BheWxvYWTESpcCCMQgijJJcVUW+xS+ePUVLaFwymxSqsIZX5HwgxvsKfjVbX/EIP233xTzJH20JIndF3Y6WuL3O2P3ESw6Gzv+ZDeErHKgAgHCo3NpZ8RAQAbLkP1zZRWiWirVbxvRxjatiqgHCAruQ6xugeEeKas2L4RxYpA2BKVW3gWHncTVF+JjG29TDU0mTbS35xaHC6hzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEICGZbabiXNxj/+bnsS3tM60aTi0+xP6/EM0J7eXnAWFuo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/saketupadhyay
+
+==================================================================
