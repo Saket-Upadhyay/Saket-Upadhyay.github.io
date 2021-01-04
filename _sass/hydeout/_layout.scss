@@ -25,7 +25,8 @@
 body {
   background-attachment: fixed;
   background-color: $sidebar-bg-color;
-  background-image: linear-gradient(to bottom, lighten($sidebar-bg-color, 7%), darken($sidebar-bg-color, 7%));
+  // background-image: linear-gradient(to bottom, lighten($sidebar-bg-color, 7%), darken($sidebar-bg-color, 7%));
+  background-image: url("/assets/bg/xsfmnodes.png");
   color: $sidebar-text-color;
   display: flex;
   flex-direction: column;
@@ -33,6 +34,7 @@ body {
 }
 
 #sidebar {
+  
   flex: 0 0 auto;
   padding: $section-spacing;
 

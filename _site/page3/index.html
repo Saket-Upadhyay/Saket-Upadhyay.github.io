@@ -39,6 +39,8 @@
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml" />
 
   <!-- Additional head bits without overriding original head -->
+<meta name="description" content="Saket Upadhyay's Blog. (a.k.a x64Mayhem). Cyber Defense Strategies and Nature Inspired Security Research.">
+
 </head>
 
 
@@ -49,7 +51,7 @@
     <h1 class="site-title">
       <a>
         
-          <span class="back-arrow icon"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+        <span class="back-arrow icon"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
   <path d="M0 0h24v24H0z" fill="none"/>
   <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
 </svg></span>
@@ -305,7 +307,7 @@
 </nav>
 
   <p>
-  <!-- &copy; 2020.
+  <!-- &copy; 2021.
   <a href="/LICENSE.md">MIT License.</a> -->
 </p>
 
@@ -345,6 +347,189 @@
 Extraction of injected malicious PE from dynamic memory in windows (Remcos malware)
 </div>
 
+<h3 id="background">Background</h3>
+
+<p>Usually, malware comes packed by some packer which obfuscates the original code and helps it to evade AV software or general human suspicion. When executed the packed binary inject actual binary in the memory and runs it from there.</p>
+
+<h3 id="what-we-will-cover-in-this-write-up">What we will cover in this write-up?</h3>
+
+<ul>
+  <li>Approach for setting break-point in packed binary to stop it in midst of injecting the malicious code and executing it.</li>
+  <li>Bypassing malware’s “debugger bypass tricks”</li>
+  <li>Locate and dump injected code from the memory.</li>
+  <li>Do necessary patching.</li>
+</ul>
+
+<h5 id="setup-environment-">Setup Environment :</h5>
+
+<blockquote>
+  <p><strong>Operating_System :</strong> Windows 10, Enterprise Evaluation 180914 
+<strong>Software_Arsenal :</strong> x32debugger, PE bear, Hexadecimal Editor HxD 
+<strong>Malware_Binary :</strong> Remcos</p>
+</blockquote>
+
+<h3 id="what-is-remcos-rat">What is Remcos RAT?</h3>
+
+<p><a href="https://blog.malwarebytes.com/detections/trojan-remcos/">Here you go, blog.malwarebytes.com</a></p>
+
+<h4 id="want-to-follow-up-with-the-article">Want to follow up with the article?</h4>
+
+<p>Here’s your malware, handle with <strong><em>care and caution.</em></strong>
+<a href="https://malshare.com/sample.php?action=detail&amp;hash=15fdc5c025e9d1645df07110c455aa09">Malshare RemCos Download Link</a></p>
+
+<h3 id="lab-setup-and-initial-inspection">Lab setup and Initial Inspection</h3>
+
+<p>We will be using our Windows 10 Virtual Machine. We have set networking to “HOST ONLY” to transfer the binary to VM via Python’s SimpleHTTPServer.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*diqgBrGTPCwzjJGAYxFbxA.png" alt="" title="python server in host" />
+<img src="https://miro.medium.com/max/1400/1*mdrm2R22TaYYN2yLXMzyYA.png" alt="" title="Downloading Binary in VM" /></p>
+
+<p>Now we have our binary, before starting we will <strong>shut down network and folder sharing in VM</strong> to prevent chaos if things goes sideways.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*E4-CrEFvjonmBBkqG3FyJA.png" alt="" /></p>
+
+<p>Let’s rename our binary to RemCOS.bin and start investigation with PE Bear.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*B_E8ArBPGcNpJ5LmcLQINw.png" alt="" title="MSVBVM60.DLL points at VisualBasic6 code" /></p>
+
+<p>The binary seems to be a VB6 packer. Lets fire up x32debugger and load our binary in it.</p>
+
+<p><img src="https://miro.medium.com/max/2000/1*S7TM3SyUNdhvGnroDUBlXA.png" alt="" title="RemCOS.bin in x32Debugger" /></p>
+
+<h3 id="setting-break-point-at-createprocessinternalw">Setting Break-point at CreateProcessInternalW</h3>
+
+<blockquote>
+  <p>What’s <a href="https://attack.mitre.org/techniques/T1106/">CreateProcessInternalW</a></p>
+</blockquote>
+
+<p><img src="https://miro.medium.com/max/1400/1*PUH4ZBp2sxWhY0ax97dp7A.png" alt="" /></p>
+
+<p>This API call allows the program to spawn a new process from itself, usually packers use this method to inject actual malware code in memory and execute them using CreateProcessInternalW.</p>
+
+<p><img src="https://miro.medium.com/max/258/1*xCiuR-I0wHS5qbrCmUN48Q.png" alt="" /></p>
+
+<p>Without more delay let’s create a breakpoint here. Type:</p>
+
+<p><code class="language-plaintext highlighter-rouge">bp CreateProcessInternalW</code></p>
+
+<p>In cmd. section and press enter.</p>
+
+<h3 id="bypassing-debugger-detection">Bypassing Debugger Detection</h3>
+
+<p>As we continue to execute the binary, we stumble upon one interesting Exception. This can be an anti-debugger tactics or just some random exception from one of VB6 APIs. Anyways this is blocking us from hitting our intended break-point.</p>
+
+<p><img src="https://miro.medium.com/max/1072/1*OA_xBTt0ojDD3i_9yLOqlQ.png" alt="" /></p>
+
+<p>To bypass this, do <strong>Debug &gt; Advanced &gt; Run (pass exceptions)</strong></p>
+
+<p><img src="https://miro.medium.com/max/1400/1*KZkkxfJU9hdxrum5iqNn-w.png" alt="" title="Passing all exceptions to binary, so that it’s not countered by debugger" /></p>
+
+<p>This will pass all the exceptions to program as it would do in normal execution. Now we can hit out break-point :</p>
+
+<p><img src="https://miro.medium.com/max/858/1*OsKEWja66BL5PRHLjOTbiw.png" alt="" /></p>
+
+<h3 id="finding-and-dumping-injected-code">Finding and Dumping Injected Code</h3>
+
+<p>We now know that it’s trying to run something from memory, we need to find what is it.</p>
+
+<p>For that goto <strong>Memory Map</strong>. As we know that most of Portable Executable File (PE File) has a DOS header which says something like “This program cannot be run in DOS mode” or something like that. We can try to search for this string in our memory map, and let’s see what we get.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*1r1K9JRiYafo3vrMV3RL1Q.png" alt="" /></p>
+
+<p>After the search we found following hits:</p>
+
+<p><img src="https://miro.medium.com/max/2000/1*daYJlZpCbuRPdoiXwWW0xg.png" alt="" /></p>
+
+<p>Now we need to find our injected code, but here’s a hurdle : any file that contains our string “This program..” will be listed, including most of the microsoft’s own DLLs and support libraries.</p>
+
+<h3 id="finding-the-injected-executable-code">Finding the injected executable code</h3>
+
+<p>Now we have to trace each of the hits to check if it’s the code we are looking for or something else.</p>
+
+<p>Select one of all listed entries : <strong>Follow in Dump &gt; Follow in Memory Map</strong></p>
+
+<p><img src="https://miro.medium.com/max/1400/1*Afh9hdo_TOMPeep1mpWYag.png" alt="" /></p>
+
+<p><img src="https://miro.medium.com/max/1306/1*pF2iREtDJ8GHkIqwLvbykQ.png" alt="" /></p>
+
+<p>You will know when you will find something unusual like : Unnamed section in memory with <strong>R</strong>ead <strong>W</strong>rite and <strong>E</strong>xecutable permission.</p>
+
+<p>Select and <strong>“Dump Memory to File”</strong></p>
+
+<p><img src="https://miro.medium.com/max/1200/1*pjOOoq-wN6tIJEzDELYmFg.png" alt="" /></p>
+
+<p><img src="https://miro.medium.com/max/1400/1*rKmW9wXkluX-nOOEYnCbTg.png" alt="" /></p>
+
+<p>We named it “remcos_extracted.bin” , let’s test it with PE Bear to make sure it was injected executable :</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*AOa9LeBVpq7ClPjPUDauxA.png" alt="" /></p>
+
+<p><strong>Hmmmm… now what?</strong> but we found our DOS header and all right?</p>
+
+<p>Let’s inspect the file in Hex Editor</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*0ipjycn3vKmR1FwMxK8Uhw.png" alt="" /></p>
+
+<p><img src="https://miro.medium.com/max/1400/1*bLprdOz8P0UyZibX4SfNFw.png" alt="" /></p>
+
+<p>And we have our DOS header… then? WHY PE BEAR IS NOT WORKING?</p>
+
+<p>This is because the file signature or magic number is not present !! Remember PE files start with <strong>“MZ.”</strong> header?</p>
+
+<h3 id="fixing-extracted-binary-header-signature-fix">Fixing Extracted Binary [Header Signature Fix]</h3>
+
+<p>Now we know what’s missing, let’s repair the binary by placing missing header in place. But where to put it?</p>
+
+<p>Let’s go to check list method :</p>
+
+<ol>
+  <li>
+    <p>MZ header usually aligns with starting offset.</p>
+  </li>
+  <li>
+    <p>about ~60 bytes before DOS header</p>
+  </li>
+</ol>
+
+<p><a href="https://i.stack.imgur.com/0DdKh.png">PE FORMAT </a></p>
+
+<p><img src="https://miro.medium.com/max/1400/1*PrBFxUXOvFotdMmVuhz-Fw.png" alt="" /></p>
+
+<p>So let’s clean all the Zero padding before 0x000600 as this seems to be good place for our signature and fits our checklist.</p>
+
+<p>Clean all the padding above and modify first 2 Bytes as <strong>4D 5A</strong> hexadecimal for <strong>MZ</strong>.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*xng5ZjsiO9CorNTfNSw6qA.png" alt="" />
+<img src="https://miro.medium.com/max/1400/1*oWvk1kbCDw4f-RG2thpt7g.png" alt="" /></p>
+
+<p>Save the file and … Now let’s check this in PE BEAR</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*d9FEHk3tvzF-SKjdp9qibg.png" alt="" />
+<img src="https://miro.medium.com/max/1400/1*lYxvu0zotmOzAAkD1BAcVw.png" alt="" /></p>
+
+<p>Cool ! everything is fine.</p>
+
+<p>AND we have our memory injected malware out in open!</p>
+
+<p>Now we can fire up IDA or whatever rocks your boat to further analyze the extracted malware.</p>
+
+<p><img src="https://miro.medium.com/max/2000/1*RVcQFMYOL7U7Vb0uyx2rjw.png" alt="" /></p>
+
+<p>But we will leave that for another article, (’cause ofcourse you can see how excited IDA is with this RAT) it will take much more space and time to clear out all those crazy Call Graphs.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>I hope this will come in handy for someone. This was actually super cool to me.</p>
+
+<p>I was playing with windows memory recently and will share more as it comes. Till then… stay caffeinated enough and keep roaming in the memory lanes(pun intended)of windows.</p>
+
+<h3 id="references">References</h3>
+
+<p><a href="https://youtu.be/DIH4SvKuktM">OA LABS ANALYSIS VIDEO</a></p>
+
+<p><a href="https://countuponsecurity.com/tag/finding-injected-code-into-memory/">Finding injected code into memory - Count Upon Security</a></p>
+
+<hr />
 
     
 
@@ -353,8 +538,6 @@ Extraction of injected malicious PE from dynamic memory in windows (Remcos malwa
       
       
 
-      
-        <a href="/2020/03/08/Extracting-packer-injected-malware.html">More &hellip;</a>
       
     
   </article>
@@ -411,6 +594,292 @@ Recover recently deleted file (if it’s still open in some process) using prope
 Introduction to Race Condition Vulnerability and how to Exploit them.
 </div>
 
+<h3 id="background">Background</h3>
+
+<p>One fine day, someone, somewhere was absorbing random knowledge from the “great internet forums” and stumbled on a CTF challenge remake.</p>
+
+<p>The challenge was to read the flag from a file [duh… “capture the FLAG(CTF)”]… but here the file was owned by root user and the programs checks for the same and if it is so, then it will not read it for us.</p>
+
+<p>This actually took me hours of screaming and existential crisis, and then after looking at naked code for long enough with extensive internet researches, I found the solution (or the solution found me?). Anyways, this was cool enough for me to share with you, so here we go with an article.</p>
+
+<h3 id="so-what-its-all-about">So what it’s all about?</h3>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">TL;DR :</code> If the computer program tries to check for some condition more
+than once, we try to change the state of the condition in between two?
+transfers in attempt to deceive the program into behaving in the way we
+want or it’s not supposed to work.</p>
+
+  <p>if you want to skip, <a href="#exp">jump to EXPLOIT</a> section
+<img src="https://miro.medium.com/max/1000/1*2I7e7fdKmE9JOBmSEJHrPQ.png" alt="Joke_Image.png" title="It's supposed to be funny" /></p>
+</blockquote>
+
+<p>In technical terms,</p>
+
+<blockquote>
+  <p>“A <strong>race condition</strong> or <strong>race hazard</strong> is the condition of an electronics, software, or other system where the system’s substantive behavior is dependent on the sequence or timing of other uncontrollable events. It becomes a bug when one or more of the possible behaviors is undesirable.” 
+— <a href="https://en.wikipedia.org/wiki/Race_condition">WikiPedia</a></p>
+</blockquote>
+
+<p>In the light of computer security,</p>
+
+<p>“In software development, <strong>time-of-check to time-of-use (TOCTOU, TOCTTOU or TOC/TOU)</strong> is a class of software bugs caused by a race condition involving the checking of the state of a part of a system (such as a security credential) and the use of the results of that check.”</p>
+
+<p>— says… guess who? …. <a href="https://en.wikipedia.org/wiki/Race_condition">WikiPedia</a>, ofc.</p>
+
+<p>Let’s try to understand this while attempting to do the challenge we got.</p>
+
+<hr />
+
+<h3 id="recreating-the-challenge">Recreating the challenge.</h3>
+
+<p>Let’s first recreate the challenge in our own machine, so that we can try it while reading this article… cool? let’s go…</p>
+
+<ul>
+  <li>We will be using Linux for all the things, ’cause Linux is Love. If you are already working on Linux just go on, you are doing great in life, if otherwise, you can use virtual machine for this tutorial and we are good.</li>
+</ul>
+
+<h4 id="step-1">Step 1:</h4>
+
+<p>Let’s create a file with root ownership which will create our flag. We can do this by following commands :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"{th1s_fl@g_i5_wh@7_w3_s33k}"</span> <span class="o">&gt;</span> flag.txt
+<span class="nb">chown </span>root:root flag.txt
+</code></pre></div></div>
+<p><img src="https://miro.medium.com/max/1400/1*pzsDxvYtEwgoDFNUV7OS7Q.png" alt="ScreenShot.png" title="ScreenShot" /></p>
+
+<h4 id="step-2">Step 2:</h4>
+
+<p>Here’s the <strong><em>C code</em></strong> of challenge binary, used to read the root flag.txt</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;string.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;errno.h&gt;
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span><span class="kt">int</span> <span class="n">fd</span><span class="p">;</span><span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+<span class="k">if</span><span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">){</span><span class="n">printf</span><span class="p">(</span><span class="s">"usage: %s &lt;file&gt;</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);}</span>
+<span class="k">struct</span> <span class="n">stat</span> <span class="n">stat_data</span><span class="p">;</span>
+<span class="k">if</span><span class="p">(</span><span class="n">stat</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="o">&amp;</span><span class="n">stat_data</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">){</span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"Failed to stat %s: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">));</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);}</span>
+<span class="k">if</span><span class="p">(</span><span class="n">stat_data</span><span class="p">.</span><span class="n">st_uid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"File %s is owned by root</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);}</span>
+<span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_RDONLY</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="n">fd</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"Couldn’t open %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);}</span>
+<span class="k">do</span> <span class="p">{</span><span class="n">size</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mi">256</span><span class="p">);</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">size</span><span class="p">);}</span><span class="k">while</span><span class="p">(</span><span class="n">size</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">);}</span>
+</code></pre></div></div>
+
+<p>I know ! I know ! This is some aggressively jotted down code chunk and yes, but it works and it’s just packed by removing all unnecessary spaces and indentation.</p>
+
+<p>For now just copy it can paste in a *.c file and this will work.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*J053Ay9Fe54ll59jXGvh8Q.png" alt="" /></p>
+
+<p>after compiling we get the following behaviour from our program…</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*a6dcj44480Ugl9-LmSyKLg.png" alt="" /></p>
+
+<p>But we want it to somehow show the contents of the file, and that’s what we will try to do, but first let’s see what the program is actually doing and what we understand from it.</p>
+
+<h3 id="dissection-of-c-code">Dissection of C Code</h3>
+
+<p>Here’s beautified code for you,</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;string.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;errno.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"usage: %s &lt;file&gt;</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">struct</span> <span class="n">stat</span> <span class="n">stat_data</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">stat</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">stat_data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"Failed to stat %s: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">));</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">stat_data</span><span class="p">.</span><span class="n">st_uid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"File %s is owned by root</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_RDONLY</span><span class="p">);</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">fd</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"Couldn't open %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">do</span> <span class="p">{</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mi">256</span><span class="p">);</span>
+        <span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="n">size</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+<p><a href="https://gist.github.com/Saket-Upadhyay/6f1c5e15c2b454d81f7826b64ae1df2d/raw/d7c083a03cce749158726b4131d1e50ab03e615f/raceconditionchallenge.c">View Raw on GitHub</a></p>
+
+<p>Now, let’s try to understand its workings,</p>
+
+<p><strong>Line 1 to 6</strong> are just imports.(all hail header files)</p>
+
+<p><strong>Line 9,10,11</strong> declares some obvious variables.</p>
+
+<p>Now we can see that we have 4 conditions before line 38 which will actually display the contents of the file. Let’s try to understand these.</p>
+
+<p><strong>At line 13</strong>, we have condition to check if the given arguments to the program equals “two” or not. actually that means we have to provide one file in the arguments, the other argument is just the program itself given by default. So according to this if we don’t provide a file to read this will execute</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">printf</span><span class="p">(</span><span class="s">"usage: %s &lt;file&gt;</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</code></pre></div></div>
+<p>and then exit.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*5FzFVOSl4vsYHjVTd9WzDg.png" alt="" /></p>
+
+<p>At <strong>line 19</strong>, we check if the file contains valid formatted data or not, we can see in <strong>line 18</strong> we defined object for <strong>stat</strong> structure from <strong>sys/stat.h</strong> header. In line 19 “if” condition we just check if we are able to extract information from the supplied file or not. If not, then we execute</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"Failed to stat %s: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">));</span>
+</code></pre></div></div>
+<p>which will print error message in standard error out and then exit.</p>
+
+<p><a href="https://pubs.opengroup.org/onlinepubs/007908799/xsh/sysstat.h.html">pubs.opengroup.org/onlinepubs/007908799/xsh/sysstat.h.html</a></p>
+
+<p>At line 24, we check if the file is owned by root or not by checking the uid of the file. What’s UID ? check the link below…</p>
+
+<p><a href="https://geek-university.com/linux/uid-user-identifier-gid-group-identifier/">UID AND GID IN LINUX</a></p>
+
+<p>The last check is at <strong>Line 32</strong>, just checks if we are able to successfully open the file as read only or not. Notice that file open at Line 30? it’s there to check for that only, no big deal here.</p>
+
+<h4 id="overall-working-">Overall working :</h4>
+
+<p>The program takes one argument as the file we want to open and then it will check if it’s a valid file or not and then checks for root ownership, and then if not owned by root it will try to open it as read only and then if successful in that it will show the contents.</p>
+
+<h3 id="what-we-need-to-do">What we need to do?</h3>
+
+<p>According to above information if we somehow convince the program that the file is not root we might be able to see the contents of the file, because this is the only barrier that out file has, it’s owned by root all other checks are just kind-of integrity checks.</p>
+
+<h4 id="finding-the-race-condition-flaw">Finding the race condition flaw</h4>
+
+<p>Now let’s see where’s the bug that we were talking about actually is…</p>
+
+<p>Here we need to focus… let’s examine the flow of the program again, and we can see that it uses <strong>argument argv[1]</strong> two times in the file at significant interval.</p>
+
+<p>once at Line 19 :</p>
+
+<pre><code class="language-C">if (stat(argv[1], &amp;stat_data) &lt; 0) {
+</code></pre>
+
+<p>And then in Line 30 :</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_RDONLY</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Interestingly, <strong>it check for the root ownership with the first use</strong> and then actually opens the file to <strong>display the contents from second usage.</strong></p>
+
+<p>Now imagine if we are able to change the file in between two uses of the argument we might be able to tell the program that the file is not owned by root and then pass on the file owned by root to open !!</p>
+
+<p>Let’s try to understand this with a diagram.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*rLkHV47bazGNdWza9kPkmQ.png" alt="" /></p>
+
+<div id="exp"></div>
+
+<h3 id="the-exploit">The Exploit</h3>
+
+<p>To exploit this vulnerability, we need to quickly swap the files before the other function calls it.</p>
+
+<p>After watching lots and lots of tutorials on system calls, Linux file management etc. in hopes to find any solution to this, eventually bumped into one.</p>
+
+<p>Okay, so we are going to use following things in our exploit</p>
+
+<ul>
+  <li>SYS_renameat2 [Systemcall] : <a href="http://man7.org/linux/man-pages/man2/rename.2.html">MAN7.ORG/LINUX/MAN-PAGES</a></li>
+</ul>
+
+<p>Our idea is to swap / rename the two files so fast that we are able to pull off above described maneuver.</p>
+
+<p>Here is a small C code that can help us do that :</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define _GNU_SOURCE
+#include &lt;stdio.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sys/syscall.h&gt;
+#include &lt;linux/fs.h&gt;
+</span>
+<span class="c1">// source https://github.com/sroettger/35c3ctf_chals/blob/master/logrotate/exploit/rename.c</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+  <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">syscall</span><span class="p">(</span><span class="n">SYS_renameat2</span><span class="p">,</span> <span class="n">AT_FDCWD</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">AT_FDCWD</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">RENAME_EXCHANGE</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Copy the C code and compile it normally with gcc, that being done, let’s understand the code :</p>
+
+<p><strong>Line 1 to 7 are just imports</strong></p>
+
+<p><strong>Line 11</strong> has infinite While loop as while(1) is always true</p>
+
+<p><strong>Line 12 here has a super important</strong> “syscall()” will call the system call from C program, here it calls renameat2 system call.</p>
+
+<p>We pass the two arguments as filenames we want to rapidly swap as argv[1] and argv[2]. Let’s understand other parameters:</p>
+
+<ol>
+  <li>
+    <p><strong>AT_FDCWD</strong> :If pathname is relative and dirfd is the special value AT_FDCWD, then pathname is interpreted relative to the current working directory of the calling process.</p>
+  </li>
+  <li>
+    <p><strong>RENAME_EXCHANGE</strong> — does an atomic exchange. Atomic exchange? yeah that’s new to me too … here it is</p>
+  </li>
+</ol>
+
+<p><a href="http://www.embhack.com/atomic-operation-in-linux-kernel/">Atomic Operation in Linx Kernel - EmbHack</a></p>
+
+<h3 id="how-to-use-the-exploit-">HOW TO USE THE EXPLOIT ?</h3>
+
+<p>Now as we have the exploit and we know how it works, let’s use it.</p>
+
+<p>just create a temp. file with anything in it</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"1"</span> <span class="o">&gt;</span>./temp
+</code></pre></div></div>
+<p>Now run the exploit program with the flag and temp file as its parameters</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*QUfK9dAuHDDBtg3RvYQitQ.png" alt="" /></p>
+
+<p>this will not produce any output but let it run, it is swapping the two files rapidly.</p>
+
+<p>Now OPEN NEW TERMINAL and run readFlag program with flag as parameter.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*MbvBeaL5aKkPsBycGRjEQw.png" alt="Flag.png" /></p>
+
+<p>AND THERE WE HAVE IT !! our F L A G…</p>
+
+<h4 id="sign-off">Sign-off</h4>
+
+<p>Phew! that was lots of information for one article, I understand … may be it’s not that simple as I intended to make it but believe me when i say this… I was just amazed and overwhelmed with the knowledge I gained on my way through it and wanted to share it asap.</p>
+
+<p>Well I hope this was new to you too and you enjoyed it, if you have any suggestion or feedback, feel free to drop it in comments.</p>
+
+<p>See ya all in next article, till then keep your bodies caffeinated enough!</p>
+
+<blockquote>
+  <p>NOTE: here is an awesome video by LiveOverflow on the same topic and actually this is the one which inspired me to write about it. <a href="https://www.youtube.com/watch?v=5g137gsB9Wk&amp;feature=youtu.be">YOUTUBE LINK</a></p>
+</blockquote>
+
 
     
 
@@ -419,8 +888,6 @@ Introduction to Race Condition Vulnerability and how to Exploit them.
       
       
 
-      
-        <a href="/2019/12/21/Winning-Race-Conditions.html">More &hellip;</a>
       
     
   </article>
@@ -444,6 +911,71 @@ Introduction to Race Condition Vulnerability and how to Exploit them.
 Streamline Permission-Based Feature Extraction for android data-set with one Python Script.
 </div>
 
+<h3 id="background">Background</h3>
+
+<p>Malware detection and analysis has been the hot topic in security for a long time, overtime the malware writers upgraded their skills and complexity and this has been the main reason for us to find new effective methodologies for malware detection and classification.</p>
+
+<p>As with the boom of AI and ML to solve general problems,the malware analysis and detection is not left untouched. Many researches has been published in the domain of malware detection using Machine Learning approach. But before doing all the gizmo of model training and neural network formation or any of those wires in brain magic, we need to collect certain information from the target to train our machine, and that is what we call <strong>features</strong> and that is what this article is all about, to get you started in the field.</p>
+
+<h3 id="baseline">Baseline</h3>
+
+<p>The following article only focus on feature generation and formatting, specifically permission-based feature generation for android application.</p>
+
+<p>Here we will only see how we can speed up this process by using simple script which Does It All will break it down in some other article where we will discuss feature extraction in general followed my training our own ML model to detect Android malware !</p>
+
+<h3 id="the-script">The Script</h3>
+
+<p>Lets get to the fun part, and explore the script itself.</p>
+
+<blockquote>
+  <p>Get the Project in <a href="https://github.com/Saket-Upadhyay/Android-Permission-Extraction-and-Dataset-Creation-with-Python">GitHub</a></p>
+</blockquote>
+
+<p>This script will extract permission information from Malware and Benign applications in their respective folders and then create one Comma Separated Values (.csv) file to store them in one place ready to be fed into ML algorithms.</p>
+
+<h3 id="how-to-use-the-script">HOW TO USE THE SCRIPT?</h3>
+
+<p>Just copy your <code class="language-plaintext highlighter-rouge">Malware</code> and <code class="language-plaintext highlighter-rouge">Benign</code> applications on which you want to train your ML Model into <code class="language-plaintext highlighter-rouge">respective folders</code> and run the script by following command in terminal.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 ExtractorAIO.py
+</code></pre></div></div>
+<p>And that’s it. yes. done. rest, the script will handle</p>
+
+<h3 id="how-to-use-the-generated-data-set">HOW TO USE THE GENERATED DATA-SET?</h3>
+
+<p>The generated data will be in <code class="language-plaintext highlighter-rouge">*.csv</code> format and can be parsed with the help of many already available libraries or modules. (pandas module in python is suggested)</p>
+
+<h4 id="formatting">Formatting</h4>
+
+<script src="https://gist.github.com/Saket-Upadhyay/e713aa3fe50fd68895c0b50ebf83508b.js"></script>
+
+<p><sup>This is sample data set of 6 applications (3 Malware &amp; 3 Benign)</sup></p>
+
+<p>The 1st column contains <strong>NAME</strong> of respective application and last column <strong>“CLASS”</strong> contains information if the application if from benign or malware family of training set. <strong>[0=Benign, 1=Malware]</strong>. In between there are all the permissions (common + all found in 1st phase) with respective information bit, <em>[0=The application do not use this permission, 1=This permission is used in the application]</em></p>
+
+<h3 id="importing-data-example-in-sklearn">Importing Data Example in sklearn</h3>
+
+<p>Suppose you want to import your new data set into sklearn and train your new model from there, here’s a way you can do that.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">file</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"data.csv"</span><span class="p">)</span>
+<span class="n">coulmnNames</span> <span class="o">=</span> <span class="nb">file</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:].</span><span class="n">columns</span>
+<span class="n">FeatureNames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">coulmnNames</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">LabelName</span> <span class="o">=</span> <span class="n">coulmnNames</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="nb">file</span><span class="p">[</span><span class="n">FeatureNames</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="nb">file</span><span class="p">[</span><span class="n">LabelName</span><span class="p">]</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+<span class="n">feature_vectors</span> <span class="o">=</span> <span class="n">X</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">Y</span>
+<span class="n">train_x</span><span class="p">,</span> <span class="n">test_x</span><span class="p">,</span> <span class="n">train_y</span><span class="p">,</span> <span class="n">test_y</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">feature_vectors</span><span class="p">,</span><span class="n">labels</span><span class="p">,</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+</code></pre></div></div>
+<p>The above code will remove <strong>NAME</strong> column and then store <strong>FEATURE_MATRIX</strong> (from column after  NAME  to second last column) and <strong>LABEL_VECTOR</strong> ( CLASS column) in X and Y respectively, which later can be split into desired training and testing sets.</p>
+
+<h3 id="conclusion">CONCLUSION</h3>
+
+<p>I hope this article will get you started with feature extraction for malware analysis using machine learning. It isn’t the end of it, but we just completed one step !</p>
+
+<hr />
 
     
 
@@ -452,8 +984,6 @@ Streamline Permission-Based Feature Extraction for android data-set with one Pyt
       
       
 
-      
-        <a href="/2019/12/04/Effortless-Feature-Extraction.html">More &hellip;</a>
       
     
   </article>
@@ -487,6 +1017,89 @@ Streamline Permission-Based Feature Extraction for android data-set with one Pyt
   Baby steps to binary rewriting and reverse engineering.
 </div>
 
+<h3 id="background-story">Background story</h3>
+
+<p><code class="language-plaintext highlighter-rouge">"Almost every code we write and compile is converted into machine code and set of instructions."</code></p>
+
+<p>Pretty basic definition for what compiler does huh?</p>
+
+<p>Well, let me re-frame that with respect to a reverse engineer’s point of view,</p>
+
+<p><code class="language-plaintext highlighter-rouge">"It doesn’t matter if you write your code in C, C++ or C# it will be converted into machine code, which can be viewed as a common low level language, Assembly."</code></p>
+
+<p>In simpler terms, all we need to understand is the assembly of code and without having its actual source code we can conclude what it will do. Now what to do from here?</p>
+
+<p>Imagine we got a program that will activate when provided with valid key, pretty common scenario right? You might say just buy the key, or download the crack etc. pretty boring solutions too… Now, what if I tell you, we can activate the program just by changing it’s binary, that too just 2–6 bytes! YES! And that’s what we will try to understand in this article.</p>
+
+<p>Actually most of such programs use comparison statements to check if your key matches with the actual key or not, e.g. “if (input == key) {//do thing here}” etc.</p>
+
+<p>And that very thing in assembly is done by “CMP” instruction and then followed by a “JMP” or similar instruction to shift the flow of controls according to the result of comparison.</p>
+
+<hr />
+
+<h3 id="lets-do-it">Let’s do it.</h3>
+
+<p>Let us make an application, this application works in the same fashion, check for the key and activate if matches. The program is written in C and compiled by the GCC compiler.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;string.h&gt;
+#include &lt;stdio.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">argc</span><span class="o">==</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">printf</span><span class="p">(</span><span class="s">"Checking License: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+                <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">strlen</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">sum</span><span class="o">+=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>	
+		<span class="p">}</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">sum</span><span class="o">==</span><span class="mi">1000</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">printf</span><span class="p">(</span><span class="s">"Access Granted!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="n">printf</span><span class="p">(</span><span class="s">"WRONG!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="n">printf</span><span class="p">(</span><span class="s">"Usage: &lt;key&gt;</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here is one example where we use “saket” as the key.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*K_G78S10NaB8cpo5rCagRg.png" alt="" />
+As we expected it to behave, when provided with invalid key it will say “WRONG!”</p>
+
+<p>When we observe the compiled binary in our favorite debugger we can see one instruction <strong>“CMP [RBP+VAR_18], 394H”</strong> that checks the string passed and then compares it with <em>(394)h =(916)d</em> that seems to be string length or something, the interesting part is that it is followed by <strong>“JNZ SHORT LOC_400657”</strong> instruction, which makes <strong>EIP</strong> or <strong>instruction pointer</strong> to point at 400657th location. In simple words, <strong>shifts the control flow to 400657th</strong> location in memory , and execute instruction from there. Further we can see that <strong>LOC_400657</strong> contains instructions of <strong>WRONG KEY</strong> part of software.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*QiRX5E9kSXkvrN7YyTFedg.png" alt="" />
+So what if we can just skip that jump statement and whatever the result of the CMP we will just continue to <strong>Access Granted</strong> part. To do that we will just <strong>change jump address in HEX DUMP from “0C” to “00”</strong> which will cause <strong>EIP</strong> to just continue to the next instruction.</p>
+
+<p>For that we will go to the hex equivalent of the instruction in dump and change the value in target address.
+<img src="https://miro.medium.com/max/1400/1*Ndw-9qh6-jx-Pw79bJhUiQ.png" alt="" />
+here we can observe JNZ instruction starts at 400649 (relative address), we can go to same in hex dump to get equivalent hex values.</p>
+
+<p><img src="https://miro.medium.com/max/1378/1*uxriK_ycJjHxt-aYJYJ-3w.png" alt="" /></p>
+
+<p>now we know that <strong><em>JNZ SHORT LOC_400649 ~ 75 0C;</em></strong> Now keeping JNZ intact, i.e. not changing 75, we can change 0C to 00 to try to null it’s effect. or we can just replace the next effective address,something like this :
+<img src="https://miro.medium.com/max/1042/1*OLDef_3bUFDIOlGgpSA3rg.png" alt="" />
+But for this article, we will just replace 0C with 00…</p>
+
+<p>THAT IS, THIS
+<img src="https://miro.medium.com/max/121/1*9xX5CM7-5zkwUw-jLW_vsg.png" alt="" />
+TO
+<img src="https://miro.medium.com/max/91/1*dUlh5aSmPdg0vdDGWOzXnw.png" alt="" />
+And now you can see our instruction continues to ACCESS GRANTED part, and no instruction points to WRONG KEY. That means we should be able to activate the software with any key we want!.</p>
+
+<p><img src="https://miro.medium.com/max/1400/1*BVYRUDW4dLcBwd2jCT16HQ.png" alt="" />
+Now let’s check that with the same key we provided, and just another key to check our modification.
+<img src="https://miro.medium.com/max/1400/1*-In-V9fwv_pAMbyqhCYTJg.png" alt="" />
+<img src="https://miro.medium.com/max/1400/1*wZb8fjJzQLS1MKEV0gO2xA.png" alt="" />
+And that works pretty good!</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Binary rewriting in <strong>real-world scenarios is much more complex</strong> than this example, but anyways this is just introduction with the aim to get the us familiar with the concept.</p>
+
+<p>I hope you enjoyed this, have a super productive day ahead !</p>
 
     
 
@@ -495,8 +1108,6 @@ Streamline Permission-Based Feature Extraction for android data-set with one Pyt
       
       
 
-      
-        <a href="/article/2019/11/25/Taking-over-a-software-by-Instruction-Rewriting.html">More &hellip;</a>
       
     
   </article>
