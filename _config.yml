@@ -16,7 +16,7 @@ baseurl:          '/'
 
 author:
   name:           'Saket Upadhyay'
-  url:            https://twitter.com/x64mayhem
+  url:            'https://twitter.com/x64mayhem'
 
 paginate:         5
 # paginate_path:    '/page:num'
