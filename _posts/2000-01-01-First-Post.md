@@ -9,7 +9,7 @@ tags:
 So you scrolled this far? Well that means two things, either my work is interesting and you liked it or you are doing some OSINT mumbo jombo.
 
 For the first one, I am so glad, thank you for spending your time on my articles and motivating me to write more.
-For the later, Ewwww.. just go away already .... :-)
+For the later, Eh... creep!
 </div>
 
 <!-- <div class="message"> -->
