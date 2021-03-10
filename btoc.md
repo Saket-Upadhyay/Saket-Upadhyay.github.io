@@ -94,7 +94,7 @@ sidebar_link: true
 <tbody>
   <tr>
     <td>24 Dec. '20</td>
-    <td><a href="#">Blog.update(0) - New additions and modification</a></td>
+    <td><a href="https://saket-upadhyay.github.io/2020/12/24/blogupdate0.html">New additions and modification</a></td>
   </tr>
 </tbody>
 </table>
