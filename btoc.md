@@ -102,4 +102,17 @@ sidebar_link: true
 ## Random Thoughts
 
 ## Off Topic
-
+<table>
+<thead>
+  <tr>
+    <th>Post Date</th>
+    <th>Title</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>01 Jan '21</td>
+    <td><a href="https://saket-upadhyay.github.io/2021/01/01/whydoc.html">Why I want to do a Doctorate?</a></td>
+  </tr>
+</tbody>
+</table>
