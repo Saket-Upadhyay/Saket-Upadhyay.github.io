@@ -24,9 +24,16 @@ List of `Research`, `White Papers`, `Talks` etc.
 
 ## `Talks`
 
+### Introduction to Cybersecurity
+##### Google Developer Students Club, VITB 
+<p>{% include svg/github.svg%}<a href="https://github.com/Saket-Upadhyay/Talks_and_Presentation/tree/master/2021/Introduction_to_Cybersecurity_(DSC)">GitHub Resources</a> , {% include svg/youtube.svg%}<a href="https://www.youtube.com/watch?v=-uasGLC0m04"> Presentation Video</a></p>
+
+---
+
 ### Malware Hunting with Machine Learning
 ##### Penn State World Campus Tech Club, Penn State, Pennsylvania
-<p>{% include svg/github.svg%}<a href="https://github.com/Saket-Upadhyay/PennStateTalk2020">GitHub Resources</a> , {% include svg/youtube.svg%}<a href="https://www.youtube.com/watch?v=1FqDsTxrIdg"> Presentation Video</a></p>
+<p>{% include svg/github.svg%}<a href="https://github.com/Saket-Upadhyay/Talks_and_Presentation/tree/master/2020/PennStateTechClub_(PSWCTC)">GitHub Resources</a> , {% include svg/youtube.svg%}<a href="https://www.youtube.com/watch?v=1FqDsTxrIdg"> Presentation Video</a></p>
+
 ---
 
 ### How to be safe in cyber plane.
