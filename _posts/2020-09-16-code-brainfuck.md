@@ -137,7 +137,9 @@ Just so that you don’t start counting, it’s 65 times `+` then `>` then 66 ti
 Now these values are ASCII Equivalent of `A`,`B` and `C` respectively, let’s check out .
 
 So let’s go back 2 cells by `<<` and then print its content by a `.` , that should print ASCII of `65 -> A` . So the code becomes : 
+
 !()[https://miro.medium.com/max/700/1*DPmWgoj1ZmibCtNbrwp1cw.png]
+
 !()[https://miro.medium.com/max/700/1*2p5hukZe9L1lboAs6YviVQ.png]
 
 Awesome! Now if we shift right by one step and print the ASCII and then again shift right and print, we will get complete `ABC` So can you tell me the code we need to add to achieve this?
