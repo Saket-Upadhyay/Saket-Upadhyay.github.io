@@ -17,12 +17,12 @@ xSFOS: (X Six Four Operating System) is a simple 64bit Linux Kernel from scratch
 
 ---
 ### xSimpleLinuxKernelModule
-<p>{% include svg/github.svg%}<a href="https://github.com/Saket-Upadhyay/ns3-cybersecurity-simulations">GitHub</a></p>
+<p>{% include svg/github.svg%}<a href="https://github.com/Saket-Upadhyay/xSimpleLinuxKernelModule">GitHub</a></p>
 Project to understand more about Linux Kernel Modules
 
 ---
 ### NS3 Cybersecurity Simulations 
-<p>{% include svg/github.svg%}<a href="https://github.com/Saket-Upadhyay/xSimpleLinuxKernelModule">GitHub</a></p>
+<p>{% include svg/github.svg%}<a href="https://github.com/Saket-Upadhyay/ns3-cybersecurity-simulations">GitHub</a></p>
 Collection of cybersecurity simulations in NS3 and C++ for academia. Some of the simulations are build from scratch and some are build upon existing solutions. With common aim to aid in understanding Cybersecurity Concepts and be able to play with them.
 
 ---
