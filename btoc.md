@@ -13,6 +13,25 @@ sidebar_link: true
 </thead>
 <tbody>
   <tr>
+    <td>06 Jun'21</td>
+    <td><a href="https://saket-upadhyay.github.io//2020/08/18/sstf-vault-wtireup.html" target="_blank" rel="noopener noreferrer">modprobe for digital peace of mind 🍃</a></td>
+  </tr>
+
+<tr>
+    <td>11 May'21</td>
+    <td><a href="https://saketupadhyay.codes/2021/05/11/MalLab.html" target="_blank" rel="noopener noreferrer">5 Step Malware Lab in Hyper-V</a></td>
+  </tr>
+  <tr>
+    <td>25 Dec'20</td>
+    <td><a href="https://saketupadhyay.codes/2020/12/25/rsanotonlargefiles.html" target="_blank" rel="noopener noreferrer">Why RSA is NOT used to encrypt LARGE files?</a></td>
+  </tr>
+  <tr>
+    <td>16 Sep'20</td>
+    <td><a href="https://saketupadhyay.codes/2020/09/16/code-brainfuck.html" target="_blank" rel="noopener noreferrer">How to code in BrainF*ck without Losing Your Mind...</a></td>
+  </tr>
+
+
+  <tr>
     <td>18 Aug'20</td>
     <td><a href="https://saket-upadhyay.github.io//2020/08/18/sstf-vault-wtireup.html" target="_blank" rel="noopener noreferrer">Samsung CTF App Reverse Eng. Writeup (Detailed)</a></td>
   </tr>
@@ -100,6 +119,17 @@ sidebar_link: true
 </table>
 
 ## Random Thoughts
+<table>
+<thead>
+  <tr>
+    <th>Post Date</th>
+    <th>Title</th>
+  </tr>
+</thead>
+<tbody>
+
+</tbody>
+</table>
 
 ## Off Topic
 <table>
