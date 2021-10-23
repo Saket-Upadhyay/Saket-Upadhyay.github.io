@@ -8,6 +8,9 @@ body{
 .main{
 	background: #fff;
 }
+.mainlisting{
+	background: #fff;
+}
 
 .home-description{
 	font-style: italic;
@@ -69,8 +72,36 @@ body{
 			font-size: 24px;
 			font-family: 'Source Code Pro', monospace;
 		}
+		.projectdataheading:hover{
+			font-size: 24px;
+			font-family: 'Source Code Pro', monospace;
+			color: #fff;
+			background-color: #000;
+		}
 		.projectdata{
 			font-size: 18px;
+			font-family: 'Source Code Pro', monospace;
+		}
+
+		.researchdataheading{
+			font-size: 18px;
+			font-family: 'Source Code Pro', monospace;
+		}
+		.researchdataheading:hover{
+			font-size: 18px;
+			color: #fff;
+			background-color: #000;
+			font-family: 'Source Code Pro', monospace;
+		}
+		.doilink:hover{
+			color: #fff;
+			background-color: #2a80e2;
+		}
+		.researchauthors{
+			font-style: italic;
+		}
+		.researchdata{
+			font-size: 16px;
 			font-family: 'Source Code Pro', monospace;
 		}
 		
@@ -129,7 +160,7 @@ p{
 
 footer{
 	padding: 22px 0 10px 0;
-	font-style: italic;
+	font-style: normal;
 	}
 
 
@@ -236,7 +267,6 @@ footer{
 	margin-top: 15px;
 	margin-bottom: 20px;
 	padding-right: 40px;
-
 	}
 .page-title:after{
 	width: 75%;
