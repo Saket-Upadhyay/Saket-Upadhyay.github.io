@@ -53,7 +53,7 @@ body{
 		}
 
 		.img-rabbit{
-			/*margin: 0 -15px;*/
+			margin: 0 0;
 		}
 
 		.btn-group-vertical{
@@ -78,6 +78,23 @@ body{
 			color: #fff;
 			background-color: #000;
 		}
+
+		.talkheading{
+			font-size: 24px;
+			font-family: 'Source Code Pro', monospace;
+		}
+		.talkheading:hover{
+			font-size: 24px;
+			font-family: 'Source Code Pro', monospace;
+			color: #013269;
+			background-color: rgb(206, 206, 206);
+		}
+
+		.talkdata{
+			font-size: 15px;
+			font-family: 'Source Code Pro', monospace;
+		}
+
 		.projectdata{
 			font-size: 18px;
 			font-family: 'Source Code Pro', monospace;
@@ -126,6 +143,21 @@ body{
 	font-family: 'Architects Daughter', cursive;
 	font-size: 18px;
 	}
+
+	.btn-rabbit2{
+		background-color: #fff;
+		color: #111;
+		font-style: bold;
+		border: 1px solid #111;
+		border-radius: 0px !important;
+		transition: all 0.4s ease-in-out;
+		margin-bottom: 2px;
+		/* font-family: 'Indie Flower', cursive; */
+		font-family: 'Architects Daughter', cursive;
+		font-size: 1px;
+		height: 3em;
+		width: 3em;
+		}
 
 .btn-rabbit:hover{
 	color: #fff;
@@ -357,8 +389,11 @@ footer{
 }
 .custom_btn{
   -vendor-animation-duration: 3s;
+  animation-duration: 3s;
   -vendor-animation-delay: 2s;
+  animation-delay: 2s;
   -vendor-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
 }
 .show{
 	display: block;
