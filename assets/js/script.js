@@ -143,6 +143,8 @@ $( document ).ready(function() {
         $("#sharingaaninfo").click(function(){
             window.open("https://naruto.fandom.com/wiki/Sharingan","_blank");
         });
-
+        $("#publickkey").click(function(){
+            window.open("./pubkey.html","_blank");
+        });
 
 		});
