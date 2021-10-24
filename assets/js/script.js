@@ -71,6 +71,23 @@ $( document ).ready(function() {
 
 
         // OTHER LINKS I WANT TO OPEN IN NEW TABS
+
+        $("#mytwitter").click(function(){
+            window.open("https://twitter.com/x64mayhem", "_blank");
+        });
+
+        $("#mygithub").click(function(){
+            window.open("https://github.com/Saket-Upadhyay", "_blank");
+        });
+
+        $("#mylinkedin").click(function(){
+            window.open("https://www.linkedin.com/in/saketupadhyay/", "_blank");
+        });
+
+        $("#myfb").click(function(){
+            window.open("https://www.facebook.com/x64mayhem", "_blank");
+        });
+
         $("#bloglink").click(function(){
             window.open("http://saket-upadhyay.github.io/blog", "_blank");
         });
@@ -122,5 +139,10 @@ $( document ).ready(function() {
         $("#shellyt").click(function(){
             window.open("https://youtu.be/4PMW_huHuqo?t=291", "_blank");
         });
+
+        $("#sharingaaninfo").click(function(){
+            window.open("https://naruto.fandom.com/wiki/Sharingan","_blank");
+        });
+
 
 		});

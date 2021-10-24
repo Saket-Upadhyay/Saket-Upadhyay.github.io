@@ -101,11 +101,11 @@ body{
 		}
 
 		.researchdataheading{
-			font-size: 18px;
+			font-size: 24px;
 			font-family: 'Source Code Pro', monospace;
 		}
 		.researchdataheading:hover{
-			font-size: 18px;
+			font-size: 24px;
 			color: #fff;
 			background-color: #000;
 			font-family: 'Source Code Pro', monospace;
