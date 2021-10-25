@@ -9,6 +9,7 @@ $( document ).ready(function() {
                 $("#inspire_scroll").fadeOut();  ;   
                 $("#reseach_scroll").fadeOut();
                 $("#projects_scroll").fadeOut();
+                $("#hiddenpanel").fadeOut();
                 $("#patent_scroll").fadeOut();
                 $("#scicomm_scroll").fadeOut();
                 $("#talksandpresentations_scroll").fadeOut();
@@ -148,3 +149,24 @@ $( document ).ready(function() {
         });
 
 		});
+
+function HiddenFunction(){
+window.alert("Hi! (⌐■_■)"+
+"If you are browsing the webpage's source code, you might be interested in it's github repo!"
++
+"\r\n"
++
+"You can go to https://github.com/Saket-Upadhyay/Saket-Upadhyay.github.io to see the source code and LICENSE stuff."
++
+"\r\n"
++
+"But if you want to roam around here, it's okay, I've commented different part of this code including the script.js and main.css so that you can understand easily what I've done here."
++
+"\r\n"
++
+"I am not a full time webdev. ofc, but I can code enough to make this."
++
+"\r\n"
++
+"PSSSSS... have you checked \"/bonus.html\" ? ;)")
+}
