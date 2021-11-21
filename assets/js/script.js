@@ -4,15 +4,16 @@ $( document ).ready(function() {
 
 
                 // For Debugging
-                // $('#index').fadeOut();
-                $("#about_scroll").fadeOut()
-                $("#inspire_scroll").fadeOut();  ;   
-                $("#reseach_scroll").fadeOut();
-                $("#projects_scroll").fadeOut();
-                $("#hiddenpanel").fadeOut();
-                $("#patent_scroll").fadeOut();
-                $("#scicomm_scroll").fadeOut();
-                $("#talksandpresentations_scroll").fadeOut();
+                // // $('#index').fadeOut();
+                // $("#hiddenpanel").fadeOut();
+                // $("#about_scroll").fadeOut();
+                // $("#inspire_scroll").fadeOut();    
+                // $("#reseach_scroll").fadeOut();
+                // $("#projects_scroll").fadeOut();
+                // $("#patent_scroll").fadeOut();
+                // $("#scicomm_scroll").fadeOut();
+                // $("#talksandpresentations_scroll").fadeOut();
+                processParameters(location.search);
 
                 $("#about").click(function(){
                     $("#index").fadeOut();
@@ -152,7 +153,9 @@ $( document ).ready(function() {
 
 function HiddenFunction(){
 window.alert("Hi! (⌐■_■)"+
-"If you are browsing the webpage's source code, you might be interested in it's github repo!"
+"\r\n"
++
+"If you are browsing the source code, you might be interested in it's github repo!"
 +
 "\r\n"
 +
@@ -160,13 +163,120 @@ window.alert("Hi! (⌐■_■)"+
 +
 "\r\n"
 +
-"But if you want to roam around here, it's okay, I've commented different part of this code including the script.js and main.css so that you can understand easily what I've done here."
+"\r\n"
++
+"If you have any suggestions please feel free to contact me at saketsec[at]icloud[dot]com"
 +
 "\r\n"
 +
-"I am not a full time webdev. ofc, but I can code enough to make this."
+"\r\n"
++
+"I am not a full time webdev. ofc, but I can code enough to make this haha xD"
++
+"\r\n"
 +
 "\r\n"
 +
 "PSSSSS... have you checked \"/bonus.html\" ? ;)")
 }
+
+function processParameters(url) {
+    // if(!url) url = location.search;
+    var query = url.substr(1);
+    var result = {};
+    query.split("&").forEach(function(part) {
+      var item = part.split("=");
+      result[item[0]] = decodeURIComponent(item[1]);
+    });
+
+    if (result['show'] == 'publications'){
+                        $('#index').fadeOut();
+                        $("#about_scroll").fadeOut();
+                        $("#inspire_scroll").fadeOut();  
+                        $("#reseach_scroll").fadeIn();
+                        $("#projects_scroll").fadeOut();
+                        $("#hiddenpanel").fadeOut();
+                        $("#patent_scroll").fadeIn();
+                        $("#scicomm_scroll").fadeOut();
+                        $("#talksandpresentations_scroll").fadeOut();
+    }
+    else if(result['show'] == 'projects')
+    {
+        $('#index').fadeOut();
+        $("#about_scroll").fadeOut();
+        $("#inspire_scroll").fadeOut();   
+        $("#reseach_scroll").fadeOut();
+        $("#projects_scroll").fadeIn();
+        $("#hiddenpanel").fadeOut();
+        $("#patent_scroll").fadeOut();
+        $("#scicomm_scroll").fadeOut();
+        $("#talksandpresentations_scroll").fadeOut();
+    }
+    else if(result['show'] == 'talks')
+    {
+        $('#index').fadeOut();
+        $("#about_scroll").fadeOut();
+        $("#inspire_scroll").fadeOut(); 
+        $("#reseach_scroll").fadeOut();
+        $("#projects_scroll").fadeOut();
+        $("#hiddenpanel").fadeOut();
+        $("#patent_scroll").fadeOut();
+        $("#scicomm_scroll").fadeOut();
+        $("#talksandpresentations_scroll").fadeIn();
+    }
+    else if(result['show'] == 'about')
+    {
+        $('#index').fadeOut();
+        $("#about_scroll").fadeIn();
+        $("#inspire_scroll").fadeOut(); 
+        $("#reseach_scroll").fadeOut();
+        $("#projects_scroll").fadeOut();
+        $("#hiddenpanel").fadeOut();
+        $("#patent_scroll").fadeOut();
+        $("#scicomm_scroll").fadeOut();
+        $("#talksandpresentations_scroll").fadeOut();
+    }
+    else if(result['show'] == 'aboutinspire')
+    {
+        $('#index').fadeOut();
+        $("#about_scroll").fadeIn();
+        $("#inspire_scroll").fadeIn(); 
+        $("#reseach_scroll").fadeOut();
+        $("#projects_scroll").fadeOut();
+        $("#hiddenpanel").fadeOut();
+        $("#patent_scroll").fadeOut();
+        $("#scicomm_scroll").fadeOut();
+        $("#talksandpresentations_scroll").fadeOut();
+    }
+    else if(result['show'] == 'hiddenpanel')
+    {
+        HiddenFunction();
+    }
+    else if(result['show'] == 'scicomm')
+    {
+        $('#index').fadeOut();
+        $("#about_scroll").fadeOut();
+        $("#inspire_scroll").fadeOut(); 
+        $("#reseach_scroll").fadeOut();
+        $("#projects_scroll").fadeOut();
+        $("#hiddenpanel").fadeOut();
+        $("#patent_scroll").fadeOut();
+        $("#scicomm_scroll").fadeIn();
+        $("#talksandpresentations_scroll").fadeOut();
+    }
+    else if(result['show'] == 'publickey')
+    {
+        window.location.replace("https://saket-upadhyay.github.io/pubkey.html");
+    }
+    else{
+        $('#index').fadeIn();
+        $("#hiddenpanel").fadeOut();
+        $("#about_scroll").fadeOut();
+        $("#inspire_scroll").fadeOut();    
+        $("#reseach_scroll").fadeOut();
+        $("#projects_scroll").fadeOut();
+        $("#patent_scroll").fadeOut();
+        $("#scicomm_scroll").fadeOut();
+        $("#talksandpresentations_scroll").fadeOut();
+    }
+  }
