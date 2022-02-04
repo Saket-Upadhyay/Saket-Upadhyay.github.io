@@ -75,7 +75,7 @@ $( document ).ready(function() {
         // OTHER LINKS I WANT TO OPEN IN NEW TABS
 
         $("#mytwitter").click(function(){
-            window.open("https://twitter.com/x64mayhem", "_blank");
+            window.open("https://twitter.com/saketofcyber", "_blank");
         });
 
         $("#mygithub").click(function(){
