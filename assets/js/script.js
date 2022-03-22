@@ -87,7 +87,7 @@ $( document ).ready(function() {
         });
 
         $("#myfb").click(function(){
-            window.open("https://www.facebook.com/x64mayhem", "_blank");
+            window.open("https://www.facebook.com/saketofcyber", "_blank");
         });
 
         $("#bloglink").click(function(){
@@ -96,6 +96,10 @@ $( document ).ready(function() {
 
         $("#mediumlink").click(function(){
             window.open("https://saketupadhyay.medium.com/", "_blank");
+        });
+
+        $("#MYYT").click(function(){
+            window.open("https://www.youtube.com/channel/UCMFOriBTi3cGTsPFWoiwRMQ", "_blank");
         });
 
         $("#simonyt").click(function(){
