@@ -1,13 +1,20 @@
+
 <div class="head">
   {% if page.title %}
   <div id="masthead">
     <h3><a href="{{ site.baseurl | prepend: site.url}}">{{ site.title }}</a></h3>
   </div>
-
   {% else %}
   <div id="masthead">
     <h1>{{ site.title }}</h1>
-    <h5 style="text-align:center">{{ site.description }}</h5>
+    <p>{{ site.description }} | <a id="current_date"></a></p>
+    <script>
+      date = new Date();
+      year = date.getFullYear();
+      monthname = date.toLocaleString('default', { month: 'long'})
+      day = date.getDate();
+      document.getElementById("current_date").innerHTML = monthname + " " + day + ", " + year;
+   </script>
   </div>
   {% endif %}
 </div>

@@ -4,7 +4,6 @@ layout: default
 
 <!-- HERO SECTION -->
 <section class="hero">
-  <!-- LEFT HERO -->
   <div class="sideHeroColumn">
     {% for item in site.mast %}
       {% if item.position == 'left' %}
@@ -14,7 +13,6 @@ layout: default
     {% endfor %}
   </div>
 
-  <!-- HERO -->
   <div class="heroColumn">
     {% for item in site.mast %}
       {% if item.position == 'center' %}
@@ -24,7 +22,6 @@ layout: default
     {% endfor %}
   </div>
 
-  <!-- RIGHT HERO -->
   <div class="sideHeroColumn">
     {% for item in site.mast %}
       {% if item.position == 'right' %}
@@ -33,16 +30,21 @@ layout: default
       {% endif %}
     {% endfor %}
   </div>
-
+</section>
+</section>
+<section class="baajoohato">
+  <div>
+  <h5>Articles</h5>
+  </div>
 </section>
 
 <!-- MASONRY SECTION -->
 <section class="masonry">
+
   {% assign sorted_posts = site.columns | sort: "date" | reverse %}
   {% for item in sorted_posts %}
     <div class="item">
       {% include article.html item=item %}
     </div>
-    <p style="text-align: center;">. . .</p>
   {% endfor %}
 </section>
