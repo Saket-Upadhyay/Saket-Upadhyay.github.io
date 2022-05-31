@@ -96,6 +96,11 @@
 		/* background-color: #f9f9f9; */
 		text-decoration: underline;
 	}
+	img{
+		max-height: 100%;
+  max-width: 100%;
+
+	}
 
 /* "Containers" */
 
@@ -123,6 +128,9 @@
 		margin:						2% 0;
 		padding:					2% 0 0 0;
 		position:					relative;
+		max-height:					100%;
+  		max-width:					100%;
+
 	}
 
 	center {
@@ -170,13 +178,13 @@
 		display:					block;
 		margin:						0;
 		padding:					0;
-		width:						100%;
+		width:						80%;
 	}
 
 	.fluid {
 		display:					block;
 		margin:						0 2%;
-		max-width:					96%;
+		max-width:					80%;
 		padding:					0;
 
 	}
