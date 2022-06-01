@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Unpack UPX packed malware with SINGLE breakpoint"
+title: "Unpac UPX malware with SINGLE breakpoint"
 author: Saket
 date:   2021-11-21 12:12:12 +0530
 image: https://miro.medium.com/max/1400/1*VEdAzOsgYG9miOhJ6Wa65A.png
