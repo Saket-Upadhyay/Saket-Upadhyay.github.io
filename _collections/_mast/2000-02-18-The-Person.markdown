@@ -8,6 +8,8 @@ position: left
 image_caption: Profile Image of the author.
 ---
 
+<div class="message"><a class="link" href="/assets/CV/Saket_Upadhyay_Academic_CV_20211112.pdf">Download Curriculum Vitae(CV) [last updated on Nov. 21,2021]</a></div>
+
 Saket is a passionate computer science research student with experience in academic and industrial cybersecurity research. He holds two patents and four copyrights for his work on Nature-Inspired Cyber Security. His work has been published in high-impact research publications. He is very enthusiastic about teaching and research and plans to join academia as a lecturer after his doctorate from the University of Virginia, USA. His current research interest lies in Low-level software security, Hardware Security, Malware Analysis, Threat Intelligence, and Nature Inspired approach.
 <!--more-->
 
