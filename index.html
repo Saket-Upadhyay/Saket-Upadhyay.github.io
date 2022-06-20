@@ -1,50 +1,64 @@
----
-layout: default
----
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link href="style.css" rel="stylesheet">
+    <title>Saket U.</title>
+  </head>
+  <body>
+	<div id="content">
+		<h1>Saket Upadhyay</h1>
+		<nav>
+			<ul class="navbar">
+				<li class="navitem imhere"><a id="navbardiv" href="index.html" class="navbar">About</a></li>
+				<li class="navitem"><a href="research.html" class="navbar">Research</a></li>
+				<li class="navitem"><a  href="blog.html" class="navbar">Blog</a></li>
+				<li class="navitem"><a href="talks.html" class="navbar">Talks</a></li>
+				<li class="navitem"><a  href="cv.html" class="navbar">CV</a></li>
+				<li class="navitem"><a href="pubkey.html" class="navbar">Public Key</a></li>
+				<li class="navitem"><a href="fetchcat.html" class="navbar">random.Cat(img)</a></li>
+				<li class="modeswitch" style="align-self: right;">
+					<i class="fas fa-moon" onclick="DarkMode()"></i>
+					<i class="fas fa-sun" onclick="LightMode()"></i>
+				</li>
+			</ul>
+		</nav>
+		<div class="infoblock">
+			<img src="images/authorprofie.jpg" alt="Photo of self" class="headshot">
+			<div class="contact-info">
+				<p>
+					<b style="font-weight: 600;">PhD student, University of Virginia</b>
+				</p>
+				<p>&lsaquo;firstname&rsaquo; {at} virginia {dot} edu</p>
+				<p><a href="https://www.linkedin.com/in/saketupadhyay">LinkedIn</a>, <a href="https://scholar.google.com/citations?user=VImQVZ4AAAAJ&hl=en">Twitter</a></p>
+				<p><a href="https://scholar.google.com/citations?user=VImQVZ4AAAAJ&hl=en">Google Scholar</a></p>
+				<p><a href="https://scholar.google.com/citations?user=VImQVZ4AAAAJ&hl=en">ORCID</a></p>
+			</div>
+		</div>
+		<p>I am a first-year Computer Science Ph.D. student at University of Virgina. My research interests are - 
 
-<!-- HERO SECTION -->
-<section class="hero">
-  <div class="sideHeroColumn">
-    {% for item in site.mast %}
-      {% if item.position == 'left' %}
-        {% include article.html item=item %}
-        {% break %}
-      {% endif %}
-    {% endfor %}
-  </div>
+			<ol>
+				<li>Low-Level software security.</li>
+				<li>Sub Ring-0 Security and Privilege Escalation.</li>
+				<li>Malware Detection and Analysis.</li>
+				<li>Processor security.</li>
+				<li>Low-energy computing hardware security.</li>
+			</ol>
 
-  <div class="heroColumn">
-    {% for item in site.mast %}
-      {% if item.position == 'center' %}
-        {% include article.html item=item %}
-        {% break %}
-      {% endif %}
-    {% endfor %}
-  </div>
+		</p>
+		<p>Previously I completed my undergraduate degree (B.Tech.) in Computer Science with specialisation in cybersecurity and digital forensics at the Vellore Institute of Technology, India, where I worked under Dr. Shishir K. Shandilya on Nature Inspired Cybersecurity (NICS)</p>
 
-  <div class="sideHeroColumn">
-    {% for item in site.mast %}
-      {% if item.position == 'right' %}
-        {% include article.html item=item %}
-        {% break %}
-      {% endif %}
-    {% endfor %}
-  </div>
-</section>
-</section>
-<section class="baajoohato">
-  <div>
-  <h5>&nbsp;</h5>
-  </div>
-</section>
+	</div>
 
-<!-- MASONRY SECTION -->
-<section class="masonry">
-
-  {% assign sorted_posts = site.columns | sort: "date" | reverse %}
-  {% for item in sorted_posts %}
-    <div class="item">
-      {% include article.html item=item %}
-    </div>
-  {% endfor %}
-</section>
+  </body>
+  <footer>
+	या कुन्देन्दुतुषारहारधवला या शुभ्रवस्त्रावृता, या वीणावरदण्डमण्डितकरा या श्वेतपद्मासना। या ब्रह्माच्युत शंकरप्रभृतिभिर्देवैः सदा वन्दिता, सा मां पातु सरस्वती भगवती निःशेषजाड्यापहा॥१॥
+  </footer>
+  <br>
+  <br>
+  <footer>
+   2022 © saketupadhyay ; due <a href="credits.html">credits here</a>.
+  </footer>
+  <script src="script.js"></script>
+  <script src="https://kit.fontawesome.com/d24b63793e.js" crossorigin="anonymous"></script>
+  </html>
