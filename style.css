@@ -97,7 +97,7 @@ a.navbar:hover {
 }
 
 .imhere a {
-	color: #533980;
+	color: #1d81cd;
 }
 
 .cvlist {
@@ -110,7 +110,6 @@ a.navbar:hover {
 }
 
 .cvitem-title {
-	color: #533980;
 	font-weight: bold;
 	margin: 0px 0px 3px 0px;
 }
@@ -128,7 +127,9 @@ a.navbar:hover {
 }
 
 .me {
-	font-weight: 600;
+	/* font-weight: 600; */
+	color: #dc4040;
+	font-style: italic;
 }
 
 .display-table {
