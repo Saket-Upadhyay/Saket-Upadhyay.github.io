@@ -28,8 +28,6 @@ function checkVision() {
         DarkMode();
     } else if (localStorage.getItem("vision") == 'light') {
         LightMode();
-    } else if (localStorage.getItem("vision") == '') {
-        DarkMode();
     }
 }
 
