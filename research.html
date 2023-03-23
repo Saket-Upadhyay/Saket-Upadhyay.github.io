@@ -1,128 +1,52 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
-    <link href="style.css" rel="stylesheet">
-    <title>Saket U.</title>
-	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-
-  </head>
-  <body>
-	<div id="content">
-		<h1>Saket Upadhyay</h1>
-		<nav>
-			<ul class="navbar">
-				<li class="navitem imhere"><a id="navbardiv" href="index.html" class="navbar">About</a></li>
-				<li class="navitem"><a href="research.html" class="navbar">Research</a></li>
-				<li class="navitem"><a  href="blog.html" class="navbar">Blog</a></li>
-				<li class="navitem"><a href="talks.html" class="navbar">Talks</a></li>
-				<li class="navitem"><a  href="cv.html" class="navbar">CV</a></li>
-				<li class="navitem"><a href="pubkey.html" class="navbar">Public Key</a></li>
-				<li class="navitem"><a href="fetchcat.html" class="navbar">random.Cat(img)</a></li>
-				<li class="modeswitch" >
-					<i class="fas fa-moon" onclick="DarkMode()"></i>
-					<i class="fas fa-sun" onclick="LightMode()"></i>
-				</li>
-			</ul>
-		</nav>
-		<h3>Publications</h3>
-		<ul class="cvlist">
-
-            <li class="cvitem">
-                <div class="cvitem-title">Modified Firefly Optimization Algorithm-Based IDS for Nature-Inspired Cybersecurity</div>
-				<div class="authorlist">Shishir Kumar Shandilya, Bong Jun Choi, Ajit Kumar, <b class="me">Saket Upadhyay</b>.</div>
-                <div class="venue">MDPI, Processes 2023, 11(3), 715; 2023/02/28</div>
-                <div class="links">
-                    [<a href="rpapers/pdfs/processes-11-00715-with-cover.pdf">pdf</a>]
-                    [<a href="rpapers/references/saketfirefly.bib">bibtex</a>]
-                    [<a href="https://doi.org/10.3390/pr11030715">web</a>]
-                </div>
+    <link href="research.css" rel="stylesheet">
+    <title>Saket U. | Research</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/c0117f17fa.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="mouseshadow">
+    <i id="mouseshadow-icon" class="fa-solid fa-link"></i>
+</div>
+<div id="content">
+    <h3>Saket Upadhyay</h3>
+    <nav>
+        <ul class="navbar">
+            <li class="navitem imhere"><a id="navbardiv" href="index.html" class="navbar">About</a></li>
+            <li class="navitem"><a href="research.html" class="navbar">Research</a></li>
+            <li class="navitem"><a href="blog.html" class="navbar">Blog</a></li>
+            <li class="navitem"><a href="talks.html" class="navbar">Talks</a></li>
+            <li class="navitem"><a href="cv.html" class="navbar">CV</a></li>
+            <li class="navitem"><a href="pubkey.html" class="navbar">Public Key</a></li>
+            <li class="navitem"><a href="fetchcat.html" class="navbar">random.Cat(img)</a></li>
+            <li class="modeswitch">
+                <i class="fas fa-moon" onclick="DarkMode()"></i>
+                <i class="fas fa-sun" onclick="LightMode()"></i>
             </li>
+        </ul>
+    </nav>
 
-			<li class="cvitem">
-				<div class="cvitem-title">Nature-Inspired Malware and Anomaly Detection in Android-Based Systems</div>
-				<div class="authorlist"><b class="me">Saket Upadhyay</b></div>
-				<div class="venue">Advances in Nature-Inspired Cyber Security and Resilience, Springer; 2021/10/20</div>
-				<div class="links">
-					[<del>pdf</del>]
-					[<a href="rpapers/references/nicsanomalysaket.bib">bibtex</a>]
-					[<a href="https://link.springer.com/chapter/10.1007/978-3-030-90708-2_5">web</a>]
-				</div>
-			</li>
-			
-			<li class="cvitem">
-				<div class="cvitem-title">AI-assisted Computer Network Operations testbed for Nature-Inspired Cyber Security based adaptive defense simulation and analysis</div>
-				<div class="authorlist">Shishir Kumar Shandilya, <b class="me">Saket Upadhyay</b>, Ajit Kumar, Atulya K Nagar.</div>
-				<div class="venue">Future Generation Computer Systems; 2021/02/01</div>
-				<div class="links">
-					[<span style="text-decoration: line-through;">pdf</span>]
-					[<a href="rpapers/references/saketnicstestbed.bib">bibtex</a>]
-					[<a href="https://www.sciencedirect.com/science/article/abs/pii/S0167739X21003642">web</a>]
-				</div>
-			</li>
+    <div id="platter" data-mouse-down-at="0" data-pred-per="0" draggable="false">
+        <!--    Research paper platters-->
+        <img class="image" data-type="pdf" onclick="fireflyredirect()" src="rpapers/platter/firefly.png" draggable="false"/>
+        <img class="image" data-type="paper" onclick="nicsandroredirect()" src="rpapers/platter/nicsandro.png" draggable="false"/>
+        <img class="image" data-type="paper" onclick="aitestbedredirect()" src="rpapers/platter/aiassistedtestbed.png" draggable="false"/>
+        <img class="image" data-type="pdf" onclick="pacerredirect()" src="rpapers/platter/saketpacer.png" draggable="false"/>
+        <img class="image"  data-type="paper" onclick="paceieeeredirect()" src="rpapers/platter/PACE.png" draggable="false"/>
+
+        <!--    Patent Platter-->
+    </div>
+    <a href="researchlist.html" id="animrem" class="interactive" data-type="remanime">Remove fancy-pants animations.</a>
+</div>
 
 
-
-			<li class="cvitem">
-				<div class="cvitem-title">PACER: Platform for Android Malware Classification, Performance Evaluation and Threat Reporting</div>
-				<div class="authorlist">Ajit Kumar, Vinti Agarwal, Shishir Kumar Shandilya, Andrii Shalaginov, <b class="me">Saket Upadhyay</b> and Bhawna Yadav</div>
-				<div class="venue">Future Internet, MDPI; 2020/4</div>
-				<div class="links">
-					[<a href="rpapers/pdfs/saketpacer.pdf">pdf</a>]
-					[<a href="rpapers/references/saketpacer.bib">bibtex</a>]
-					[<a href="https://www.mdpi.com/1999-5903/12/4/66">web</a>]
-				</div>
-			</li>
-		
-			<li class="cvitem">
-				<div class="cvitem-title">PACE: Platform for Android Malware Classification and Performance Evaluation</div>
-				<div class="authorlist">Ajit Kumar, Vinti Agarwal, Shishir Kumar Shandilya, Andrii Shalaginov, <b class="me">Saket Upadhyay</b> and Bhawna Yadav</div>
-				<div class="venue">2019 IEEE International Conference on Big Data ; 2019/12/9</div>
-				<div class="links">
-					[<span style="text-decoration: line-through;">pdf</span>]
-					[<a href="rpapers/references/pacesaket.bib">bibtex</a>]
-					[<a href="https://ieeexplore.ieee.org/abstract/document/9006557">web</a>]
-
-				</div>
-			</li>
-
-		</ul>
-
-		<h3>Patents</h3>
-		<ul class="cvlist">
-			<li class="cvitem">
-				<div class="cvitem-title">A scanning device, a system and a method for characterization of external devices.</div>
-				<div class="venue">Intellectual Property, India; 2021-06-16| PAT: 369424</div>
-			</li>
-			<li class="cvitem">
-				<div class="cvitem-title">Nature-inspired adaptive defence system forearly intrusion detection.</div>
-				<div class="venue">Intellectual Property, Australia; 2021-08-20| PAT: 20211006268</div>
-			</li>
-		</ul>
-
-		<h3>Copyrights</h3>
-		<ul class="cvlist">
-			<li class="cvitem">
-				<div class="cvitem-title">NICS Hardware Security Module Driver.</div>
-				<div class="venue">2021-09-29 | 23581/2021-CO/SW</div>
-			</li>
-			<li class="cvitem">
-				<div class="cvitem-title">Firefly-inspired Early Alert Mechanism for Intrusion Detection Systems.</div>
-				<div class="venue">2021-09-29 | 23581/2021-CO/SW</div>
-			</li>
-			<li class="cvitem">
-				<div class="cvitem-title">NICS-based Network Testbed for Adaptive Defense Analysis.</div>
-				<div class="venue">2021-09-28 | 23470/2021-CO/SW</div>
-			</li>
-			<li class="cvitem">
-				<div class="cvitem-title">PAMC: Platform for Android Malware Classification.</div>
-				<div class="venue">2021 | SW-14439/2021</div>
-			</li>
-		</ul>
-
-	</div>
-  </body>
-
-  <script src="script.js"></script>
-  <script src="https://kit.fontawesome.com/d24b63793e.js" crossorigin="anonymous"></script>
+</body>
+<!--<footer draggable="false">-->
+<!--    2023 © saketupadhyay-->
+<!--</footer>-->
+<script src="research.js"></script>
+<script src="https://kit.fontawesome.com/d24b63793e.js" crossorigin="anonymous"></script>
 </html>
