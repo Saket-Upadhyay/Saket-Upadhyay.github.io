@@ -2,6 +2,10 @@
 const content = document.getElementById('content');
 const navbar = document.getElementById('navbardiv')
 
+// For mouse shadow
+
+const trailer = document.getElementById("mouseshadow");
+
 
 function LightMode() {
 
@@ -11,6 +15,8 @@ function LightMode() {
     content.style.color = "black";
     content.style.transition = ".3s linear";
     navbar.style.color = "black"
+    trailer.style.backgroundColor= "black";
+
 
 }
 
@@ -20,7 +26,8 @@ function DarkMode() {
     document.body.style.transition = ".3s linear";
     content.style.color = "white";
     content.style.transition = ".3s linear";
-    navbar.style.color = "white"
+    navbar.style.color = "white";
+    trailer.style.backgroundColor= "deepskyblue";
 }
 
 function checkVision() {
@@ -31,7 +38,17 @@ function checkVision() {
     }
 }
 
+
 document.addEventListener("load", checkVision());
+
+const getTrailerClass = type => {
+    switch (type) {
+        case "paper":
+            return "fa-solid fa-arrow-up-right-from-square";
+        default:
+            return "fa-solid fa-link";
+    }
+}
 
 
 // RESEARCH TAB THIGNS
@@ -45,6 +62,23 @@ const handleOnUp = () => {
 }
 
 const handleOnMove = e => {
+
+    // Mouse shadow movement
+    const interactable = e.target.closest(".image"),
+        interacting = interactable !== null;
+
+    const icon = document.getElementById("mouseshadow-icon");
+
+    animateTrailer(e, interacting);
+
+    trailer.dataset.type = interacting ? interactable.dataset.type : "";
+
+    if(interacting) {
+        icon.className = getTrailerClass(interactable.dataset.type);
+    }
+
+    // Pallet movement
+
     if (track.dataset.mouseDownAt === "0") return;
 
     const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX,
@@ -65,11 +99,36 @@ const handleOnMove = e => {
             objectPosition: `${100 + nextPercentage}% center`
         }, {duration: 1200, fill: "forwards"});
     }
+
+
+
 }
 
 const disableselect = (e) => {
     return false
 }
+
+const animateTrailer = (e, interacting) => {
+    const x = e.clientX - trailer.offsetWidth / 2,
+        y = e.clientY - trailer.offsetHeight / 2;
+
+    const keyframes = {
+        transform: `translate(${x}px, ${y}px) scale(${interacting ? 8 : 1})`
+    }
+
+    trailer.animate(keyframes, {
+        duration: 800,
+        fill: "forwards"
+    });
+}
+
+
+
+
+
+
+
+
 
 /* -- Had to add extra lines for touch events -- */
 

@@ -180,3 +180,50 @@ footer {
     top: 50%;
     transform: translate(-15%, -50%);
 }
+
+body:hover> #mouseshadow
+{
+    opacity: 1;
+}
+
+#mouseshadow{
+    height: 20px;
+    width: 20px;
+    background-color: deepskyblue;
+    border-radius: 20px;
+
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: 10000;
+
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 500ms ease;
+
+    display: grid;
+    place-items: center;
+}
+
+#mouseshadow:not([data-type=""]) > #mouseshadow-icon {
+    opacity: 1;
+}
+
+#mouseshadow-icon {
+    font-size: 6px;
+    line-height: 4px;
+    color: white;
+    opacity: 0;
+    transition: opacity 400ms ease;
+}
+
+
+.image {
+    opacity: 0.5;
+    transition: background-size 400ms ease, opacity 400ms ease;
+}
+
+.image:hover {
+    background-size: 105%;
+    opacity: 1;
+}
