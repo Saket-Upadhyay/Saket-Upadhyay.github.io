@@ -181,10 +181,20 @@ footer {
     transform: translate(-15%, -50%);
 }
 
+#animrem{
+    position: absolute;
+    font-style: italic;
+    font-size: small;
+    bottom: 5%;
+
+}
+
 body:hover> #mouseshadow
 {
     opacity: 1;
 }
+
+
 
 #mouseshadow{
     height: 20px;
@@ -208,6 +218,14 @@ body:hover> #mouseshadow
 #mouseshadow:not([data-type=""]) > #mouseshadow-icon {
     opacity: 1;
 }
+
+#mouseshadow:is([data-type="remanime"]) > #mouseshadow-icon {
+    opacity: 1;
+    font-size: 150%;
+    color: red;
+}
+
+
 
 #mouseshadow-icon {
     font-size: 7px;

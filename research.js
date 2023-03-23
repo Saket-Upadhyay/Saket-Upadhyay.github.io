@@ -47,6 +47,8 @@ const getTrailerClass = type => {
             return "fa-solid fa-arrow-up-right-from-square";
         case "pdf":
             return "fa-solid fa-file-pdf";
+        case "remanime":
+            return "fa-solid fa-circle-xmark";
         default:
             return "fa-solid fa-link";
     }
@@ -66,16 +68,24 @@ const handleOnUp = () => {
 const handleOnMove = e => {
 
     // Mouse shadow movement
-    const interactable = e.target.closest(".image"),
+    const icon = document.getElementById("mouseshadow-icon");
+    const imageinteractable = e.target.closest(".image"),
+        imageinteracting = imageinteractable !== null;
+
+    const interactable = e.target.closest(".interactive"),
         interacting = interactable !== null;
 
-    const icon = document.getElementById("mouseshadow-icon");
+        animateTrailer(e, imageinteracting);
 
-    animateTrailer(e, interacting);
 
-    trailer.dataset.type = interacting ? interactable.dataset.type : "";
 
-    if(interacting) {
+    trailer.dataset.type = imageinteracting ? imageinteractable.dataset.type : "";
+
+    if(imageinteracting) {
+        icon.className = getTrailerClass(imageinteractable.dataset.type);
+    }
+    if (interacting) {
+        trailer.dataset.type = interacting ? interactable.dataset.type : "";
         icon.className = getTrailerClass(interactable.dataset.type);
     }
 
@@ -129,7 +139,7 @@ const animateTrailer = (e, interacting) => {
 
 function fireflyredirect()
 {
-    window.open("https://doi.org/10.3390/pr11030715", "_blank");
+    window.open("/rpapers/pdfs/saketfirefly.pdf", "_blank");
 }
 
 
@@ -140,7 +150,7 @@ function nicsandroredirect()
 
 function pacerredirect()
 {
-    window.open("/rpapers/saketpacer.pdf", "_blank");
+    window.open("/rpapers/pdfs/saketpacer.pdf", "_blank");
 }
 
 function paceieeeredirect()
@@ -154,7 +164,10 @@ function aitestbedredirect()
 }
 
 
-
+function noanimationredirect()
+{
+    window.open("");
+}
 
 
 /* -- Had to add extra lines for touch events -- */
