@@ -210,8 +210,8 @@ body:hover> #mouseshadow
 }
 
 #mouseshadow-icon {
-    font-size: 6px;
-    line-height: 4px;
+    font-size: 7px;
+    line-height: 5px;
     color: white;
     opacity: 0;
     transition: opacity 400ms ease;

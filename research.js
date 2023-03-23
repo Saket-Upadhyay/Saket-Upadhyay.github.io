@@ -45,6 +45,8 @@ const getTrailerClass = type => {
     switch (type) {
         case "paper":
             return "fa-solid fa-arrow-up-right-from-square";
+        case "pdf":
+            return "fa-solid fa-file-pdf";
         default:
             return "fa-solid fa-link";
     }
@@ -123,8 +125,33 @@ const animateTrailer = (e, interacting) => {
 }
 
 
+// Click functions for papers
+
+function fireflyredirect()
+{
+    window.open("https://doi.org/10.3390/pr11030715", "_blank");
+}
 
 
+function nicsandroredirect()
+{
+    window.open("https://link.springer.com/chapter/10.1007/978-3-030-90708-2_5", "_blank");
+}
+
+function pacerredirect()
+{
+    window.open("/rpapers/saketpacer.pdf", "_blank");
+}
+
+function paceieeeredirect()
+{
+    window.open("https://ieeexplore.ieee.org/abstract/document/9006557", "_blank");
+}
+
+function aitestbedredirect()
+{
+    window.open("https://www.sciencedirect.com/science/article/abs/pii/S0167739X21003642", "_blank");
+}
 
 
 
