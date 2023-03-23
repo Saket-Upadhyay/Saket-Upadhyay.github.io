@@ -1,26 +1,31 @@
 // Variables
 const content = document.getElementById('content');
 const navbar = document.getElementById('navbardiv')
+const pgpbox = document.getElementById('pgpkey');
 
 
 function LightMode() {
 
-    localStorage.setItem("vision", "light")
+    localStorage.setItem("vision","light");
     document.body.style.backgroundColor = "white";
     document.body.style.transition = ".3s linear";
     content.style.color = "black";
     content.style.transition = ".3s linear";
-    navbar.style.color = "black"
+    navbar.style.color = "black";
+    pgpbox.style.color = "black";
 
 }
 
-function DarkMode() {
-    localStorage.setItem("vision", "dark")
+function DarkMode()
+{
+    localStorage.setItem("vision","dark");
+
     document.body.style.backgroundColor = "black";
     document.body.style.transition = ".3s linear";
     content.style.color = "white";
     content.style.transition = ".3s linear";
-    navbar.style.color = "white"
+    navbar.style.color = "white";
+    pgpbox.style.color = "white";
 }
 
 function checkVision() {
