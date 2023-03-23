@@ -11,6 +11,10 @@ h1 {
 	font-weight: 250;
 }
 
+h3 {
+	font-weight: 100;
+}
+
 nav {
 	/*width: 100%;*/
 	border-bottom: 1px solid #AAA;
@@ -150,9 +154,25 @@ a.navbar:hover {
 }
 
 footer {
+	position: center;
     text-align: center;
     font-style: italic;
     font-size: 0.75em;
     color: #666666;
 }
 
+#platter > .image {
+	width: 50vmin;
+	height: 66vmin;
+	object-fit: cover;
+	object-position: 100% 50%;
+}
+
+#platter{
+	display: flex;
+	gap: 4vmin;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(0%,-50%);
+}
