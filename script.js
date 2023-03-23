@@ -3,10 +3,9 @@ const content = document.getElementById('content');
 const navbar = document.getElementById('navbardiv')
 
 
-
 function LightMode() {
 
-    localStorage.setItem("vision","light")
+    localStorage.setItem("vision", "light")
     document.body.style.backgroundColor = "white";
     document.body.style.transition = ".3s linear";
     content.style.color = "black";
@@ -15,9 +14,8 @@ function LightMode() {
 
 }
 
-function DarkMode()
-{
-    localStorage.setItem("vision","dark")
+function DarkMode() {
+    localStorage.setItem("vision", "dark")
     document.body.style.backgroundColor = "black";
     document.body.style.transition = ".3s linear";
     content.style.color = "white";
@@ -25,21 +23,17 @@ function DarkMode()
     navbar.style.color = "white"
 }
 
-function checkVision(){
-    if (localStorage.getItem("vision") == 'dark')
-    {
+function checkVision() {
+    if (localStorage.getItem("vision") == 'dark') {
         DarkMode();
-    } else if (localStorage.getItem("vision") == 'light')
-    {
+    } else if (localStorage.getItem("vision") == 'light') {
         LightMode();
-    }
-    else if (localStorage.getItem("vision") == '')
-    {
+    } else if (localStorage.getItem("vision") == '') {
         DarkMode();
     }
 }
 
-document.addEventListener("load",checkVision());
+document.addEventListener("load", checkVision());
 
 
 // RESEARCH TAB THIGNS
@@ -53,7 +47,7 @@ const handleOnUp = () => {
 }
 
 const handleOnMove = e => {
-    if(track.dataset.mouseDownAt === "0") return;
+    if (track.dataset.mouseDownAt === "0") return;
 
     const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX,
         maxDelta = window.innerWidth / 2;
@@ -66,12 +60,12 @@ const handleOnMove = e => {
 
     track.animate({
         transform: `translate(${nextPercentage}%, -50%)`
-    }, { duration: 1200, fill: "forwards" });
+    }, {duration: 1200, fill: "forwards"});
 
-    for(const image of track.getElementsByClassName("image")) {
+    for (const image of track.getElementsByClassName("image")) {
         image.animate({
             objectPosition: `${100 + nextPercentage}% center`
-        }, { duration: 1200, fill: "forwards" });
+        }, {duration: 1200, fill: "forwards"});
     }
 }
 
