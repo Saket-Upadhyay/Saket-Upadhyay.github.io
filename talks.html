@@ -1,79 +1,106 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
-    <link href="style.css" rel="stylesheet">
+    <link href="assets/style.css" rel="stylesheet">
     <title>Saket U.</title>
-	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  </head>
-  <body>
-	<div id="content">
-		<h1>Saket Upadhyay</h1>
-		<nav>
-			<ul class="navbar">
-				<li class="navitem imhere"><a id="navbardiv" href="index.html" class="navbar">About</a></li>
-				<li class="navitem"><a href="research.html" class="navbar">Research</a></li>
-				<li class="navitem"><a  href="blog.html" class="navbar">Blog</a></li>
-				<li class="navitem"><a href="talks.html" class="navbar">Talks</a></li>
-				<li class="navitem"><a  href="cv.html" class="navbar">CV</a></li>
-				<li class="navitem"><a href="pubkey.html" class="navbar">Public Key</a></li>
-				<li class="navitem"><a href="fetchcat.html" class="navbar">random.Cat(img)</a></li>
-				<li class="modeswitch" >
-					<i class="fas fa-moon" onclick="DarkMode()"></i>
-					<i class="fas fa-sun" onclick="LightMode()"></i>
-				</li>
-			</ul>
-		</nav>
-<h3>Talks and Presentations</h3>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/c0117f17fa.js" crossorigin="anonymous"></script>
 
-<ul class="cvlist">
-    <li class="cvitem">
-        <div class="cvitem-title">Automating malware process scanning with Python3</div>
-        <div class="venue">PyCode2021 Conference</div>
-		<div class="links">
-			[<strike>YouTube</strike>]
-			[<a href="https://pycode-conference.org/">Web</a>]
-			[<a href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/blob/main/2021/PyCode%20Conference%202021/Presentation/Automating%20malware%20process%20scanning%20with%20Python3.pdf">Slides</a>]
-			[<a href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/tree/main/2021/PyCode%20Conference%202021">GitHub</a>]
-		</div>
-    </li>
+</head>
+<body>
+<div id="mousefollow">
+    <i id="mouseshadow-icon" class="fa-solid fa-link"></i>
+</div>
 
-	<li class="cvitem">
-        <div class="cvitem-title">Firefly Inspired IDS Optimisation (NICS)</div>
-        <div class="venue">CyVIT 2021: International Cybersecurity Conclave</div>
-		<div class="links">
-			<!-- [<a href="">slides</a>] -->
-			[<a href="https://www.youtube.com/watch?v=5nwDzJLSCTo&t=15628s">YouTube</a>]
-			[<strike>Web</strike>]
-			[<a href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/blob/main/2021/FireFly%20Based%20IDS%20for%20NICS%20Research%20Presentation%20(CyVIT'21)/SLIDE/Modified%20Firefly%20Optimisation%20inspired%20Intrusion%20Detection%20Systems.pdf">Slides</a>]
-			[<a href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/tree/main/2021/FireFly%20Based%20IDS%20for%20NICS%20Research%20Presentation%20(CyVIT'21)">GitHub</a>]
-		</div>
-    </li>
+<div id="content">
 
-	<li class="cvitem">
-        <div class="cvitem-title">Malware Hunting with Machine Learning</div>
-        <div class="venue">Penn State World Campus Tech Club, Penn State University, Pennsylvania, USA</div>
-		<div class="links">
-			[<a href="https://youtu.be/1FqDsTxrIdg">YouTube</a>]
-			[<strike>Web</strike>]
-			[<a href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/blob/main/2020/PennStateTechClub_(PSWCTC)/SLIDE/Malware%20Hunting%20With%20ML.pdf">Slides</a>]
-			[<a href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/tree/main/2020/PennStateTechClub_(PSWCTC)">GitHub</a>]
-		</div>
-    </li>
+    <h1>Saket Upadhyay</h1>
+    <nav>
+        <ul class="navbar">
+            <li class="navitem imhere interactive" data-type="aboutbutton"><a id="navbardiv" href="index.html"
+                                                                              class="navbar">About</a></li>
+            <li class="navitem interactive" data-type="researchbutton"><a href="research.html"
+                                                                          class="navbar">Research</a></li>
+            <li class="navitem interactive" data-type="blogbutton"><a href="blog.html" class="navbar">Blog</a></li>
+            <li class="navitem interactive" data-type="talkbutton"><a href="talks.html" class="navbar">Talks</a></li>
+            <li class="navitem interactive" data-type="cvbutton"><a href="cv.html" class="navbar">CV</a></li>
+            <li class="navitem interactive" data-type="keybutton"><a href="pubkey.html" class="navbar">Public Key</a>
+            </li>
+            <li class="navitem interactive" data-type="catbutton"><a href="fetchcat.html"
+                                                                     class="navbar">random.Cat(img)</a></li>
+            <li class="modeswitch" style="align-self: flex-end;">
+                <i class="fas fa-moon interactive" data-type="nightbutton" onclick="DarkMode()"></i>
+                <i class="fas fa-sun interactive" data-type="morningbutton" onclick="LightMode()"></i>
+            </li>
+        </ul>
+    </nav>
+    <h3>Talks and Presentations</h3>
 
-	<li class="cvitem">
-        <div class="cvitem-title"> Multi-Model Malware Detection and Classification.</div>
-        <div class="venue">Hybrid Intelligent Systems (HIS 2019) Conference, Bhopal, India</div>
-		<div class="links">
-			[<strike>YouTube</strike>]
-			[<strike>Web</strike>]
-			[<strike>Slides</strike>]
-			[<strike>GitHub</strike>]
-		</div>
-    </li>
+    <ul class="cvlist">
+        <li class="cvitem">
+            <div class="cvitem-title">Automating malware process scanning with Python3</div>
+            <div class="venue">PyCode2021 Conference</div>
+            <div class="links">
+                [<strike>YouTube</strike>]
+                [<a class="interactive" href="https://pycode-conference.org/">Web</a>]
+                [<a class="interactive"
+                    href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/blob/main/2021/PyCode%20Conference%202021/Presentation/Automating%20malware%20process%20scanning%20with%20Python3.pdf">Slides</a>]
+                [<a class="interactive" data-type="github"
+                    href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/tree/main/2021/PyCode%20Conference%202021">GitHub</a>]
+            </div>
+        </li>
 
-</ul>
+        <li class="cvitem">
+            <div class="cvitem-title">Firefly Inspired IDS Optimisation (NICS)</div>
+            <div class="venue">CyVIT 2021: International Cybersecurity Conclave</div>
+            <div class="links">
+                <!-- [<a href="">slides</a>] -->
+                [<a class="interactive" data-type="youtube" href="https://www.youtube.com/watch?v=5nwDzJLSCTo&t=15628s">YouTube</a>]
+                [<strike>Web</strike>]
+                [<a class="interactive"
+                    href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/blob/main/2021/FireFly%20Based%20IDS%20for%20NICS%20Research%20Presentation%20(CyVIT'21)/SLIDE/Modified%20Firefly%20Optimisation%20inspired%20Intrusion%20Detection%20Systems.pdf">Slides</a>]
+                [<a class="interactive" data-type="github"
+                    href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/tree/main/2021/FireFly%20Based%20IDS%20for%20NICS%20Research%20Presentation%20(CyVIT'21)">GitHub</a>]
+            </div>
+        </li>
 
-<script src="script.js"></script>
-<script src="https://kit.fontawesome.com/d24b63793e.js" crossorigin="anonymous"></script>
+        <li class="cvitem">
+            <div class="cvitem-title">Malware Hunting with Machine Learning</div>
+            <div class="venue">Penn State World Campus Tech Club, Penn State University, Pennsylvania, USA</div>
+            <div class="links">
+                [<a class="interactive" data-type="youtube" href="https://youtu.be/1FqDsTxrIdg">YouTube</a>]
+                [
+                <del>Web</del>
+                ]
+                [<a class="interactive"
+                    href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/blob/main/2020/PennStateTechClub_(PSWCTC)/SLIDE/Malware%20Hunting%20With%20ML.pdf">Slides</a>]
+                [<a class="interactive" data-type="github"
+                    href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/tree/main/2020/PennStateTechClub_(PSWCTC)">GitHub</a>]
+            </div>
+        </li>
+
+        <li class="cvitem">
+            <div class="cvitem-title"> Multi-Model Malware Detection and Classification.</div>
+            <div class="venue">Hybrid Intelligent Systems (HIS 2019) Conference, Bhopal, India</div>
+            <div class="links">
+                [
+                <del>YouTube</del>
+                ]
+                [
+                <del>Web</del>
+                ]
+                [
+                <del>Slides</del>
+                ]
+                [
+                <del>GitHub</del>
+                ]
+            </div>
+        </li>
+
+    </ul>
+</div>
+</body>
+<script src="assets/script.js"></script>
 </html>
