@@ -154,6 +154,12 @@ a.navbar:hover {
     text-align: right;
 }
 
+#pgpbox{
+    background-color: white;
+    text-decoration: none;
+
+}
+
 footer {
     position: center;
     text-align: center;
@@ -179,4 +185,47 @@ footer {
     left: 50%;
     top: 50%;
     transform: translate(-15%, -50%);
+}
+
+
+/*Mouse shadow things*/
+
+
+#mousefollow{
+    height: 20px;
+    width: 20px;
+    background-color: deepskyblue;
+    border-radius: 20px;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10000;
+
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 500ms ease;
+
+    display: grid;
+    place-items: center;
+}
+
+#mousefollow:not([data-type=""]) > #mouseshadow-icon {
+    opacity: 1;
+}
+
+
+
+
+#mouseshadow-icon {
+    font-size: 7px;
+    line-height: 5px;
+    color: white;
+    opacity: 0;
+    transition: opacity 400ms ease;
+}
+
+body:hover> #mousefollow
+{
+    opacity: 1;
 }
