@@ -42,9 +42,11 @@ const animateTrailer = (e, interacting) => {
     const x = e.clientX - trailer.offsetWidth / 2,
         y = e.clientY - trailer.offsetHeight / 2;
 
-    const keyframes = {
+
+    let keyframes = {
         transform: `translate(${x}px, ${y}px) scale(${interacting ? 3 : 1})`
     }
+
 
     trailer.animate(keyframes, {
         duration: 800,
@@ -87,6 +89,8 @@ const getTrailerClass = type => {
             return "fa-brands fa-youtube";
         case "github":
             return "fa-brands fa-github";
+        case "credits":
+            return "fa-solid fa-lightbulb";
         default:
             return "fa-solid fa-arrow-up-right-from-square";
     }
@@ -105,7 +109,13 @@ const handleOnMove = e => {
 
     trailer.dataset.type = interacting ? interactable.dataset.type : "";
     icon.className = getTrailerClass(interactable.dataset.type);
-
+    switch (interactable.dataset.type) {
+        case "credits":
+            icon.style.color = "#f5ec00";
+            break;
+        default:
+            icon.style.color = "#FFFFFF";
+    }
 
 }
 
