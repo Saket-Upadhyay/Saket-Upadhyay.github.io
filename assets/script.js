@@ -61,6 +61,10 @@ const getTrailerClass = type => {
             return "fa-solid fa-book-open-reader";
         case "blogbutton":
             return "fa-solid fa-pen-nib";
+        case "teachingbutton":
+            return "fa fa-pencil";
+        case "leaderbutton":
+            return "fa fa-line-chart";
         case "talkbutton":
             return "fa-solid fa-chalkboard-user";
         case "cvbutton":
@@ -109,6 +113,7 @@ const handleOnMove = e => {
 
     trailer.dataset.type = interacting ? interactable.dataset.type : "";
     icon.className = getTrailerClass(interactable.dataset.type);
+
     switch (interactable.dataset.type) {
         case "credits":
             icon.style.color = "#f5ec00";
