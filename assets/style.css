@@ -204,7 +204,7 @@ footer {
 
     pointer-events: none;
     opacity: 0;
-    transition: opacity 500ms ease;
+    transition: opacity 400ms ease;
 
     display: grid;
     place-items: center;
@@ -216,11 +216,11 @@ footer {
 
 
 #mouseshadow-icon {
-    font-size: 7px;
-    line-height: 5px;
+    font-size: 8px;
+    line-height: 8px;
     color: white;
     opacity: 0;
-    transition: opacity 400ms ease;
+    transition: opacity 300ms ease;
 }
 
 body:hover > #mousefollow {
