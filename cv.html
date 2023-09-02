@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="utf-8">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <link href="assets/style.css" rel="stylesheet">
     <title>Saket U. | CV</title>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <script src="https://kit.fontawesome.com/c0117f17fa.js" crossorigin="anonymous"></script>
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/c0117f17fa.js"></script>
 
 </head>
 <body>
 <div id="mousefollow">
-    <i id="mouseshadow-icon" class="fa-solid fa-link"></i>
+    <i class="fa-solid fa-link" id="mouseshadow-icon"></i>
 </div>
 
 <div id="content">
@@ -18,17 +18,21 @@
     <h1>Saket Upadhyay</h1>
     <nav>
         <ul class="navbar">
-            <li class="navitem imhere interactive" data-type="aboutbutton"><a id="navbardiv" href="index.html"
-                                                                              class="navbar">About</a></li>
-            <li class="navitem interactive" data-type="researchbutton"><a href="research.html"
-                                                                          class="navbar">Research</a></li>
-            <li class="navitem interactive" data-type="blogbutton"><a href="blog.html" class="navbar">Blog</a></li>
-            <li class="navitem interactive" data-type="talkbutton"><a href="talks.html" class="navbar">Talks</a></li>
-            <li class="navitem interactive" data-type="cvbutton"><a href="cv.html" class="navbar">CV</a></li>
-            <li class="navitem interactive" data-type="keybutton"><a href="pubkey.html" class="navbar">Public Key</a>
+            <li class="navitem imhere interactive" data-type="aboutbutton"><a class="navbar" href="index.html"
+                                                                              id="navbardiv">About</a></li>
+            <li class="navitem interactive" data-type="researchbutton"><a class="navbar"
+                                                                          href="research.html">Research</a></li>
+            <li class="navitem interactive" data-type="researchbutton"><a class="navbar"
+                                                                          href="teaching.html">Teaching</a></li>
+            <li class="navitem interactive" data-type="researchbutton"><a class="navbar"
+                                                                          href="leadership.html">Leadership</a></li>
+            <li class="navitem interactive" data-type="blogbutton"><a class="navbar" href="blog.html">Blog</a></li>
+            <li class="navitem interactive" data-type="talkbutton"><a class="navbar" href="talks.html">Talks</a></li>
+            <li class="navitem interactive" data-type="cvbutton"><a class="navbar" href="cv.html">CV</a></li>
+            <li class="navitem interactive" data-type="keybutton"><a class="navbar" href="pubkey.html">Public Key</a>
             </li>
-            <li class="navitem interactive" data-type="catbutton"><a href="fetchcat.html"
-                                                                     class="navbar">random.Cat(img)</a></li>
+            <li class="navitem interactive" data-type="catbutton"><a class="navbar"
+                                                                     href="fetchcat.html">random.Cat(img)</a></li>
             <li class="modeswitch" style="align-self: flex-end;">
                 <i class="fas fa-moon interactive" data-type="nightbutton" onclick="DarkMode()"></i>
                 <i class="fas fa-sun interactive" data-type="morningbutton" onclick="LightMode()"></i>
@@ -40,7 +44,7 @@
         <a
                 class="interactive" data-type="gpgsig" href="CV/Saket_Upadhyay_Academic_CV_20220904.pdf.sig">[gpg
             sig]</a></p>
-    <embed type="application/pdf" src="CV/Saket_Upadhyay_Academic_CV_20220904.pdf" height="800" width="800">
+    <embed height="800" src="CV/Saket_Upadhyay_Academic_CV_20220904.pdf" type="application/pdf" width="800">
 </div>
 </body>
 <script src="assets/script.js"></script>
