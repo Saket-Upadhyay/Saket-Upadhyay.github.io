@@ -1,0 +1,234 @@
+:root {
+    --purple: #6c5ce7;
+    --violet: #2073d0;
+    --pink: #083598;
+    --blue-rgb: 33 150 243;
+    --primary-rgb: var(--blue-rgb);
+}
+
+@keyframes background-pan {
+    from {
+        background-position: 0% center;
+    }
+
+    to {
+        background-position: -200% center;
+    }
+}
+
+@keyframes scale {
+    from, to {
+        transform: scale(0);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(180deg);
+    }
+}
+
+body {
+    background-color: rgb(0, 0, 0);
+    display: grid;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    place-items: center;
+}
+
+h1 {
+    color: white;
+    font-family: "Rubik", sans-serif;
+    font-size: clamp(5em, 4vw, 20em);
+    font-weight: 400;
+    margin: 0px;
+    /*padding: 10px;*/
+    text-align: center;
+}
+
+h1 > .magic {
+    display: inline-block;
+    position: relative;
+}
+
+h1 > .magic > .magic-star {
+    --size: clamp(20px, 1.5vw, 30px);
+
+    animation: scale 700ms ease forwards;
+    display: block;
+    height: var(--size);
+    left: var(--star-left);
+    position: absolute;
+    top: var(--star-top);
+    width: var(--size);
+}
+
+h1 > .magic > .magic-star > svg {
+    animation: rotate 2000ms linear infinite;
+    display: block;
+    opacity: 0.7;
+}
+
+h1 > .magic > .magic-star > svg > path {
+    fill: var(--violet);
+}
+
+h1 > .magic > .magic-text {
+    font-size: xxx-large;
+    animation: background-pan 3s linear infinite;
+    background: linear-gradient(
+            to right,
+            var(--purple),
+            var(--violet),
+            var(--pink),
+            var(--purple)
+    );
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+}
+
+
+p {
+    color: grey;
+    font-family: "Rubik", sans-serif;
+    font-size: clamp(1em, 1vw, 1em);
+    font-weight: 100;
+    margin: 0;
+    /*padding: 1px;*/
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: lightgrey;
+}
+
+
+/**/
+
+h3 {
+    color: whitesmoke;
+    font-family: "Rubik", sans-serif;
+    font-size: clamp(1.5em, 1vw, 2em);
+    font-weight: 500;
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+}
+
+h2 {
+    color: white;
+    font-family: "Rubik", sans-serif;
+    font-size: clamp(1em, 1vw, 2em);
+    font-weight: 300;
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* STRUCTURE */
+
+.wrapper {
+    padding: 5px;
+    max-width: 960px;
+    width: 95%;
+    margin: 20px auto;
+}
+
+header {
+    padding: 0 15px;
+}
+
+.columns {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin: 5px 0;
+}
+
+.column:after {
+    background: linear-gradient(
+            transparent,
+            var(--violet),
+            transparent
+    );
+    height: 60%;
+    width: 2px;
+    position: absolute;
+    left: -1px;
+    top: 70%;
+    opacity: 0;
+    content: "";
+    transition: top 600ms ease,
+    opacity 600ms ease;
+}
+
+.column:hover:after{
+    top: 20%;
+    opacity: 1;
+}
+
+.column {
+    flex: 1;
+    position: relative;
+    border: 1px solid darkgrey;
+    /*border: 1px solid rgb(var(--primary-rgb)/50%);*/
+    /*aspect-ratio: 3/0.5;*/
+    border-radius: 0.5em;
+    margin: 2px;
+    padding: 10px;
+&
+:first-child {
+    margin-left: 0;
+}
+
+&
+:last-child {
+    margin-right: 0;
+}
+
+}
+
+footer {
+    padding: 0 15px;
+}
+
+
+@media screen and (max-width: 980px) {
+    .columns .column {
+        margin-bottom: 5px;
+        flex-basis: 40%;
+
+&:nth-last-child(2) {
+     margin-right: 0;
+ }
+
+&:last-child {
+     flex-basis: 100%;
+     margin: 0;
+ }
+}
+
+}
+
+@media screen and (max-width: 680px) {
+    .columns .column {
+        flex-basis: 100%;
+        margin: 0 0 5px 0;
+    }
+}
