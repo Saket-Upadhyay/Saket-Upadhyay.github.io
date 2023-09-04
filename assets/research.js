@@ -1,6 +1,6 @@
 // Variables
 const content = document.getElementById('content');
-const navbar = document.getElementById('navbardiv')
+
 
 // For mouse shadow
 
@@ -14,8 +14,8 @@ function LightMode() {
     document.body.style.transition = ".3s linear";
     content.style.color = "black";
     content.style.transition = ".3s linear";
-    navbar.style.color = "black"
-    trailer.style.backgroundColor= "black";
+
+    trailer.style.backgroundColor = "black";
 
 
 }
@@ -26,14 +26,14 @@ function DarkMode() {
     document.body.style.transition = ".3s linear";
     content.style.color = "white";
     content.style.transition = ".3s linear";
-    navbar.style.color = "white";
-    trailer.style.backgroundColor= "deepskyblue";
+
+    trailer.style.backgroundColor = "deepskyblue";
 }
 
 function checkVision() {
-    if (localStorage.getItem("vision") == 'dark') {
+    if (localStorage.getItem("vision") === 'dark') {
         DarkMode();
-    } else if (localStorage.getItem("vision") == 'light') {
+    } else if (localStorage.getItem("vision") === 'light') {
         LightMode();
     }
 }
@@ -49,6 +49,46 @@ const getTrailerClass = type => {
             return "fa-solid fa-file-pdf";
         case "remanime":
             return "fa-solid fa-circle-xmark";
+        case "aboutbutton":
+            return "fa-solid fa-user-graduate";
+        case "researchbutton":
+            return "fa-solid fa-book-open-reader";
+        case "blogbutton":
+            return "fa-solid fa-pen-nib";
+        case "teachingbutton":
+            return "fa fa-chalkboard-user";
+        case "leaderbutton":
+            return "fa fa-line-chart";
+        case "talkbutton":
+            return "fa-solid fa-bullhorn";
+        case "cvbutton":
+            return "fa-solid fa-newspaper";
+        case "keybutton":
+            return "fa-solid fa-key";
+        case "catbutton":
+            return "fa-solid fa-cat";
+        case "nightbutton":
+            return "fa-solid fa-moon";
+        case "morningbutton":
+            return "fa-solid fa-sun";
+        case "linkedin":
+            return "fa-brands fa-linkedin";
+        case "twitter":
+            return "fa-brands fa-twitter";
+        case "gscholar":
+            return "fa-brands fa-google";
+        case "orcid":
+            return "fa-brands fa-orcid";
+        case "download":
+            return "fa-solid fa-download";
+        case "gpgsig":
+            return "fa-solid fa-signature";
+        case "youtube":
+            return "fa-brands fa-youtube";
+        case "github":
+            return "fa-brands fa-github";
+        case "credits":
+            return "fa-solid fa-lightbulb";
         default:
             return "fa-solid fa-link";
     }
@@ -75,13 +115,12 @@ const handleOnMove = e => {
     const interactable = e.target.closest(".interactive"),
         interacting = interactable !== null;
 
-        animateTrailer(e, imageinteracting);
-
+    animateTrailer(e, imageinteracting);
 
 
     trailer.dataset.type = imageinteracting ? imageinteractable.dataset.type : "";
 
-    if(imageinteracting) {
+    if (imageinteracting) {
         icon.className = getTrailerClass(imageinteractable.dataset.type);
     }
     if (interacting) {
@@ -113,7 +152,6 @@ const handleOnMove = e => {
     }
 
 
-
 }
 
 const disableselect = (e) => {
@@ -137,29 +175,24 @@ const animateTrailer = (e, interacting) => {
 
 // Click functions for papers
 
-function fireflyredirect()
-{
+function fireflyredirect() {
     window.open("/rpapers/pdfs/saketfirefly.pdf", "_blank");
 }
 
 
-function nicsandroredirect()
-{
+function nicsandroredirect() {
     window.open("https://link.springer.com/chapter/10.1007/978-3-030-90708-2_5", "_blank");
 }
 
-function pacerredirect()
-{
+function pacerredirect() {
     window.open("/rpapers/pdfs/saketpacer.pdf", "_blank");
 }
 
-function paceieeeredirect()
-{
+function paceieeeredirect() {
     window.open("https://ieeexplore.ieee.org/abstract/document/9006557", "_blank");
 }
 
-function aitestbedredirect()
-{
+function aitestbedredirect() {
     window.open("https://www.sciencedirect.com/science/article/abs/pii/S0167739X21003642", "_blank");
 }
 

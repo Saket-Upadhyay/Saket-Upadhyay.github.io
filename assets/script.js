@@ -1,7 +1,6 @@
 // Variables
 const content = document.getElementById('content');
-const navbar = document.getElementById('navbardiv')
-const pgpbox = document.getElementById('pgpkey');
+// const navbar = document.getElementById('navbardiv')
 const trailer = document.getElementById("mousefollow");
 
 function LightMode() {
@@ -11,7 +10,7 @@ function LightMode() {
     document.body.style.transition = ".3s linear";
     content.style.color = "black";
     content.style.transition = ".3s linear";
-    navbar.style.color = "black";
+    // navbar.style.color = "black";
     trailer.style.backgroundColor = "black";
 }
 
@@ -22,14 +21,14 @@ function DarkMode() {
     document.body.style.transition = ".3s linear";
     content.style.color = "white";
     content.style.transition = ".3s linear";
-    navbar.style.color = "white";
+    // navbar.style.color = "white";
     trailer.style.backgroundColor = "deepskyblue";
 }
 
 function checkVision() {
-    if (localStorage.getItem("vision") == 'dark') {
+    if (localStorage.getItem("vision") === 'dark') {
         DarkMode();
-    } else if (localStorage.getItem("vision") == 'light') {
+    } else if (localStorage.getItem("vision") === 'light') {
         LightMode();
     }
 }
@@ -57,6 +56,8 @@ const getTrailerClass = type => {
     switch (type) {
         case "aboutbutton":
             return "fa-solid fa-user-graduate";
+        case "weblink":
+            return "fa-solid fa-link";
         case "researchbutton":
             return "fa-solid fa-book-open-reader";
         case "blogbutton":
