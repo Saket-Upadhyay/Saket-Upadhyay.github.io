@@ -1,5 +1,5 @@
 # Saket Upadhyay
-## Curriculum Vitae
+## Curriculum Vitae / Résumé
 
 **Note:** You need to import my public key to validate the digital signature. 
 
