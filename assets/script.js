@@ -71,9 +71,9 @@ const getTrailerClass = type => {
         case "cvbutton":
             return "fa-solid fa-newspaper";
         case "keybutton":
-            return "fa-solid fa-key";
+            return "fa-solid fa-key fa-shake";
         case "catbutton":
-            return "fa-solid fa-cat";
+            return "fa-solid fa-cat fa-bounce";
         case "nightbutton":
             return "fa-solid fa-moon";
         case "morningbutton":
@@ -84,6 +84,8 @@ const getTrailerClass = type => {
             return "fa-brands fa-twitter";
         case "gscholar":
             return "fa-brands fa-google";
+        case "extrabutton":
+            return "fa-solid fa-square-plus fa-beat";
         case "orcid":
             return "fa-brands fa-orcid";
         case "download":
