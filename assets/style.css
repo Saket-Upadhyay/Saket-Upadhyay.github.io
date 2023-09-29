@@ -244,3 +244,29 @@ body:hover > #mousefollow {
     margin: 2px 0 3px 20px;
     list-style: disc;
 }
+
+
+
+
+
+.row {
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    -ms-flex-wrap: wrap; /* IE10 */
+    flex-wrap: wrap;
+    padding: 0 4px;
+}
+
+/* Create four equal columns that sits next to each other */
+.column {
+    -ms-flex: 30%; /* IE10 */
+    flex: 30%;
+    max-width: 30%;
+    padding: 0 4px;
+}
+
+.column img {
+    margin-top: 8px;
+    vertical-align: middle;
+    width: 100%;
+}
