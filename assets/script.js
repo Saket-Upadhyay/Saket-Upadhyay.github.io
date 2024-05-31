@@ -85,7 +85,7 @@ const getTrailerClass = type => {
         case "gscholar":
             return "fa-brands fa-google";
         case "extrabutton":
-            return "fa-solid fa-square-plus fa-beat";
+            return "fa-solid fa-image fa-beat";
         case "orcid":
             return "fa-brands fa-orcid";
         case "download":
