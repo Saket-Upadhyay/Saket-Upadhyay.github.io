@@ -139,5 +139,123 @@ window.onmousemove = e => handleOnMove(e);
 
 window.ontouchmove = e => handleOnMove(e.touches[0]);
 
+
+
+// BibTeX Modal Viewer
+(function () {
+  function ensureBibModal() {
+    if (document.getElementById('bib-modal')) return;
+
+    const style = document.createElement('style');
+    style.textContent = `
+      #bib-modal.hidden { display: none; }
+      #bib-modal { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+      #bib-modal .backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
+      #bib-modal .dialog { position: relative; max-width: 90vw; max-height: 80vh; width: 760px; background: #fff; color: #000; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); overflow: hidden; display: flex; flex-direction: column; }
+      #bib-modal .header { display:flex; gap:8px; align-items:center; padding:8px 12px; border-bottom: 1px solid #eee; background:#f7f7f7; }
+      #bib-modal .title { flex:1; font-weight:600; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+      #bib-modal pre { margin:0; padding:12px; font-family: monospace; font-size:13px; overflow:auto; white-space:pre-wrap; background: #fff; }
+      .btn { padding:6px 10px; border:1px solid #ccc; background:#fff; border-radius:4px; cursor:pointer; }
+    `;
+    document.head.appendChild(style);
+
+    const modal = document.createElement('div');
+    modal.id = 'bib-modal';
+    modal.className = 'hidden';
+    modal.setAttribute('aria-hidden', 'true');
+    modal.innerHTML = `
+      <div class="backdrop" data-role="backdrop"></div>
+      <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="bib-title">
+        <div class="header">
+          <div id="bib-title" class="title">BibTeX</div>
+          <div class="controls">
+            <button id="bib-copy" class="btn" type="button">Copy</button>
+            <button id="bib-close" class="btn" type="button">Close</button>
+          </div>
+        </div>
+        <pre id="bib-content">Loading...</pre>
+        <div class="footer" style="padding:8px 12px; border-top:1px solid #eee; text-align:right; background:#f7f7f7;">
+          <small style="color:#666">Click outside or press Esc to close</small>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    const contentEl = document.getElementById('bib-content');
+    const titleEl = document.getElementById('bib-title');
+    const closeBtn = document.getElementById('bib-close');
+    const copyBtn = document.getElementById('bib-copy');
+    const backdrop = modal.querySelector('[data-role="backdrop"]');
+
+    function openModal() {
+      modal.classList.remove('hidden');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+    function closeModal() {
+      modal.classList.add('hidden');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+    });
+
+    copyBtn.addEventListener('click', async function () {
+      const text = contentEl.textContent || '';
+      try {
+        await navigator.clipboard.writeText(text);
+        const prev = copyBtn.textContent;
+        copyBtn.textContent = 'Copied';
+        setTimeout(() => { copyBtn.textContent = prev; }, 1500);
+      } catch (_) {
+        try {
+          const range = document.createRange();
+          range.selectNodeContents(contentEl);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        } catch (_) {}
+      }
+    });
+
+    modal._open = openModal;
+    modal._close = closeModal;
+    modal._contentEl = contentEl;
+    modal._titleEl = titleEl;
+  }
+
+  // Show BibTeX by key lookup
+  function showBibTeX(key) {
+    const citation = BIBTEX_DATABASE[key];
+    if (!citation) {
+      console.error(`BibTeX key "${key}" not found in database`);
+      showBibText('Error: Citation not found', 'Error');
+      return;
+    }
+    showBibText(citation.bibtex, citation.title);
+  }
+
+  // Show BibTeX from raw string
+  function showBibText(bibString, title) {
+    ensureBibModal();
+    const modal = document.getElementById('bib-modal');
+    const contentEl = modal._contentEl;
+    const titleEl = modal._titleEl;
+
+    titleEl.textContent = title || 'BibTeX';
+    contentEl.textContent = (bibString && bibString.length) ? bibString : '(empty)';
+    modal._open();
+  }
+
+  window.showBibTeX = showBibTeX;
+  window.showBibText = showBibText;
+})();
+
+
 // Disable Selection
 // document.onselectstart = disableselect;

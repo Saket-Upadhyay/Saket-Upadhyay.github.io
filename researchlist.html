@@ -33,7 +33,7 @@
                                                                           href="teaching.html">Teaching</a></li>
             <li class="navitem interactive" data-type="leaderbutton"><a class="navbar"
                                                                         href="leadership.html">Leadership</a></li>
-            <li class="navitem interactive" data-type="cvbutton"><a class="navbar" href="cv.html">Résumé</a></li>
+            <li class="navitem interactive" data-type="cvbutton"><a class="navbar" href="cv.html">CV</a></li>
 
             <li class="navitem interactive" data-type="keybutton"><a class="navbar" href="pubkey.html">Public Key</a>
             </li>
@@ -54,21 +54,42 @@
     </nav>
     <h3>Publications</h3>
     <ul class="cvlist">
-
-
         <li class="cvitem">
-            <div class="cvitem-title">Detecting and Defending Vulnerabilities in Heterogeneous and Monolithic Systems: Current Strategies and Future Directions
+            <div class="cvitem-title"> Shiny Objects: Object-Centric Characterization of Chromium
             </div>
-            <div class="authorlist">Venkat Nitin Patnala, Sai Manoj Pudukotai Dinakarrao, Guru Venkataramani, Jie Chen, Milos Doroslovacki, Fan Yao, Hongyu Fang, Meron Demissie, Todd Austin, Lauren Biernacki, <b class="me">Saket Upadhyay</b>, Arnabjyoti Kalita, Ashish Venkat .
+            <div class="authorlist"><b class="me">Saket Upadhyay</b>, Ashish Venkat.
             </div>
-            <div class="venue">Proceedings of the 2024 International Conference on Hardware/Software Codesign and System Synthesis (ESWEEK); 2024/09</div>
+            <div class="venue">Proceedings of the ACM on Measurement and Analysis of Computing Systems @ SIGMETRICS'26
+            </div>
             <div class="links">
-                [<a href="rpapers/pdfs/esweek2024.pdf">pdf</a>]
-                [<a href="rpapers/references/esweek2024.bib">bibtex</a>]
-                [<del>web</del>]
+                [<a href="rpapers/pdfs/ShinyObjects.pdf">pdf</a>]
+                [<a href="#" onclick="event.preventDefault(); showBibTeX('shinyobjects')">cite</a>]
+                [
+                <del>web</del>
+                ]
             </div>
         </li>
 
+
+        <li class="cvitem">
+            <div class="cvitem-title">Detecting and Defending Vulnerabilities in Heterogeneous and Monolithic Systems:
+                Current Strategies and Future Directions
+            </div>
+            <div class="authorlist">Venkat Nitin Patnala, Sai Manoj Pudukotai Dinakarrao, Guru Venkataramani, Jie Chen,
+                Milos Doroslovacki, Fan Yao, Hongyu Fang, Meron Demissie, Todd Austin, Lauren Biernacki, <b class="me">Saket
+                    Upadhyay</b>, Arnabjyoti Kalita, Ashish Venkat .
+            </div>
+            <div class="venue">Proceedings of the 2024 International Conference on Hardware/Software Codesign and System
+                Synthesis (ESWEEK); 2024/09
+            </div>
+            <div class="links">
+                [<a href="rpapers/pdfs/esweek2024.pdf">pdf</a>]
+                [<a href="#" onclick="event.preventDefault(); showBibTeX('esweek2024')">cite</a>]
+                [
+                <del>web</del>
+                ]
+            </div>
+        </li>
 
 
         <li class="cvitem">
@@ -80,7 +101,7 @@
             <div class="venue">MDPI, Processes 2023, 11(3), 715; 2023/02/28</div>
             <div class="links">
                 [<a href="rpapers/pdfs/saketfirefly.pdf">pdf</a>]
-                [<a href="rpapers/references/saketfirefly.bib">bibtex</a>]
+                [<a href="#" onclick="event.preventDefault(); showBibTeX('firefly')">cite</a>]
                 [<a href="https://doi.org/10.3390/pr11030715">web</a>]
             </div>
         </li>
@@ -93,7 +114,7 @@
                 [
                 <del>pdf</del>
                 ]
-                [<a href="rpapers/references/nicsanomalysaket.bib">bibtex</a>]
+                [<a href="#" onclick="event.preventDefault(); showBibTeX('nicsanomaly')">cite</a>]
                 [<a href="https://link.springer.com/chapter/10.1007/978-3-030-90708-2_5">web</a>]
             </div>
         </li>
@@ -107,8 +128,8 @@
             </div>
             <div class="venue">Future Generation Computer Systems; 2021/02/01</div>
             <div class="links">
-                [<span style="text-decoration: line-through;">pdf</span>]
-                [<a href="rpapers/references/saketnicstestbed.bib">bibtex</a>]
+                [<a href="rpapers/pdfs/aiassistedCNO.pdf">pdf</a>]
+                [<a href="#" onclick="event.preventDefault(); showBibTeX('nicstestbed')">cite</a>]
                 [<a href="https://www.sciencedirect.com/science/article/abs/pii/S0167739X21003642">web</a>]
             </div>
         </li>
@@ -124,7 +145,7 @@
             <div class="venue">Future Internet, MDPI; 2020/4</div>
             <div class="links">
                 [<a href="rpapers/pdfs/saketpacer.pdf">pdf</a>]
-                [<a href="rpapers/references/saketpacer.bib">bibtex</a>]
+                [<a href="#" onclick="event.preventDefault(); showBibTeX('pacer')">cite</a>]
                 [<a href="https://www.mdpi.com/1999-5903/12/4/66">web</a>]
             </div>
         </li>
@@ -137,14 +158,31 @@
             <div class="venue">2019 IEEE International Conference on Big Data ; 2019/12/9</div>
             <div class="links">
                 [<span style="text-decoration: line-through;">pdf</span>]
-                [<a href="rpapers/references/pacesaket.bib">bibtex</a>]
+                [<a href="#" onclick="event.preventDefault(); showBibTeX('pace')">cite</a>]
                 [<a href="https://ieeexplore.ieee.org/abstract/document/9006557">web</a>]
 
             </div>
         </li>
 
     </ul>
-    <a class="interactive" href="research.html" style="font-size: small"><i>See image carousel.</i></a>
+
+    <h3>Archive</h3>
+    <ul class="cvlist">
+        <li class="cvitem">
+            <div class="cvitem-title">FuzzDistill: Intelligent Fuzzing Target Selection using Compile-Time Analysis and
+                Machine Learning
+            </div>
+            <div class="authorlist"><b class="me">Saket Upadhyay</b>.
+            </div>
+            <div class="venue">Proceedings of the ACM on Measurement and Analysis of Computing Systems @ SIGMETRICS'26
+            </div>
+            <div class="links">
+                [<a href="rpapers/pdfs/fuzzdistill.pdf">pdf</a>]
+                [<a href="#" onclick="event.preventDefault(); showBibTeX('fuzzdistill')">cite</a>]
+                [<a href="https://doi.org/10.48550/arXiv.2412.08100">web</a>]
+            </div>
+        </li>
+    </ul>
 
     <h3>Patents</h3>
     <ul class="cvlist">
@@ -184,7 +222,8 @@
 </body>
 
 <footer>
-    2024 © Saket Upadhyay
+    2025 © Saket Upadhyay
 </footer>
+<script src="assets/bibtex-db.js"></script>
 <script src="assets/script.js"></script>
 </html>
