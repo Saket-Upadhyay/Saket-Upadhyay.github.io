@@ -1,5 +1,62 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Kalam&display=swap');
+/* Theme: <html data-theme="light|dark"> is set before paint by the inline snippet in each page's <head>. */
+:root {
+    --bg: white;
+    --fg: black;
+    --nav: rgb(141, 141, 141);
+    --nav-hover: #333;
+    --dot: black;
+    --muted: #666666;
+    --modal-bg: white;
+    --modal-bar: #f7f7f7;
+    --modal-rule: #eee;
+    color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+    --bg: black;
+    --fg: white;
+    --nav-hover: #ddd;
+    --dot: deepskyblue;
+    --muted: #999;
+    --modal-bg: #1a1a1a;
+    --modal-bar: #262626;
+    --modal-rule: #3a3a3a;
+    color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg: black;
+        --fg: white;
+        --nav-hover: #ddd;
+        --dot: deepskyblue;
+        --muted: #999;
+        --modal-bg: #1a1a1a;
+        --modal-bar: #262626;
+        --modal-rule: #3a3a3a;
+        color-scheme: dark;
+    }
+}
+
+body {
+    background-color: var(--bg);
+    transition: background-color .3s linear;
+}
+
+/* Theme toggles: plain icons, but real buttons for keyboard and screen readers. */
+.modeswitch button {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+:focus-visible {
+    outline: 2px solid #038CFC;
+    outline-offset: 2px;
+}
 
 #content {
     margin: 0 auto;
@@ -7,6 +64,8 @@
     text-align: left;
     max-width: 800px;
     font-family: 'Montserrat', sans-serif;
+    color: var(--fg);
+    transition: color .3s linear;
 }
 
 h1 {
@@ -38,16 +97,16 @@ a:hover {
 }
 
 a:active {
-    color: black;
+    color: var(--fg);
 }
 
 a.navbar {
-    color: rgb(141, 141, 141);
+    color: var(--nav);
     text-decoration: none;
 }
 
 a.navbar:hover {
-    color: #333;
+    color: var(--nav-hover);
 }
 
 .infoblock {
@@ -162,11 +221,10 @@ a.navbar:hover {
 }
 
 footer {
-    position: center;
     text-align: center;
     font-style: italic;
     font-size: 0.75em;
-    color: #666666;
+    color: var(--muted);
 }
 
 /* For Research Presentation*/
@@ -195,7 +253,7 @@ footer {
 #mousefollow {
     height: 20px;
     width: 20px;
-    background-color: black;
+    background-color: var(--dot);
     border-radius: 20px;
 
     position: fixed;
@@ -270,4 +328,41 @@ body:hover > #mousefollow {
     margin-top: 8px;
     vertical-align: middle;
     width: 100%;
+}
+
+/* The trailer only makes sense with a hovering pointer, and is decorative motion. */
+@media (hover: none), (prefers-reduced-motion: reduce) {
+    #mousefollow {
+        display: none;
+    }
+}
+
+/* Embedded CV / key viewers never overflow the column. */
+embed {
+    max-width: 100%;
+}
+
+.headshot {
+    width: auto;
+}
+
+@media (max-width: 600px) {
+    .headshot {
+        float: none;
+        display: block;
+        margin: 0 0 1em 0;
+    }
+
+    .contact-info {
+        margin: 1em 0;
+    }
+
+    .navitem {
+        margin-bottom: 0.4em;
+    }
+
+    .column {
+        flex: 100%;
+        max-width: 100%;
+    }
 }

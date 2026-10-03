@@ -1,45 +1,27 @@
-// Variables
-const content = document.getElementById('content');
-
-
 // For mouse shadow
 
 const trailer = document.getElementById("mouseshadow");
 
-
-function LightMode() {
-
-    localStorage.setItem("vision", "light")
-    document.body.style.backgroundColor = "white";
-    document.body.style.transition = ".3s linear";
-    content.style.color = "black";
-    content.style.transition = ".3s linear";
-
-    trailer.style.backgroundColor = "black";
-
-
-}
-
-function DarkMode() {
-    localStorage.setItem("vision", "dark")
-    document.body.style.backgroundColor = "black";
-    document.body.style.transition = ".3s linear";
-    content.style.color = "white";
-    content.style.transition = ".3s linear";
-
-    trailer.style.backgroundColor = "deepskyblue";
-}
-
-function checkVision() {
-    if (localStorage.getItem("vision") === 'dark') {
-        DarkMode();
-    } else if (localStorage.getItem("vision") === 'light') {
-        LightMode();
+// Theme colours live in research.css as CSS variables keyed on <html data-theme>.
+function setVision(mode) {
+    document.documentElement.dataset.theme = mode;
+    try {
+        localStorage.setItem("vision", mode);
+    } catch (_) {
     }
 }
 
+function LightMode() {
+    setVision("light");
+}
 
-document.addEventListener("load", checkVision());
+function DarkMode() {
+    setVision("dark");
+}
+
+// The trailer is hidden by CSS on touch screens; reduced motion also makes the platter jump instead of glide.
+const trailerOff = window.matchMedia("(hover: none), (prefers-reduced-motion: reduce)");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const getTrailerClass = type => {
     switch (type) {
@@ -102,7 +84,8 @@ const handleOnDown = e => track.dataset.mouseDownAt = e.clientX;
 
 const handleOnUp = () => {
     track.dataset.mouseDownAt = "0";
-    track.dataset.predPer = track.dataset.percentage;
+    // A click without a drag never sets percentage; keep the last position.
+    track.dataset.predPer = track.dataset.percentage ?? track.dataset.predPer;
 }
 
 const handleOnMove = e => {
@@ -115,7 +98,7 @@ const handleOnMove = e => {
     const interactable = e.target.closest(".interactive"),
         interacting = interactable !== null;
 
-    animateTrailer(e, imageinteracting);
+    if (!trailerOff.matches) animateTrailer(e, imageinteracting);
 
 
     trailer.dataset.type = imageinteracting ? imageinteractable.dataset.type : "";
@@ -141,37 +124,68 @@ const handleOnMove = e => {
 
     track.dataset.percentage = nextPercentage;
 
-    track.animate({
-        transform: `translate(${nextPercentage}%, -50%)`
-    }, {duration: 1200, fill: "forwards"});
-
-    for (const image of track.getElementsByClassName("image")) {
-        image.animate({
-            objectPosition: `${100 + nextPercentage}% center`
-        }, {duration: 1200, fill: "forwards"});
-    }
-
-
+    glide.tp = nextPercentage;
+    glide.to = 100 + nextPercentage;
+    startGlide();
 }
 
 const disableselect = (e) => {
     return false
 }
 
-const animateTrailer = (e, interacting) => {
-    const x = e.clientX - trailer.offsetWidth / 2,
-        y = e.clientY - trailer.offsetHeight / 2;
+// Everything glides toward its target: each frame closes ~45% of the remaining distance per
+// `halfStep` ms (62 for the cursor, 93 for the strip), independent of frame rate.
+const glide = {
+    x: 0, y: 0, s: 1, tx: 0, ty: 0, ts: 1, placed: false,   // cursor trailer
+    p: -15, tp: -15,                                        // strip position (%), CSS starts at -15
+    o: 50, to: 50,                                          // image object-position (%)
+    running: false, last: 0
+};
 
-    const keyframes = {
-        transform: `translate(${x}px, ${y}px) scale(${interacting ? 8 : 1})`
+const stepGlide = now => {
+    const g = glide,
+        dt = Math.min(now - g.last, 100),
+        quick = reduceMotion.matches ? 1 : 1 - Math.pow(0.55, dt / 62),
+        slow = reduceMotion.matches ? 1 : 1 - Math.pow(0.55, dt / 93);
+    g.last = now;
+    g.x += (g.tx - g.x) * quick;
+    g.y += (g.ty - g.y) * quick;
+    g.s += (g.ts - g.s) * quick;
+    g.p += (g.tp - g.p) * slow;
+    g.o += (g.to - g.o) * slow;
+    const settled = Math.abs(g.tx - g.x) < 0.05 && Math.abs(g.ty - g.y) < 0.05 && Math.abs(g.ts - g.s) < 0.005
+        && Math.abs(g.tp - g.p) < 0.01 && Math.abs(g.to - g.o) < 0.01;
+    if (settled) {
+        Object.assign(g, {x: g.tx, y: g.ty, s: g.ts, p: g.tp, o: g.to});
     }
-
-    trailer.animate(keyframes, {
-        duration: 800,
-        fill: "forwards"
-    });
+    trailer.style.transform = `translate(${g.x}px, ${g.y}px) scale(${g.s})`;
+    track.style.transform = `translate(${g.p}%, -50%)`;
+    for (const image of track.getElementsByClassName("image")) {
+        image.style.objectPosition = `${g.o}% center`;
+    }
+    if (settled) g.running = false; else requestAnimationFrame(stepGlide);
 }
 
+const startGlide = () => {
+    if (glide.running) return;
+    glide.running = true;
+    glide.last = performance.now();
+    requestAnimationFrame(stepGlide);
+}
+
+const animateTrailer = (e, interacting) => {
+    const g = glide;
+    g.tx = e.clientX - trailer.offsetWidth / 2;
+    g.ty = e.clientY - trailer.offsetHeight / 2;
+    g.ts = interacting ? 8 : 1;
+    if (!g.placed) {
+        g.x = g.tx;
+        g.y = g.ty;
+        g.s = g.ts;
+        g.placed = true;
+    }
+    startGlide();
+}
 
 // Click functions for papers
 
@@ -203,13 +217,25 @@ window.onmousedown = e => handleOnDown(e);
 
 window.ontouchstart = e => handleOnDown(e.touches[0]);
 
-window.onmouseup = e => handleOnUp(e);
+window.onmouseup = () => handleOnUp();
 
-window.ontouchend = e => handleOnUp(e.touches[0]);
+window.ontouchend = () => handleOnUp();
 
-window.onmousemove = e => handleOnMove(e);
+// One update per frame, however fast events arrive.
+let pendingMove = null;
+const queueMove = e => {
+    if (!e) return;
+    const first = pendingMove === null;
+    pendingMove = {clientX: e.clientX, clientY: e.clientY, target: e.target};
+    if (first) requestAnimationFrame(() => {
+        handleOnMove(pendingMove);
+        pendingMove = null;
+    });
+}
 
-window.ontouchmove = e => handleOnMove(e.touches[0]);
+window.onmousemove = e => queueMove(e);
+
+window.ontouchmove = e => queueMove(e.touches[0]);
 
 // Disable Selection
 document.onselectstart = disableselect;

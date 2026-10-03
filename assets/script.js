@@ -1,56 +1,63 @@
 // Variables
-const content = document.getElementById('content');
-// const navbar = document.getElementById('navbardiv')
 const trailer = document.getElementById("mousefollow");
 
-function LightMode() {
+// Theme colours live in style.css as CSS variables keyed on <html data-theme>.
+// The inline snippet in each page's <head> applies the saved choice before paint.
+function setVision(mode) {
+    document.documentElement.dataset.theme = mode;
+    try {
+        localStorage.setItem("vision", mode);
+    } catch (_) {
+    }
+}
 
-    localStorage.setItem("vision", "light");
-    document.body.style.backgroundColor = "white";
-    document.body.style.transition = ".3s linear";
-    content.style.color = "black";
-    content.style.transition = ".3s linear";
-    // navbar.style.color = "black";
-    trailer.style.backgroundColor = "black";
+function LightMode() {
+    setVision("light");
 }
 
 function DarkMode() {
-    localStorage.setItem("vision", "dark");
-
-    document.body.style.backgroundColor = "black";
-    document.body.style.transition = ".3s linear";
-    content.style.color = "white";
-    content.style.transition = ".3s linear";
-    // navbar.style.color = "white";
-    trailer.style.backgroundColor = "deepskyblue";
+    setVision("dark");
 }
-
-function checkVision() {
-    if (localStorage.getItem("vision") === 'dark') {
-        DarkMode();
-    } else if (localStorage.getItem("vision") === 'light') {
-        LightMode();
-    }
-}
-
-document.addEventListener("load", checkVision());
 
 // Mouse shadow thing
 
-const animateTrailer = (e, interacting) => {
-    const x = e.clientX - trailer.offsetWidth / 2,
-        y = e.clientY - trailer.offsetHeight / 2;
+// The trailer closes ~45% of its remaining distance every 62ms (same feel as the old
+// 800ms animations stacked on each other), independent of frame rate.
+const trailerState = {x: 0, y: 0, s: 1, tx: 0, ty: 0, ts: 1, running: false, last: 0, placed: false};
 
-
-    let keyframes = {
-        transform: `translate(${x}px, ${y}px) scale(${interacting ? 3 : 1})`
+const stepTrailer = now => {
+    const t = trailerState,
+        f = 1 - Math.pow(0.55, Math.min(now - t.last, 100) / 62);
+    t.last = now;
+    t.x += (t.tx - t.x) * f;
+    t.y += (t.ty - t.y) * f;
+    t.s += (t.ts - t.s) * f;
+    const settled = Math.abs(t.tx - t.x) < 0.05 && Math.abs(t.ty - t.y) < 0.05 && Math.abs(t.ts - t.s) < 0.005;
+    if (settled) {
+        t.x = t.tx;
+        t.y = t.ty;
+        t.s = t.ts;
     }
+    trailer.style.transform = `translate(${t.x}px, ${t.y}px) scale(${t.s})`;
+    if (settled) t.running = false; else requestAnimationFrame(stepTrailer);
+}
 
-
-    trailer.animate(keyframes, {
-        duration: 800,
-        fill: "forwards"
-    });
+const animateTrailer = (e, interacting) => {
+    const t = trailerState;
+    t.tx = e.clientX - trailer.offsetWidth / 2;
+    t.ty = e.clientY - trailer.offsetHeight / 2;
+    t.ts = interacting ? 3 : 1;
+    if (!t.placed) {
+        t.x = t.tx;
+        t.y = t.ty;
+        t.s = t.ts;
+        t.placed = true;
+    }
+    if (!t.running) {
+        t.running = true;
+        t.last = performance.now();
+        requestAnimationFrame(stepTrailer);
+    }
 }
 const getTrailerClass = type => {
     switch (type) {
@@ -103,7 +110,6 @@ const getTrailerClass = type => {
     }
 }
 
-// const handleOnMove = e => {
 const handleOnMove = e => {
 
     // Mouse shadow movement
@@ -115,30 +121,29 @@ const handleOnMove = e => {
     animateTrailer(e, interacting);
 
     trailer.dataset.type = interacting ? interactable.dataset.type : "";
+    if (!interacting) return;
+
     icon.className = getTrailerClass(interactable.dataset.type);
-
-    switch (interactable.dataset.type) {
-        case "credits":
-            icon.style.color = "#f5ec00";
-            break;
-        default:
-            icon.style.color = "#FFFFFF";
-    }
-
+    icon.style.color = interactable.dataset.type === "credits" ? "#f5ec00" : "#FFFFFF";
 }
 
-const disableselect = (e) => {
-    return false
+// One trailer update per frame, however fast events arrive.
+// The trailer is hidden by CSS on touch screens and for reduced motion.
+const trailerOff = window.matchMedia("(hover: none), (prefers-reduced-motion: reduce)");
+let pendingMove = null;
+const queueMove = e => {
+    if (!e || !trailer || trailerOff.matches) return;
+    const first = pendingMove === null;
+    pendingMove = {clientX: e.clientX, clientY: e.clientY, target: e.target};
+    if (first) requestAnimationFrame(() => {
+        handleOnMove(pendingMove);
+        pendingMove = null;
+    });
 }
 
+window.onmousemove = e => queueMove(e);
 
-/* -- Had to add extra lines for touch events -- */
-
-
-window.onmousemove = e => handleOnMove(e);
-
-window.ontouchmove = e => handleOnMove(e.touches[0]);
-
+window.ontouchmove = e => queueMove(e.touches[0]);
 
 
 // BibTeX Modal Viewer
@@ -151,11 +156,13 @@ window.ontouchmove = e => handleOnMove(e.touches[0]);
       #bib-modal.hidden { display: none; }
       #bib-modal { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; }
       #bib-modal .backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
-      #bib-modal .dialog { position: relative; max-width: 90vw; max-height: 80vh; width: 760px; background: #fff; color: #000; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); overflow: hidden; display: flex; flex-direction: column; }
-      #bib-modal .header { display:flex; gap:8px; align-items:center; padding:8px 12px; border-bottom: 1px solid #eee; background:#f7f7f7; }
+      #bib-modal .dialog { position: relative; max-width: 90vw; max-height: 80vh; width: 760px; background: var(--modal-bg); color: var(--fg); border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); overflow: hidden; display: flex; flex-direction: column; }
+      #bib-modal .header { display:flex; gap:8px; align-items:center; padding:8px 12px; border-bottom: 1px solid var(--modal-rule); background: var(--modal-bar); }
       #bib-modal .title { flex:1; font-weight:600; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-      #bib-modal pre { margin:0; padding:12px; font-family: monospace; font-size:13px; overflow:auto; white-space:pre-wrap; background: #fff; }
-      .btn { padding:6px 10px; border:1px solid #ccc; background:#fff; border-radius:4px; cursor:pointer; }
+      #bib-modal pre { margin:0; padding:12px; font-family: monospace; font-size:13px; overflow:auto; white-space:pre-wrap; background: var(--modal-bg); }
+      #bib-modal .footer { padding:8px 12px; border-top:1px solid var(--modal-rule); text-align:right; background: var(--modal-bar); }
+      #bib-modal .footer small { color: var(--muted); }
+      .btn { padding:6px 10px; border:1px solid var(--modal-rule); background: var(--modal-bg); color: var(--fg); border-radius:4px; cursor:pointer; }
     `;
     document.head.appendChild(style);
 
@@ -174,8 +181,8 @@ window.ontouchmove = e => handleOnMove(e.touches[0]);
           </div>
         </div>
         <pre id="bib-content">Loading...</pre>
-        <div class="footer" style="padding:8px 12px; border-top:1px solid #eee; text-align:right; background:#f7f7f7;">
-          <small style="color:#666">Click outside or press Esc to close</small>
+        <div class="footer">
+          <small>Click outside or press Esc to close</small>
         </div>
       </div>
     `;
@@ -255,7 +262,3 @@ window.ontouchmove = e => handleOnMove(e.touches[0]);
   window.showBibTeX = showBibTeX;
   window.showBibText = showBibText;
 })();
-
-
-// Disable Selection
-// document.onselectstart = disableselect;

@@ -2,12 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <script>try{var v=localStorage.getItem("vision");if(v==="dark"||v==="light")document.documentElement.dataset.theme=v}catch(e){}</script>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam&display=swap&text=%28%E0%A4%B8%E0%A4%BE%E0%A4%95%E0%A5%87%E0%A4%A4%20%E0%A4%89%E0%A4%AA%E0%A4%BE%E0%A4%A7%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%29" rel="stylesheet">
+    <link href="assets/fontawesome/css/fa-site.css" rel="stylesheet">
+    <script defer src="assets/script.js"></script>
     <link href="assets/style.css" rel="stylesheet">
     <title>Saket U. | About</title>
     <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
-    <link href="assets/fontawesome/css/fontawesome.css" rel="stylesheet">
-    <link href="assets/fontawesome/css/brands.css" rel="stylesheet">
-    <link href="assets/fontawesome/css/solid.css" rel="stylesheet">
 
 </head>
 <body>
@@ -40,19 +45,22 @@
             <li class="navitem interactive" data-type="talkbutton"><a class="navbar" href="talks.html">Talks</a></li>
             <li class="navitem interactive" data-type="blogbutton"><a class="navbar" href="blog.html">Blog</a></li>
             <li class="navitem interactive" data-type="catbutton"><a class="navbar" href="fetchcat.html"><i
-                    class="fa-regular fa-cat"></i></a></li>
+                    class="fa-solid fa-cat"></i></a></li>
             <li class="navitem interactive" data-type="extrabutton"><a class="navbar" href="extras.html"><i
-                    class="fa-regular fa-image"></i></a></li>
+                    class="fa-solid fa-image"></i></a></li>
 
 
             <li class="modeswitch" style="align-self: flex-end;">
-                <i class="fas fa-moon interactive" data-type="nightbutton" onclick="DarkMode()"></i>
-                <i class="fas fa-sun interactive" data-type="morningbutton" onclick="LightMode()"></i>
+                <button aria-label="Dark mode" class="interactive" data-type="nightbutton" onclick="DarkMode()" type="button"><i class="fas fa-moon"></i></button>
+                <button aria-label="Light mode" class="interactive" data-type="morningbutton" onclick="LightMode()" type="button"><i class="fas fa-sun"></i></button>
             </li>
         </ul>
     </nav>
     <div class="infoblock">
-        <img alt="Photo of self" class="headshot" src="images/authorprofile.jpg">
+        <picture>
+            <source srcset="images/authorprofile.webp" type="image/webp">
+            <img alt="Photo of self" class="headshot" height="400" src="images/authorprofile.jpg" width="400">
+        </picture>
         <div class="contact-info">
             <p>
                 <b style="font-weight: 600;">PhD candidate, University of Virginia</b>
@@ -91,7 +99,6 @@
 
 </div>
 
-</body>
 <footer>
     या कुन्देन्दुतुषारहारधवला या शुभ्रवस्त्रावृता, या वीणावरदण्डमण्डितकरा या श्वेतपद्मासना। या ब्रह्माच्युत
     शंकरप्रभृतिभिर्देवैः सदा वन्दिता, सा मां पातु सरस्वती भगवती निःशेषजाड्यापहा॥१॥
@@ -101,8 +108,5 @@
 <footer>
     2026 © Saket Upadhyay <br><a class="interactive" data-type="credits" href="credits.html">credits</a>
 </footer>
-<script src="assets/script.js"></script>
+</body>
 </html>
-
-
-

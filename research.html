@@ -2,12 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <script>try{var v=localStorage.getItem("vision");if(v==="dark"||v==="light")document.documentElement.dataset.theme=v}catch(e){}</script>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="assets/fontawesome/css/fa-site.css" rel="stylesheet">
+    <script defer src="assets/research.js"></script>
     <link href="assets/research.css" rel="stylesheet">
     <title>Saket U. | Research</title>
     <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
-    <link href="assets/fontawesome/css/fontawesome.css" rel="stylesheet">
-    <link href="assets/fontawesome/css/brands.css" rel="stylesheet">
-    <link href="assets/fontawesome/css/solid.css" rel="stylesheet">
 </head>
 <body>
 <div id="mouseshadow">
@@ -32,14 +36,14 @@
             </li>
             <li class="navitem interactive" data-type="talkbutton"><a class="navbar" href="talks.html">Talks</a></li>
             <li class="navitem interactive" data-type="blogbutton"><a class="navbar" href="blog.html">Blog</a></li>
-<li class="navitem interactive" data-type="catbutton"><a class="navbar" href="fetchcat.html"><i class="fa-regular fa-cat"></i></a></li>
+<li class="navitem interactive" data-type="catbutton"><a class="navbar" href="fetchcat.html"><i class="fa-solid fa-cat"></i></a></li>
             <li class="navitem interactive" data-type="extrabutton"><a class="navbar" href="extras.html"><i
-                    class="fa-regular fa-image"></i></a></li>
+                    class="fa-solid fa-image"></i></a></li>
 
 
             <li class="modeswitch" style="align-self: flex-end;">
-                <i class="fas fa-moon interactive" data-type="nightbutton" onclick="DarkMode()"></i>
-                <i class="fas fa-sun interactive" data-type="morningbutton" onclick="LightMode()"></i>
+                <button aria-label="Dark mode" class="interactive" data-type="nightbutton" onclick="DarkMode()" type="button"><i class="fas fa-moon"></i></button>
+                <button aria-label="Light mode" class="interactive" data-type="morningbutton" onclick="LightMode()" type="button"><i class="fas fa-sun"></i></button>
             </li>
         </ul>
     </nav>
@@ -47,21 +51,18 @@
     <div data-mouse-down-at="0" data-pred-per="0" draggable="false" id="platter">
         <!--    Research paper platters-->
         <img class="image" data-type="pdf" draggable="false" onclick="fireflyredirect()"
-             src="rpapers/platter/firefly.png"/>
+             alt="Modified Firefly Optimization Algorithm-Based IDS for Nature-Inspired Cybersecurity" decoding="async" height="1000" src="rpapers/platter/firefly.webp" width="707"/>
         <img class="image" data-type="paper" draggable="false" onclick="nicsandroredirect()"
-             src="rpapers/platter/nicsandro.png"/>
+             alt="Nature-Inspired Malware and Anomaly Detection in Android-Based Systems" decoding="async" height="1000" src="rpapers/platter/nicsandro.webp" width="772"/>
         <img class="image" data-type="paper" draggable="false" onclick="aitestbedredirect()"
-             src="rpapers/platter/aiassistedtestbed.png"/>
+             alt="AI-assisted Computer Network Operations testbed for Nature-Inspired Cyber Security based adaptive defense simulation and analysis" decoding="async" height="1000" loading="lazy" src="rpapers/platter/aiassistedtestbed.webp" width="750"/>
         <img class="image" data-type="pdf" draggable="false" onclick="pacerredirect()"
-             src="rpapers/platter/saketpacer.png"/>
+             alt="PACER: Platform for Android Malware Classification, Performance Evaluation and Threat Reporting" decoding="async" height="1000" loading="lazy" src="rpapers/platter/saketpacer.webp" width="707"/>
         <img class="image" data-type="paper" draggable="false" onclick="paceieeeredirect()"
-             src="rpapers/platter/PACE.png"/>
+             alt="PACE: Platform for Android Malware Classification and Performance Evaluation" decoding="async" height="1000" loading="lazy" src="rpapers/platter/PACE.webp" width="707"/>
 
     </div>
     <a class="interactive" data-type="remanime" href="researchlist.html" id="animrem">Remove fancy-pants animations.</a>
 </div>
-
-
 </body>
-<script src="assets/research.js"></script>
 </html>
