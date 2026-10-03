@@ -1,7 +1,0 @@
-User-Agent: *
-Allow: /
-Allow: /cv
-Allow: /cv.html
-Allow: /pubkey.html
-Allow: /pubkey
-Allow: /research.html
