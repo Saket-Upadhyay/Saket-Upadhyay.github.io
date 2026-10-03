@@ -97,6 +97,8 @@ class Output(NamedTuple):
         name: Output file name, in assets/fonts/.
         text: Characters to keep.
         features: OpenType layout features to keep.
+        style_suffix: Appended to an instance's style name, so files sharing
+            a weight (split by unicode-range) still get unique names.
     """
 
     source: str
@@ -104,6 +106,7 @@ class Output(NamedTuple):
     name: str
     text: str
     features: Sequence[str]
+    style_suffix: str = ""
 
 
 def outputs() -> list[Output]:
@@ -129,7 +132,7 @@ def outputs() -> list[Output]:
         Output(sans, {**sans_axes, "wght": 400}, "google-sans-400.woff2",
                latin, LATIN_FEATURES),
         Output(sans, {**sans_axes, "wght": 400}, "google-sans-400-extra.woff2",
-               _chars(used, is_extra_script) + " ", ALL_FEATURES),
+               _chars(used, is_extra_script) + " ", ALL_FEATURES, "Extra"),
         Output(sans, {**sans_axes, "wght": 600}, "google-sans-600.woff2",
                latin, LATIN_FEATURES),
         Output(sans_italic, {**sans_axes, "wght": 400},
@@ -140,6 +143,35 @@ def outputs() -> list[Output]:
                ALL_FEATURES),
     ]
     # fmt: on
+
+
+_WEIGHT_NAMES = {400: "Regular", 500: "Medium", 600: "SemiBold", 700: "Bold"}
+
+
+def _rename_instance(font: TTFont, weight: int, suffix: str = "") -> None:
+    """Gives a pinned instance its own style name, e.g. "Google Sans SemiBold".
+
+    The instancer leaves every instance named after the variable font's
+    default ("Regular"). Safari caches web fonts by PostScript name, so
+    same-named files for different weights can stand in for each other.
+    """
+    names = font["name"]
+    family = names.getBestFamilyName()
+    italic = "Italic" in (names.getBestSubFamilyName() or "")
+    style = _WEIGHT_NAMES.get(weight, str(weight))
+    if italic:
+        style = "Italic" if style == "Regular" else f"{style} Italic"
+    if suffix:
+        style = f"{style} {suffix}"
+    postscript = f"{family}-{style}".replace(" ", "")
+    for name_id, value in (
+        (2, style),
+        (4, f"{family} {style}"),
+        (6, postscript),
+        (17, style),
+    ):
+        names.setName(value, name_id, 3, 1, 0x409)
+    font["OS/2"].usWeightClass = weight
 
 
 def load(path: Path, axes: dict[str, float]) -> TTFont:
@@ -189,7 +221,12 @@ def main() -> None:
             buffer = io.BytesIO()
             load(source_dir / output.source, output.axes).save(buffer)
             instances[key] = buffer.getvalue()
-        write_subset(TTFont(io.BytesIO(instances[key])), output)
+        font = TTFont(io.BytesIO(instances[key]))
+        if output.axes:
+            _rename_instance(
+                font, int(output.axes.get("wght", 400)), output.style_suffix
+            )
+        write_subset(font, output)
 
 
 if __name__ == "__main__":
