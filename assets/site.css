@@ -99,8 +99,8 @@
   color-scheme: light;
 }
 
-/* Dark tokens appear twice: for the explicit toggle, and for the system
-   setting when the reader hasn't chosen. Keep both blocks in sync. */
+/* Light is the default regardless of the system setting; dark applies only
+   when the reader picks it with the toggle. */
 :root[data-theme='dark'] {
   --paper: #14171e;
   --rule: #232c3d;
@@ -111,20 +111,6 @@
   --muted: #98a0b0;
   --red: #ff8a80;
   color-scheme: dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --paper: #14171e;
-    --rule: #232c3d;
-    --margin: #8f3d44;
-    --text: #dde2ec;
-    --ink: #95b0ff;
-    --mark: #b8962e;
-    --muted: #98a0b0;
-    --red: #ff8a80;
-    color-scheme: dark;
-  }
 }
 
 *,
@@ -438,16 +424,6 @@ h3 {
 
 :root[data-theme='dark'] .when-light {
   display: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .when-dark {
-    display: inline;
-  }
-
-  :root:not([data-theme='light']) .when-light {
-    display: none;
-  }
 }
 
 /* Margin notes, keyed to the text by Devanagari numerals. Pointing at either

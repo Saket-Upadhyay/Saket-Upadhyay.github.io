@@ -65,9 +65,7 @@
   /** Applies the theme toggle buttons. */
   function initTheme() {
     const root = document.documentElement;
-    const isDark = () => root.dataset.theme ?
-        root.dataset.theme === 'dark' :
-        matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = () => root.dataset.theme === 'dark';
     for (const button of document.querySelectorAll('[data-theme-toggle]')) {
       button.addEventListener('click', () => {
         root.dataset.theme = isDark() ? 'light' : 'dark';
