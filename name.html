@@ -1,73 +1,142 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
-    <script defer src="name.js"></script>
-    <title>Saket U. | Name</title>
-    <link href="name.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Applies the saved theme before first paint; kept minimal on purpose. -->
+  <script>try{var v=localStorage.getItem("vision");if(v==="dark"||v==="light")document.documentElement.dataset.theme=v}catch(e){}</script>
+  <title>Name | Saket Upadhyay</title>
+  <meta name="description" content="What the name Saket means, in six languages.">
+  <link rel="preload" href="assets/fonts/google-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/caveat-400.woff2" as="font" type="font/woff2" crossorigin>
+  <style>:root{--l:32px;--fs-body:18px;--fs-entry-title:1em;--fs-mono:.85em;--fs-links:.85rem;--fs-key-block:.72rem;--fs-date-label:.8rem;--fs-label-key:.78rem;--fs-title:2.5rem;--fs-heading:1.85rem;--fs-notes:1.2rem;--fs-label-name:2.3rem;--fs-label-name-small:2.1rem;--fs-label-value:1.3rem;--fs-label-key-deva:1rem;--fs-who:2.4rem;--fs-who-deva:1.75rem;--fs-date:1.3rem;--fs-toggle:1.3rem;--fs-footer:1.2rem;--fs-footer-shloka:1.3rem;--fs-cursor:1.3rem;--fs-nav:clamp(1rem, 2.3vw, 1.22rem);--fs-nav-sidebar:1.0rem;--fs-nav-doodle:18px;--fs-nav-phi:12px;--fs-bib-title:1.4rem;--fs-bib-button:1.2rem;--fs-note-numeral:1.05rem;--fs-note-ref:.9rem;--fs-bib-code:.9rem;}</style>
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="icon" href="favicon.ico">
+  <script defer src="assets/site.js"></script>
 </head>
+<body class="">
+<!--
+  Hello, source reader.
 
-<body>
-<h1>
-    <span class="magic">
-    <span class="magic-star">
-      <svg viewBox="0 0 512 512">
-      <path d="M512 255.1c0 11.34-7.406 20.86-18.44 23.64l-171.3 42.78l-42.78 171.1C276.7 504.6 267.2 512 255.9 512s-20.84-7.406-23.62-18.44l-42.66-171.2L18.47 279.6C7.406 276.8 0 267.3 0 255.1c0-11.34 7.406-20.83 18.44-23.61l171.2-42.78l42.78-171.1C235.2 7.406 244.7 0 256 0s20.84 7.406 23.62 18.44l42.78 171.2l171.2 42.78C504.6 235.2 512 244.6 512 255.1z"/>
-      </svg>
-    </span>
-    <span class="magic-star">
-      <svg viewBox="0 0 512 512">
-      <path d="M512 255.1c0 11.34-7.406 20.86-18.44 23.64l-171.3 42.78l-42.78 171.1C276.7 504.6 267.2 512 255.9 512s-20.84-7.406-23.62-18.44l-42.66-171.2L18.47 279.6C7.406 276.8 0 267.3 0 255.1c0-11.34 7.406-20.83 18.44-23.61l171.2-42.78l42.78-171.1C235.2 7.406 244.7 0 256 0s20.84 7.406 23.62 18.44l42.78 171.2l171.2 42.78C504.6 235.2 512 244.6 512 255.1z"/>
-      </svg>
-    </span>
-    <span class="magic-star">
-      <svg viewBox="0 0 512 512">
-      <path d="M512 255.1c0 11.34-7.406 20.86-18.44 23.64l-171.3 42.78l-42.78 171.1C276.7 504.6 267.2 512 255.9 512s-20.84-7.406-23.62-18.44l-42.66-171.2L18.47 279.6C7.406 276.8 0 267.3 0 255.1c0-11.34 7.406-20.83 18.44-23.61l171.2-42.78l42.78-171.1C235.2 7.406 244.7 0 256 0s20.84 7.406 23.62 18.44l42.78 171.2l171.2 42.78C504.6 235.2 512 244.6 512 255.1z"/>
-      </svg>
-    </span>
-    <span class="magic-text">साकेत | Saket | Sāketa <br> /ˈsækɛt/</span>
-  </span>
-</h1>
+  Every page here is plain HTML, written into a notebook template by a small
+  Python script (tools/build.py). One stylesheet, a little JavaScript for the
+  ink cursor and the sketched navigation, no frameworks, no trackers.
+  If you read source code for fun, we'd probably get along.
 
-<section class="columns">
-
-    <div class="column">
-        <h3>EN</h3>
-        <h2>The word "Saket" has its origin in the Sanskrit language, which is an ancient language of India. In
-            Sanskrit, the word "Saket" means "heavenly or divine abode".</h2>
+  — Saket
+-->
+<a class="skip" href="#content">Skip to content</a>
+<div class="page">
+  <header class="row head">
+    <div class="main">
+      <p class="who"><a href="index.html" data-ink="about me">Saket Upadhyay</a> <a class="deva" href="name.html" data-ink="how to say it" lang="hi">साकेत उपाध्याय</a></p>
     </div>
-    <div class="column">
-        <h3>SA</h3>
-        <h2>"साकेत" शब्दस्य उत्पत्तिः भारतस्य प्राचीनभाषा संस्कृतभाषायाम् अस्ति । संस्कृतभाषायां "साकेत" शब्दस्य अर्थः
-            "स्वर्गीयं वा दिव्यं वा निवासस्थानं" इति।</h2>
-    </div>
-    <div class="column">
-        <h3>RU</h3>
-        <h2> Слово «сакет» происходит от санскрита, древнего языка Индии. На санскрите слово «сакет» означает «небесная
-            или божественная обитель».</h2>
-    </div>
-    <div class="column">
-        <h3>FR</h3>
-        <h2>Le mot "Saket" vient de l'ancienne langue de l'Inde, le sanskrit. En sanskrit, le mot "Saket" signifie "ciel
-            ou demeure divine".</h2>
-    </div>
+  </header>
 
-    <div class="column">
-        <h3>TA</h3>
-        <h2> "சாகேத்" என்ற வார்த்தையின் தோற்றம் இந்தியாவின் பழமையான மொழியான சமஸ்கிருத மொழியில் உள்ளது. சமஸ்கிருதத்தில்,
-            "சாகேத்" என்ற சொல்லுக்கு "பரலோகம் அல்லது தெய்வீக இருப்பிடம்" என்று பொருள்.</h2>
+  <!-- Wide landscape screens: a fixed sidebar on the right.
+       Otherwise: rows at the top of the page. -->
+  <aside class="row side">
+    <div class="main">
+      <div class="dp">
+        <span>Date<b data-today>03.10.26</b></span>
+        <span>Page<b></b></span>
+      </div>
+      <div class="label snap">
+        <dl>
+          <dt>Name</dt><dd class="name"><p class="label-name">Saket Upadhyay</p></dd>
+          <dt lang="hi">नाम</dt><dd><a class="deva" href="name.html" data-ink="how to say it" lang="hi">साकेत उपाध्याय</a></dd>
+          <dt>Class</dt><dd>PhD candidate, Computer Science</dd>
+          <dt>School</dt><dd>University of Virginia</dd>
+          <dt>Subject</dt><dd>Memory Safety × Compilers</dd>
+          <dt>ORCID</dt><dd><a href="https://orcid.org/0000-0003-0574-7843" data-ink="orcid">0000-0003-0574-7843</a></dd>
+        </dl>
+        <figure class="photo"><img src="images/authorprofile.webp" alt="Saket Upadhyay" width="500" height="500" data-swap-src="images/wheeliemtb.webp" data-swap-alt="Saket doing a wheelie on a mountain bike"></figure>
+      </div>
+      <nav class="cfg snap" aria-label="Site">
+        <a data-id="about" data-box="255,14,130,38" data-box-side="115,12,130,36" href="index.html" data-ink="about me">About</a>
+        <a data-id="research" data-box="15,88,130,36" data-box-side="0,88,80,34" href="researchlist.html" data-ink="papers">Research</a>
+        <a data-id="teaching" data-box="175,88,130,36" data-box-side="93,88,80,34" href="teaching.html" data-ink="classes">Teaching</a>
+        <a data-id="talks" data-box="335,88,130,36" data-box-side="186,88,80,34" href="talks.html" data-ink="slides + video">Talks</a>
+        <a data-id="leadership" data-box="495,88,130,36" data-box-side="279,88,82,34" href="leadership.html" data-ink="service">Leadership</a>
+        <a data-id="cv" data-box="205,168,110,36" data-box-side="92,172,82,34" href="cv.html" data-ink="pdf">CV</a>
+        <a data-id="key" data-box="335,168,110,36" data-box-side="186,172,82,34" href="pubkey.html" data-ink="0x59BA0808">PGP Key</a>
+      </nav>
+      <p class="contacts">
+        <a class="icon" href="https://scholar.google.com/citations?hl=en&amp;user=bT9RE28AAAAJ" data-ink="google scholar" aria-label="Google Scholar">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><g id="i-scholar">
+            <path d="M3.8 12.7 L16.1 5 L28.3 12.5 L15.9 20.1 Z"/>
+            <path d="M10.3 17.1 C9 22.7 12.1 27.5 16.1 27.4 C20.1 27.3 23.1 22.5 21.8 17.2"/>
+            <path d="M26.1 13.7 L26.3 19.6"/>
+          </g><use href="#i-scholar" class="again"/></svg>
+        </a>
+        <a class="icon" href="https://github.com/Saket-Upadhyay" data-ink="github" aria-label="GitHub">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><g id="i-github">
+            <path d="M9 9.6 L8.1 5.1 L12.5 7.6 C14.7 7 17.4 7.1 19.6 7.7 L23.9 5.2 L23 9.6 C24.9 11.5 25.5 13.7 25.1 16.1 C24.4 20.1 21 22.3 16 22.2 C11 22.2 7.5 20 7 16 C6.6 13.6 7.2 11.4 9 9.6 Z"/>
+            <path d="M13.1 22.1 C12.7 23.7 12.8 25.7 13 27.5 M18.9 22 C19.3 23.7 19.2 25.6 19.1 27.4"/>
+            <path d="M12.9 25.2 C10.5 25.9 9.3 24.6 8.3 23.1"/>
+          </g><use href="#i-github" class="again"/></svg>
+        </a>
+        <a class="icon" href="https://www.linkedin.com/in/saketupadhyay" data-ink="linkedin" aria-label="LinkedIn">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><g id="i-linkedin">
+            <path d="M5.5 4.9 C11 4.2 21 4.6 26.8 5.3 C27.6 11 27.4 21 26.6 27 C20 27.7 11 27.4 5.2 26.7 C4.6 20 4.7 11 5.5 4.9 Z"/>
+            <path d="M10.4 14.1 L10.6 22.7 M10.3 9.9 L10.7 10.4"/>
+            <path d="M15 22.8 L15.1 14.2 M15.1 17.7 C16 14.6 21.7 13.4 21.9 17.5 L22.1 22.7"/>
+          </g><use href="#i-linkedin" class="again"/></svg>
+        </a>
+        <span class="mono">&lt;first_name&gt;[at]virginia[dot]edu</span>
+      </p>
     </div>
-    <div class="column">
-        <h3>HI</h3>
-        <h2>"साकेत" शब्द की उत्पत्ति संस्कृत भाषा में हुई है, जो एक प्राचीन भारतीय भाषा है। संस्कृत में "साकेत" शब्द का
-            अर्थ "स्वर्गीय या दिव्य निवास" है।</h2>
+    <div class="margin">
+      <button type="button" data-theme-toggle>
+        <span class="when-light">Dark mode</span><span class="when-dark">Light mode</span>
+      </button>
     </div>
+  </aside>
 
-</section>
+  <main id="content">
+<div class="row">
+  <div class="main"><h1>साकेत | Saket | Sāketa</h1></div>
+</div>
+<div class="row">
+  <div class="main"><h3>Pronounced <span class="mono">/ˈsækɛt/</span>.</h3></div>
+</div>
+<div class="row">
+  <div class="main"><p lang="en">The word "Saket" has its origin in the Sanskrit language, which is an ancient
+  language of India. In Sanskrit, the word "Saket" means "heavenly or divine abode".</p></div>
+  <div class="margin lead"><p class="note">English</p></div>
+</div>
+<div class="row">
+  <div class="main"><p lang="sa">"साकेत" शब्दस्य उत्पत्तिः भारतस्य प्राचीनभाषा संस्कृतभाषायाम् अस्ति ।
+  संस्कृतभाषायां "साकेत" शब्दस्य अर्थः "स्वर्गीयं वा दिव्यं वा निवासस्थानं" इति।</p></div>
+  <div class="margin lead"><p class="note">संस्कृतम्</p></div>
+</div>
+<div class="row">
+  <div class="main"><p lang="hi">"साकेत" शब्द की उत्पत्ति संस्कृत भाषा में हुई है, जो एक प्राचीन भारतीय भाषा है।
+  संस्कृत में "साकेत" शब्द का अर्थ "स्वर्गीय या दिव्य निवास" है।</p></div>
+  <div class="margin lead"><p class="note">हिन्दी</p></div>
+</div>
+<div class="row">
+  <div class="main"><p lang="ta">"சாகேத்" என்ற வார்த்தையின் தோற்றம் இந்தியாவின் பழமையான மொழியான சமஸ்கிருத
+  மொழியில் உள்ளது. சமஸ்கிருதத்தில், "சாகேத்" என்ற சொல்லுக்கு "பரலோகம் அல்லது தெய்வீக இருப்பிடம்" என்று பொருள்.</p></div>
+  <div class="margin lead"><p class="note">தமிழ்</p></div>
+</div>
+<div class="row">
+  <div class="main"><p lang="ru">Слово «сакет» происходит от санскрита, древнего языка Индии. На санскрите
+  слово «сакет» означает «небесная или божественная обитель».</p></div>
+  <div class="margin lead"><p class="note">Русский</p></div>
+</div>
+<div class="row">
+  <div class="main"><p lang="fr">Le mot "Saket" vient de l'ancienne langue de l'Inde, le sanskrit. En
+  sanskrit, le mot "Saket" signifie "ciel ou demeure divine".</p></div>
+  <div class="margin lead"><p class="note">Français</p></div>
+</div>
+  </main>
 
-
-<p>go back to <a href="https://saketupadhyay.com">saketupadhyay.com</a></p>
-
+  <footer class="row">
+    <div class="main">
+      <p class="colophon">© 2026 Saket Upadhyay. <a href="blog.html" data-ink="writing">Blog</a>, <a href="credits.html" data-ink="thanks">credits</a>.</p>
+    </div>
+  </footer>
+</div>
 </body>
 </html>

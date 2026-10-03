@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Applies the saved theme before first paint; kept minimal on purpose. -->
+  <script>try{var v=localStorage.getItem("vision");if(v==="dark"||v==="light")document.documentElement.dataset.theme=v}catch(e){}</script>
+  <title>{{title}}</title>
+  <meta name="description" content="{{description}}">
+  <link rel="preload" href="assets/fonts/google-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/caveat-400.woff2" as="font" type="font/woff2" crossorigin>
+  {{font_sizes}}
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="icon" href="favicon.ico">
+  {{head}}
+  <script defer src="assets/site.js"></script>
+</head>
+<body class="{{body_class}}">
+<!--
+  Hello, source reader.
+
+  Every page here is plain HTML, written into a notebook template by a small
+  Python script (tools/build.py). One stylesheet, a little JavaScript for the
+  ink cursor and the sketched navigation, no frameworks, no trackers.
+  If you read source code for fun, we'd probably get along.
+
+  — Saket
+-->
+<a class="skip" href="#content">Skip to content</a>
+<div class="page">
+  <header class="row head">
+    <div class="main">
+      {{compact}}
+    </div>
+  </header>
+
+  <!-- Wide landscape screens: a fixed sidebar on the right.
+       Otherwise: rows at the top of the page. -->
+  <aside class="row side">
+    <div class="main">
+      <div class="dp">
+        <span>Date<b data-today>{{date}}</b></span>
+        <span>Page<b>{{page}}</b></span>
+      </div>
+      {{label}}
+      <nav class="cfg snap" aria-label="Site">
+        {{nav}}
+      </nav>
+      {{contacts}}
+    </div>
+    <div class="margin">
+      <button type="button" data-theme-toggle>
+        <span class="when-light">Dark mode</span><span class="when-dark">Light mode</span>
+      </button>
+    </div>
+  </aside>
+
+  <main id="content">
+{{content}}
+  </main>
+
+  <footer class="row">
+    <div class="main">
+      {{shloka}}
+      <p class="colophon">© {{year}} Saket Upadhyay. <a href="blog.html" data-ink="writing">Blog</a>, <a href="credits.html" data-ink="thanks">credits</a>.</p>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,156 +1,179 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
-    <script>try{var v=localStorage.getItem("vision");if(v==="dark"||v==="light")document.documentElement.dataset.theme=v}catch(e){}</script>
-    <link href="https://fonts.googleapis.com" rel="preconnect">
-    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Kalam&display=swap&text=%28%E0%A4%B8%E0%A4%BE%E0%A4%95%E0%A5%87%E0%A4%A4%20%E0%A4%89%E0%A4%AA%E0%A4%BE%E0%A4%A7%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%29" rel="stylesheet">
-    <link href="assets/fontawesome/css/fa-site.css" rel="stylesheet">
-    <script defer src="assets/script.js"></script>
-    <link href="assets/style.css" rel="stylesheet">
-    <title>Saket U. | Talks</title>
-    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Applies the saved theme before first paint; kept minimal on purpose. -->
+  <script>try{var v=localStorage.getItem("vision");if(v==="dark"||v==="light")document.documentElement.dataset.theme=v}catch(e){}</script>
+  <title>Talks | Saket Upadhyay</title>
+  <meta name="description" content="Talks and presentations by Saket Upadhyay, with slides, videos and code.">
+  <link rel="preload" href="assets/fonts/google-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/caveat-400.woff2" as="font" type="font/woff2" crossorigin>
+  <style>:root{--l:32px;--fs-body:18px;--fs-entry-title:1em;--fs-mono:.85em;--fs-links:.85rem;--fs-key-block:.72rem;--fs-date-label:.8rem;--fs-label-key:.78rem;--fs-title:2.5rem;--fs-heading:1.85rem;--fs-notes:1.2rem;--fs-label-name:2.3rem;--fs-label-name-small:2.1rem;--fs-label-value:1.3rem;--fs-label-key-deva:1rem;--fs-who:2.4rem;--fs-who-deva:1.75rem;--fs-date:1.3rem;--fs-toggle:1.3rem;--fs-footer:1.2rem;--fs-footer-shloka:1.3rem;--fs-cursor:1.3rem;--fs-nav:clamp(1rem, 2.3vw, 1.22rem);--fs-nav-sidebar:1.0rem;--fs-nav-doodle:18px;--fs-nav-phi:12px;--fs-bib-title:1.4rem;--fs-bib-button:1.2rem;--fs-note-numeral:1.05rem;--fs-note-ref:.9rem;--fs-bib-code:.9rem;}</style>
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="icon" href="favicon.ico">
+  <script defer src="assets/site.js"></script>
 </head>
-<body>
-<div id="mousefollow">
-    <i class="fa-solid fa-link" id="mouseshadow-icon" style="color: #000000"></i>
+<body class="">
+<!--
+  Hello, source reader.
+
+  Every page here is plain HTML, written into a notebook template by a small
+  Python script (tools/build.py). One stylesheet, a little JavaScript for the
+  ink cursor and the sketched navigation, no frameworks, no trackers.
+  If you read source code for fun, we'd probably get along.
+
+  — Saket
+-->
+<a class="skip" href="#content">Skip to content</a>
+<div class="page">
+  <header class="row head">
+    <div class="main">
+      <p class="who"><a href="index.html" data-ink="about me">Saket Upadhyay</a> <a class="deva" href="name.html" data-ink="how to say it" lang="hi">साकेत उपाध्याय</a></p>
+    </div>
+  </header>
+
+  <!-- Wide landscape screens: a fixed sidebar on the right.
+       Otherwise: rows at the top of the page. -->
+  <aside class="row side">
+    <div class="main">
+      <div class="dp">
+        <span>Date<b data-today>03.10.26</b></span>
+        <span>Page<b>04</b></span>
+      </div>
+      <div class="label snap">
+        <dl>
+          <dt>Name</dt><dd class="name"><p class="label-name">Saket Upadhyay</p></dd>
+          <dt lang="hi">नाम</dt><dd><a class="deva" href="name.html" data-ink="how to say it" lang="hi">साकेत उपाध्याय</a></dd>
+          <dt>Class</dt><dd>PhD candidate, Computer Science</dd>
+          <dt>School</dt><dd>University of Virginia</dd>
+          <dt>Subject</dt><dd>Memory Safety × Compilers</dd>
+          <dt>ORCID</dt><dd><a href="https://orcid.org/0000-0003-0574-7843" data-ink="orcid">0000-0003-0574-7843</a></dd>
+        </dl>
+        <figure class="photo"><img src="images/authorprofile.webp" alt="Saket Upadhyay" width="500" height="500" data-swap-src="images/wheeliemtb.webp" data-swap-alt="Saket doing a wheelie on a mountain bike"></figure>
+      </div>
+      <nav class="cfg snap" aria-label="Site">
+        <a data-id="about" data-box="255,14,130,38" data-box-side="115,12,130,36" href="index.html" data-ink="about me">About</a>
+        <a data-id="research" data-box="15,88,130,36" data-box-side="0,88,80,34" href="researchlist.html" data-ink="papers">Research</a>
+        <a data-id="teaching" data-box="175,88,130,36" data-box-side="93,88,80,34" href="teaching.html" data-ink="classes">Teaching</a>
+        <a data-id="talks" data-box="335,88,130,36" data-box-side="186,88,80,34" href="talks.html" data-ink="you are here" aria-current="page">Talks</a>
+        <a data-id="leadership" data-box="495,88,130,36" data-box-side="279,88,82,34" href="leadership.html" data-ink="service">Leadership</a>
+        <a data-id="cv" data-box="205,168,110,36" data-box-side="92,172,82,34" href="cv.html" data-ink="pdf">CV</a>
+        <a data-id="key" data-box="335,168,110,36" data-box-side="186,172,82,34" href="pubkey.html" data-ink="0x59BA0808">PGP Key</a>
+      </nav>
+      <p class="contacts">
+        <a class="icon" href="https://scholar.google.com/citations?hl=en&amp;user=bT9RE28AAAAJ" data-ink="google scholar" aria-label="Google Scholar">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><g id="i-scholar">
+            <path d="M3.8 12.7 L16.1 5 L28.3 12.5 L15.9 20.1 Z"/>
+            <path d="M10.3 17.1 C9 22.7 12.1 27.5 16.1 27.4 C20.1 27.3 23.1 22.5 21.8 17.2"/>
+            <path d="M26.1 13.7 L26.3 19.6"/>
+          </g><use href="#i-scholar" class="again"/></svg>
+        </a>
+        <a class="icon" href="https://github.com/Saket-Upadhyay" data-ink="github" aria-label="GitHub">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><g id="i-github">
+            <path d="M9 9.6 L8.1 5.1 L12.5 7.6 C14.7 7 17.4 7.1 19.6 7.7 L23.9 5.2 L23 9.6 C24.9 11.5 25.5 13.7 25.1 16.1 C24.4 20.1 21 22.3 16 22.2 C11 22.2 7.5 20 7 16 C6.6 13.6 7.2 11.4 9 9.6 Z"/>
+            <path d="M13.1 22.1 C12.7 23.7 12.8 25.7 13 27.5 M18.9 22 C19.3 23.7 19.2 25.6 19.1 27.4"/>
+            <path d="M12.9 25.2 C10.5 25.9 9.3 24.6 8.3 23.1"/>
+          </g><use href="#i-github" class="again"/></svg>
+        </a>
+        <a class="icon" href="https://www.linkedin.com/in/saketupadhyay" data-ink="linkedin" aria-label="LinkedIn">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><g id="i-linkedin">
+            <path d="M5.5 4.9 C11 4.2 21 4.6 26.8 5.3 C27.6 11 27.4 21 26.6 27 C20 27.7 11 27.4 5.2 26.7 C4.6 20 4.7 11 5.5 4.9 Z"/>
+            <path d="M10.4 14.1 L10.6 22.7 M10.3 9.9 L10.7 10.4"/>
+            <path d="M15 22.8 L15.1 14.2 M15.1 17.7 C16 14.6 21.7 13.4 21.9 17.5 L22.1 22.7"/>
+          </g><use href="#i-linkedin" class="again"/></svg>
+        </a>
+        <span class="mono">&lt;first_name&gt;[at]virginia[dot]edu</span>
+      </p>
+    </div>
+    <div class="margin">
+      <button type="button" data-theme-toggle>
+        <span class="when-light">Dark mode</span><span class="when-dark">Light mode</span>
+      </button>
+    </div>
+  </aside>
+
+  <main id="content">
+<div class="row">
+  <div class="main"><h1>Talks and presentations</h1></div>
 </div>
+<div class="row">
+  <div class="main"><article class="entry">
 
-<div id="content">
-
-    <h1>
-        Saket Upadhyay
-        <span style="font-family: 'Kalam', cursive; font-weight: 400; font-style: normal;">
-        (साकेत उपाध्याय)
-        </span>
-    </h1>
-    <nav>
-        <ul class="navbar">
-            <li class="navitem interactive" data-type="aboutbutton"><a class="navbar" href="index.html"
-                                                                       id="navbardiv">About</a></li>
-            <li class="navitem interactive" data-type="researchbutton"><a class="navbar"
-                                                                          href="researchlist.html">Research</a></li>
-            <li class="navitem interactive" data-type="teachingbutton"><a class="navbar"
-                                                                          href="teaching.html">Teaching</a></li>
-            <li class="navitem interactive" data-type="leaderbutton"><a class="navbar"
-                                                                        href="leadership.html">Leadership</a></li>
-            <li class="navitem interactive" data-type="cvbutton"><a class="navbar" href="cv.html">CV</a></li>
-
-            <li class="navitem interactive" data-type="keybutton"><a class="navbar" href="pubkey.html">Public Key</a>
-            </li>
-            <li class="navitem imhere interactive" data-type="talkbutton"><a class="navbar" href="talks.html">Talks</a>
-            </li>
-            <li class="navitem interactive" data-type="blogbutton"><a class="navbar" href="blog.html">Blog</a></li>
-<li class="navitem interactive" data-type="catbutton"><a class="navbar" href="fetchcat.html"><i class="fa-solid fa-cat"></i></a></li>
-            <li class="navitem interactive" data-type="extrabutton"><a class="navbar" href="extras.html"><i
-                    class="fa-solid fa-image"></i></a></li>
-
-
-            <li class="modeswitch" style="align-self: flex-end;">
-                <button aria-label="Dark mode" class="interactive" data-type="nightbutton" onclick="DarkMode()" type="button"><i class="fas fa-moon"></i></button>
-                <button aria-label="Light mode" class="interactive" data-type="morningbutton" onclick="LightMode()" type="button"><i class="fas fa-sun"></i></button>
-            </li>
-        </ul>
-    </nav>
-    <h3>Talks and Presentations</h3>
-
-    <ul class="cvlist">
-
-                <li class="cvitem">
-            <div class="cvitem-title">[2026] Shiny Objects: Object-Centric Characterization of Chromium.</div>
-            <div class="venue">SIGMETRICS'26</div>
-            <div class="links">
-                [<span style="text-decoration: line-through;">YouTube</span>]
-                [<a class="interactive" href="rpapers/pdfs/ShinyObjects.pdf">Paper</a>]
-                [<span style="text-decoration: line-through;">Slides</span>]
-                [<span  style="text-decoration: line-through;">GitHub</span>]
-            </div>
-        </li>
-
-
-        <li class="cvitem">
-            <div class="cvitem-title">[2024] Securing Large Monolithic Systems: Challenges and Opportunities.</div>
-            <div class="venue">ESWEEK'24 ; Special Session: Detecting and Defending Vulnerabilities in Heterogeneous and Monolithic Systems: Current Strategies and Future Directions</div>
-            <div class="links">
-                [<span style="text-decoration: line-through;">YouTube</span>]
-                [<a class="interactive" href="rpapers/pdfs/esweek2024.pdf">Paper</a>]
-                [<a class="interactive"
-                    href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/blob/ea51c987818f44947860bb849dbfcf3b42ed2492/2024/ESWEEK/Securing%20Large%20Monolithic%20Systems%20Challenges%20and%20Opportunities%20-%20ESWEEK%202024%20-%20NC.pdf">Slides</a>]
-                [<a class="interactive" data-type="github"
-                    href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/tree/ea51c987818f44947860bb849dbfcf3b42ed2492/2024/ESWEEK">GitHub</a>]
-            </div>
-        </li>
-
-
-        <li class="cvitem">
-            <div class="cvitem-title">[2021] Automating malware process scanning with Python3</div>
-            <div class="venue">PyCode2021 Conference</div>
-            <div class="links">
-                [<span style="text-decoration: line-through;">YouTube</span>]
-                [<a class="interactive" href="https://pycode-conference.org/">Web</a>]
-                [<a class="interactive"
-                    href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/blob/main/2021/PyCode%20Conference%202021/Presentation/Automating%20malware%20process%20scanning%20with%20Python3.pdf">Slides</a>]
-                [<a class="interactive" data-type="github"
-                    href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/tree/main/2021/PyCode%20Conference%202021">GitHub</a>]
-            </div>
-        </li>
-
-        <li class="cvitem">
-            <div class="cvitem-title">[2021] Firefly Inspired IDS Optimisation (NICS)</div>
-            <div class="venue">CyVIT 2021: International Cybersecurity Conclave</div>
-            <div class="links">
-                <!-- [<a href="">slides</a>] -->
-                [<a class="interactive" data-type="youtube" href="https://www.youtube.com/watch?v=5nwDzJLSCTo&t=15628s">YouTube</a>]
-                [<span style="text-decoration: line-through;">Web</span>]
-                [<a class="interactive"
-                    href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/blob/main/2021/FireFly%20Based%20IDS%20for%20NICS%20Research%20Presentation%20(CyVIT'21)/SLIDE/Modified%20Firefly%20Optimisation%20inspired%20Intrusion%20Detection%20Systems.pdf">Slides</a>]
-                [<a class="interactive" data-type="github"
-                    href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/tree/main/2021/FireFly%20Based%20IDS%20for%20NICS%20Research%20Presentation%20(CyVIT'21)">GitHub</a>]
-            </div>
-        </li>
-
-        <li class="cvitem">
-            <div class="cvitem-title">[2020] Malware Hunting with Machine Learning</div>
-            <div class="venue">Penn State World Campus Tech Club, Penn State University, Pennsylvania, USA</div>
-            <div class="links">
-                [<a class="interactive" data-type="youtube" href="https://youtu.be/1FqDsTxrIdg">YouTube</a>]
-                [
-                <del>Web</del>
-                ]
-                [<a class="interactive"
-                    href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/blob/main/2020/PennStateTechClub_(PSWCTC)/SLIDE/Malware%20Hunting%20With%20ML.pdf">Slides</a>]
-                [<a class="interactive" data-type="github"
-                    href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/tree/main/2020/PennStateTechClub_(PSWCTC)">GitHub</a>]
-            </div>
-        </li>
-
-        <li class="cvitem">
-            <div class="cvitem-title">[2019] Multi-Model Malware Detection and Classification.</div>
-            <div class="venue">Hybrid Intelligent Systems (HIS 2019) Conference, Bhopal, India</div>
-            <div class="links">
-                [
-                <del>YouTube</del>
-                ]
-                [
-                <del>Web</del>
-                ]
-                [
-                <del>Slides</del>
-                ]
-                [
-                <del>GitHub</del>
-                ]
-            </div>
-        </li>
-
-    </ul>
+  <h3>Shiny Objects: Object-Centric Characterization of Chromium</h3>
+  <p class="meta">SIGMETRICS'26</p>
+  <p class="links"><del>youtube</del>
+    <a href="rpapers/pdfs/ShinyObjects.pdf" data-ink="paper">paper</a>
+    <del>slides</del>
+    <del>github</del></p>
+</article></div>
+  <div class="margin lead"><p class="note">2026</p></div>
 </div>
-<footer>
-    2026 © Saket Upadhyay
-</footer>
+<div class="row">
+  <div class="main"><article class="entry">
+
+  <h3>Securing Large Monolithic Systems: Challenges and Opportunities</h3>
+  <p class="meta">ESWEEK'24. Special session: Detecting and Defending Vulnerabilities in Heterogeneous and Monolithic
+    Systems: Current Strategies and Future Directions</p>
+  <p class="links"><del>youtube</del>
+    <a href="rpapers/pdfs/esweek2024.pdf" data-ink="paper">paper</a>
+    <a href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/blob/ea51c987818f44947860bb849dbfcf3b42ed2492/2024/ESWEEK/Securing%20Large%20Monolithic%20Systems%20Challenges%20and%20Opportunities%20-%20ESWEEK%202024%20-%20NC.pdf" data-ink="slides">slides</a>
+    <a href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/tree/ea51c987818f44947860bb849dbfcf3b42ed2492/2024/ESWEEK" data-ink="github">github</a></p>
+</article></div>
+  <div class="margin lead"><p class="note">2024</p></div>
+</div>
+<div class="row">
+  <div class="main"><article class="entry">
+
+  <h3>Automating malware process scanning with Python3</h3>
+  <p class="meta">PyCode2021 Conference</p>
+  <p class="links"><del>youtube</del>
+    <a href="https://pycode-conference.org/" data-ink="conference">web</a>
+    <a href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/blob/main/2021/PyCode%20Conference%202021/Presentation/Automating%20malware%20process%20scanning%20with%20Python3.pdf" data-ink="slides">slides</a>
+    <a href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/tree/main/2021/PyCode%20Conference%202021" data-ink="github">github</a></p>
+</article></div>
+  <div class="margin lead"><p class="note">2021</p></div>
+</div>
+<div class="row">
+  <div class="main"><article class="entry">
+
+  <h3>Firefly Inspired IDS Optimisation (NICS)</h3>
+  <p class="meta">CyVIT 2021: International Cybersecurity Conclave</p>
+  <p class="links"><a href="https://www.youtube.com/watch?v=5nwDzJLSCTo&amp;t=15628s" data-ink="youtube">youtube</a>
+    <del>web</del>
+    <a href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/blob/main/2021/FireFly%20Based%20IDS%20for%20NICS%20Research%20Presentation%20(CyVIT'21)/SLIDE/Modified%20Firefly%20Optimisation%20inspired%20Intrusion%20Detection%20Systems.pdf" data-ink="slides">slides</a>
+    <a href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/tree/main/2021/FireFly%20Based%20IDS%20for%20NICS%20Research%20Presentation%20(CyVIT'21)" data-ink="github">github</a></p>
+</article></div>
+  <div class="margin lead"><p class="note">2021</p></div>
+</div>
+<div class="row">
+  <div class="main"><article class="entry">
+
+  <h3>Malware Hunting with Machine Learning</h3>
+  <p class="meta">Penn State World Campus Tech Club, Penn State University, Pennsylvania, USA</p>
+  <p class="links"><a href="https://youtu.be/1FqDsTxrIdg" data-ink="youtube">youtube</a>
+    <del>web</del>
+    <a href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/blob/main/2020/PennStateTechClub_(PSWCTC)/SLIDE/Malware%20Hunting%20With%20ML.pdf" data-ink="slides">slides</a>
+    <a href="https://github.com/Saket-Upadhyay/Talks-and-Presentation/tree/main/2020/PennStateTechClub_(PSWCTC)" data-ink="github">github</a></p>
+</article></div>
+  <div class="margin lead"><p class="note">2020</p></div>
+</div>
+<div class="row">
+  <div class="main"><article class="entry">
+
+  <h3>Multi-Model Malware Detection and Classification</h3>
+  <p class="meta">Hybrid Intelligent Systems (HIS 2019) Conference, Bhopal, India</p>
+  <p class="links"><del>youtube</del> <del>web</del> <del>slides</del> <del>github</del></p>
+</article></div>
+  <div class="margin lead"><p class="note">2019</p></div>
+</div>
+  </main>
+
+  <footer class="row">
+    <div class="main">
+      <p class="colophon">© 2026 Saket Upadhyay. <a href="blog.html" data-ink="writing">Blog</a>, <a href="credits.html" data-ink="thanks">credits</a>.</p>
+    </div>
+  </footer>
+</div>
 </body>
 </html>
