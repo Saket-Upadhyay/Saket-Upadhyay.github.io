@@ -1,23 +1,32 @@
 <!--
 title: About
-description: Saket Upadhyay is a PhD candidate at the University of Virginia working on compiler-based low-level software security.
+description: Saket Upadhyay is a PhD candidate at the University of Virginia working on memory compartmentalization and privilege isolation using compilers.
 -->
-<p>I'm a PhD candidate in Computer Science at the University of Virginia, advised by
-  <a href="https://www.cs.virginia.edu/~av6ds/" data-ink="advisor">Dr. Ashish Venkat</a>. I work on low-level software
-  security through compilers: how a compiler can enforce fine-grained security policies, and how memory objects
-  shape hardware behavior and system security.</p>
+<p>I am a Ph.D. candidate in Computer Science at the University of Virginia, advised by
+  <a href="https://www.cs.virginia.edu/~av6ds/" data-ink="advisor">Dr. Ashish Venkat</a>, working on memory
+  compartmentalization and privilege isolation. My research uses compiler infrastructure to split software into
+  isolated compartments, enforce fine-grained access policies between them, and verify that those policies hold, so
+  that a compromise in one part of a program cannot reach memory or privileges it was never meant to have.</p>
 
-<p>Most of my work happens in LLVM, memory allocation and layout, and the parts of programming languages that sit close
-  to the machine. I use compiler infrastructure to analyze, monitor, and instrument programs so that enforcement
-  systems can make better decisions.<note>my thesis, roughly</note></p>
+<p>In my current work, I build LLVM passes that automate compartmentalization from program annotations, verify policy
+  correctness across a multi-stage pipeline, compress access matrices to keep enforcement lean, and guide where
+  hardware-enforced gate calls are placed.<note>my thesis, roughly</note></p>
 
-<p>I also have a background in threat intelligence, malware analysis, and reverse engineering.<note>how it started</note></p>
+<p>Isolation is only practical if its cost is acceptable. As a Ph.D. intern at Google, I optimized large-scale,
+  high-performance cloud workloads, reasoning about hardware constraints and multi-objective tradeoffs. That experience
+  shapes how I approach the performance side of isolation: domain crossings, metadata size, and where enforcement
+  overhead actually lands on real hardware.</p>
 
-<p>I'm committed to academic research, and to broadening access to STEM education for people from diverse
-  backgrounds.<note>more on this under <a href="teaching.html" data-ink="classes">teaching</a> and
+<p>My earlier work includes object-level memory profiling of Chromium (SIGMETRICS 2026) and a background in threat
+  intelligence, malware analysis, and reverse engineering, which informs how I think about attackers moving through a
+  system.<note>how it started</note></p>
+
+<p>I am committed to broadening access to STEM education for people from diverse backgrounds.<note>more on this under
+  <a href="teaching.html" data-ink="classes">teaching</a> and
   <a href="leadership.html" data-ink="service">leadership</a></note></p>
 
-<p><b>Interests:</b> Memory (layout, allocation, safety), compilers (LLVM middle- and back-end), low-level software security, computer architecture.</p>
+<p><b>Open to collaboration on:</b> compartmentalization, privilege isolation, compilers, and hardware–software
+  co-design for security.</p>
 
 <h2>Recent work</h2>
 

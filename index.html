@@ -6,7 +6,7 @@
   <!-- Applies the saved theme before first paint; kept minimal on purpose. -->
   <script>try{var v=localStorage.getItem("vision");if(v==="dark"||v==="light")document.documentElement.dataset.theme=v}catch(e){}</script>
   <title>Saket Upadhyay</title>
-  <meta name="description" content="Saket Upadhyay is a PhD candidate at the University of Virginia working on compiler-based low-level software security.">
+  <meta name="description" content="Saket Upadhyay is a PhD candidate at the University of Virginia working on memory compartmentalization and privilege isolation using compilers.">
   <link rel="preload" href="assets/fonts/google-sans-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/caveat-400.woff2" as="font" type="font/woff2" crossorigin>
   <style>:root{--l:32px;--fs-body:18px;--fs-entry-title:1em;--fs-mono:.85em;--fs-links:.85rem;--fs-key-block:.72rem;--fs-date-label:.8rem;--fs-label-key:.78rem;--fs-title:2.5rem;--fs-heading:1.85rem;--fs-notes:1.2rem;--fs-label-name:2.3rem;--fs-label-name-small:2.1rem;--fs-label-value:1.3rem;--fs-label-key-deva:1rem;--fs-who:2.4rem;--fs-who-deva:1.75rem;--fs-date:1.3rem;--fs-toggle:1.3rem;--fs-footer:1.2rem;--fs-footer-shloka:1.3rem;--fs-cursor:1.3rem;--fs-nav:clamp(1rem, 2.3vw, 1.22rem);--fs-nav-sidebar:1.0rem;--fs-nav-doodle:18px;--fs-nav-phi:12px;--fs-bib-title:1.4rem;--fs-bib-button:1.2rem;--fs-note-numeral:1.05rem;--fs-note-ref:.9rem;--fs-bib-code:.9rem;}</style>
@@ -21,7 +21,7 @@
 
   Every page here is plain HTML, written into a notebook template by a small
   Python script (tools/build.py). One stylesheet, a little JavaScript for the
-  ink cursor and the sketched navigation, no frameworks, no trackers.
+  ink cursor and the sketched navigation.
   If you read source code for fun, we'd probably get along.
 
   — Saket
@@ -39,7 +39,7 @@
   <aside class="row side">
     <div class="main">
       <div class="dp">
-        <span>Date<b data-today>03.10.26</b></span>
+        <span>Date<b data-today>14.11.26</b></span>
         <span>Page<b>01</b></span>
       </div>
       <div class="label snap">
@@ -96,29 +96,39 @@
 
   <main id="content">
 <div class="row">
-  <div class="main"><p>I'm a PhD candidate in Computer Science at the University of Virginia, advised by
-  <a href="https://www.cs.virginia.edu/~av6ds/" data-ink="advisor">Dr. Ashish Venkat</a>. I work on low-level software
-  security through compilers: how a compiler can enforce fine-grained security policies, and how memory objects
-  shape hardware behavior and system security.</p></div>
+  <div class="main"><p>I am a Ph.D. candidate in Computer Science at the University of Virginia, advised by
+  <a href="https://www.cs.virginia.edu/~av6ds/" data-ink="advisor">Dr. Ashish Venkat</a>, working on memory
+  compartmentalization and privilege isolation. My research uses compiler infrastructure to split software into
+  isolated compartments, enforce fine-grained access policies between them, and verify that those policies hold, so
+  that a compromise in one part of a program cannot reach memory or privileges it was never meant to have.</p></div>
 </div>
 <div class="row">
-  <div class="main"><p>Most of my work happens in LLVM, memory allocation and layout, and the parts of programming languages that sit close
-  to the machine. I use compiler infrastructure to analyze, monitor, and instrument programs so that enforcement
-  systems can make better decisions.<sup><a class="nref" id="ref-1" href="#note-1" data-g="1" aria-label="Note 1" data-ink="note">१</a></sup></p></div>
+  <div class="main"><p>In my current work, I build LLVM passes that automate compartmentalization from program annotations, verify policy
+  correctness across a multi-stage pipeline, compress access matrices to keep enforcement lean, and guide where
+  hardware-enforced gate calls are placed.<sup><a class="nref" id="ref-1" href="#note-1" data-g="1" aria-label="Note 1" data-ink="note">१</a></sup></p></div>
   <div class="margin"><p class="note" id="note-1" data-g="1"><a class="n" href="#ref-1" aria-label="Back to text" data-ink="back">१</a> my thesis, roughly</p></div>
 </div>
 <div class="row">
-  <div class="main"><p>I also have a background in threat intelligence, malware analysis, and reverse engineering.<sup><a class="nref" id="ref-2" href="#note-2" data-g="2" aria-label="Note 2" data-ink="note">२</a></sup></p></div>
+  <div class="main"><p>Isolation is only practical if its cost is acceptable. As a Ph.D. intern at Google, I optimized large-scale,
+  high-performance cloud workloads, reasoning about hardware constraints and multi-objective tradeoffs. That experience
+  shapes how I approach the performance side of isolation: domain crossings, metadata size, and where enforcement
+  overhead actually lands on real hardware.</p></div>
+</div>
+<div class="row">
+  <div class="main"><p>My earlier work includes object-level memory profiling of Chromium (SIGMETRICS 2026) and a background in threat
+  intelligence, malware analysis, and reverse engineering, which informs how I think about attackers moving through a
+  system.<sup><a class="nref" id="ref-2" href="#note-2" data-g="2" aria-label="Note 2" data-ink="note">२</a></sup></p></div>
   <div class="margin"><p class="note" id="note-2" data-g="2"><a class="n" href="#ref-2" aria-label="Back to text" data-ink="back">२</a> how it started</p></div>
 </div>
 <div class="row">
-  <div class="main"><p>I'm committed to academic research, and to broadening access to STEM education for people from diverse
-  backgrounds.<sup><a class="nref" id="ref-3" href="#note-3" data-g="3" aria-label="Note 3" data-ink="note">३</a></sup></p></div>
-  <div class="margin"><p class="note" id="note-3" data-g="3"><a class="n" href="#ref-3" aria-label="Back to text" data-ink="back">३</a> more on this under <a href="teaching.html" data-ink="classes">teaching</a> and
+  <div class="main"><p>I am committed to broadening access to STEM education for people from diverse backgrounds.<sup><a class="nref" id="ref-3" href="#note-3" data-g="3" aria-label="Note 3" data-ink="note">३</a></sup></p></div>
+  <div class="margin"><p class="note" id="note-3" data-g="3"><a class="n" href="#ref-3" aria-label="Back to text" data-ink="back">३</a> more on this under
+  <a href="teaching.html" data-ink="classes">teaching</a> and
   <a href="leadership.html" data-ink="service">leadership</a></p></div>
 </div>
 <div class="row">
-  <div class="main"><p><b>Interests:</b> Memory (layout, allocation, safety), compilers (LLVM middle- and back-end), low-level software security, computer architecture.</p></div>
+  <div class="main"><p><b>Open to collaboration on:</b> compartmentalization, privilege isolation, compilers, and hardware–software
+  co-design for security.</p></div>
 </div>
 <div class="row">
   <div class="main"><h2>Recent work</h2></div>
